@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Mot-clé devant, marque derrière : « WIP Athletics » n'est pas encore une
+     requête (la salle ouvre le 31/10). Ce que les gens tapent, c'est « salle
+     de sport Amboise ». À inverser le jour où la marque sera cherchée pour
+     elle-même. -->
+<title>Salle de sport Amboise (37) — Hyrox, cross-training, pole dance | WIP Athletics</title>
+
+<meta name="description" content="Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026 — tarif fondateur ouvert à la réservation.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B0D0C">
+<meta property="og:title" content="WIP Athletics — Salle de sport à Amboise (37), ouverture le 31 octobre 2026">
+<meta property="og:description" content="Cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m² à Amboise, à 25 min de Tours. Cours en petits groupes, tous niveaux. Les premières inscriptions bloquent leur tarif d'ouverture.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="logo/png/wip-avatar-1000.png">
+
+<!-- Icônes : master v02. Le favicon SVG porte son propre fond noir de fonte,
+     il reste donc lisible sur un onglet clair comme sombre. -->
+<link rel="icon" href="logo/wip-logo-signature-blanc.svg" type="image/svg+xml">
+<link rel="icon" href="logo/png/wip-favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="logo/png/wip-apple-touch-icon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- preload de la feuille : la bascule police de secours → Archivo arrive plus
+     tôt, ce qui réduit le décalage de mise en page (règle « Font Loading ») -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wght@400;500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!--
+  WIP ATHLETICS — Work · Improve · Progress
+  Landing page — Amboise · ouverture samedi 31 octobre 2026
+
+  DIRECTION (refonte design 24/08/2026 — structure, textes et idées inchangés)
+
+  Socle = §3 du brand book : noir de fonte / magnésie / béton, un accent unique
+  (bleu de chauffe). Le code des disques olympiques calibrés est conservé — c'est
+  une idée revendiquée dans le texte de la page — mais ramené à sa juste place :
+  un repère à petite surface (l'anneau du disque, la pastille, le filet de
+  section), jamais un aplat de fond. Coïncidence utile : le disque de 20 kg est
+  bleu, donc l'accent de marque est aussi une couleur de disque.
+
+  Typographie = §4 : Archivo sur toute son amplitude de chasse (wdth 62→125) et
+  de graisse, plus Martian Mono pour tout ce qui est chiffré.
+
+  Grammaire = §5, la coupe diagonale : chanfrein 45° en bas à droite, talon
+  arrondi en bas à gauche, coupe d'image 4:3 (36,87°) toujours du même côté.
+
+  Logos = MASTER v02 (brand/logos/v02/), seule version en vigueur — la v01 est
+  historique. Wordmark seul dans la nav (bandeau étroit), lockup complet en pied
+  de page, symbole en filigrane. Tracés inlinés tels quels dans <defs>, aucun
+  nœud touché ; les fichiers d'origine sont dans logo/ pour les autres supports.
+
+  ⚠ RÈGLE §5 bis-A : la salle n'est pas affiliée à la marque déposée du milieu.
+  Ce mot ne doit apparaître nulle part — texte visible, balises, ET commentaires
+  (le source d'une page se lit). Les parcours des coachs disent « box affiliée »
+  et « entraînement fonctionnel », jamais le nom de marque.
+
+  À compléter : photos (slots repérés), coach pole, tarifs définitifs,
+  lien de réservation, planning réel.
+-->
+
+<style>
+html, body { margin: 0; padding: 0; }
+
+.wip {
+  /* ——— socle §3 ——— */
+  --fonte:    #0B0D0C;   /* noir de fonte */
+  --magnesie: #ECEBE5;   /* blanc craie chaud, jamais un blanc pur */
+  --papier:   #E3E2DA;   /* magnésie assombrie : fonds de section alternés */
+  --beton-c:  #8B8E88;   /* texte secondaire SUR NOIR   — 5,9:1 */
+  --beton-f:  #5E625C;   /* texte secondaire SUR CLAIR  — 5,2:1 */
+  --encre:    #2A2D29;   /* texte courant sur clair, moins dur que le noir plein */
+  --trait:    #D2D1C8;   /* filet sur clair */
+  --trait-n:  #232620;   /* filet sur noir */
+
+  /* accent unique : chaque fond appelle sa valeur */
+  --bleu:     #1B44C8;   /* sur magnésie — 6,5:1 */
+  --bleu-c:   #6A8AF0;   /* sur noir     — 6,1:1 */
+  --chrome:   #B4B9BC;   /* matière pole, fond noir uniquement */
+
+  /* disques calibrés — repérage uniquement, jamais un aplat de fond */
+  --d25: #C0322C;
+  --d20: #1B44C8;
+  --d15: #E0A800;
+  --d5:  #ECEBE5;
+  --d2:  #0B0D0C;
+
+  --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* coupe diagonale §5 */
+  --chanfrein: 15px;   /* 45° — blocs, boutons, étiquettes */
+  --talon: 11px;       /* R du talon bas-gauche */
+  --coupe-x: 60px;     /* coupe d'image 4:3 … */
+  --coupe-y: 45px;     /* … 60/45 = 36,87° */
+  --nav-h: 70px;
+
+  background: var(--magnesie);
+  color: var(--fonte);
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.55;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: clip; /* 'hidden' casserait position:sticky sur la nav et le hero */
+}
+
+.wip *, .wip *::before, .wip *::after { box-sizing: border-box; }
+.wip p, .wip h1, .wip h2, .wip h3, .wip h4, .wip ul, .wip li, .wip figure { margin: 0; padding: 0; }
+.wip ul { list-style: none; }
+.wip button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+.wip a { color: inherit; text-decoration: none; }
+.wip p { text-wrap: pretty; }
+.wip :focus-visible { outline: 2px solid var(--bleu); outline-offset: 3px; }
+.wip section[id], .wip header[id] { scroll-margin-top: calc(var(--nav-h) + 12px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ——— grain : la matière du papier, pas un effet ——— */
+.wip-grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .42;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wip-wrap { max-width: 1240px; margin: 0 auto; padding: 0 30px; }
+@media (max-width: 620px) { .wip-wrap { padding: 0 20px; } }
+
+/* ——— étiquette mono : tout ce qui est chiffré ou catégorisé ——— */
+.wip-mono {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--beton-f);
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ——— régimes typographiques ——— */
+.wip-h {
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  letter-spacing: -0.03em; line-height: .9; text-wrap: balance;
+}
+
+/* ——— la coupe : chanfrein bas-droit + talon bas-gauche ——— */
+.wip-coupe {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)), calc(100% - var(--chanfrein)) 100%, 0 100%);
+  border-bottom-left-radius: var(--talon);
+}
+.wip-coupe-l { --chanfrein: 30px; --talon: 18px; }
+
+/* ———————————————————————————————— annonce ———————————————————————————————— */
+.wip-annonce {
+  background: var(--fonte); color: var(--beton-c);
+  display: flex; justify-content: center; align-items: center;
+  gap: 0; flex-wrap: wrap; padding: 10px 28px;
+}
+.wip-annonce span {
+  font-family: var(--mono); font-size: 10px; font-weight: 400;
+  letter-spacing: .11em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.wip-annonce span + span::before {
+  content: ''; width: 1px; height: 11px; margin: 0 12px 0 18px;
+  background: #3A3E38; transform: skewX(-36.87deg); /* la diagonale du logo */
+}
+.wip-annonce b { color: var(--magnesie); font-weight: 500; }
+
+/* ———————————————————————————————— nav ———————————————————————————————— */
+.wip-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(11,13,12,.93);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--trait-n);
+}
+.wip-nav-in { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); gap: 20px; }
+
+/* le logo se pose en magnésie sur la nav sombre. `color` ET `fill` sont
+   donnés : les tracés des <symbol> sont en currentColor, mais un fill
+   explicite évite tout retour au noir par défaut selon le moteur. */
+.wip-logo { display: inline-flex; align-items: center; color: var(--magnesie); }
+.wip-logo-sig { display: block; width: 128px; height: auto; color: var(--magnesie); fill: var(--magnesie); }
+@media (max-width: 400px) { .wip-logo-sig { width: 104px; } }
+
+.wip-liens { display: flex; gap: 28px; align-items: center; }
+.wip-liens a {
+  font-size: 14px; font-weight: 500; color: #B9BCB5; position: relative;
+  padding: 4px 0; transition: color .2s ease;
+}
+.wip-liens a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--bleu-c); transform: scaleX(0); transform-origin: right;
+  transition: transform .3s cubic-bezier(.16,1,.3,1);
+}
+.wip-liens a:hover { color: var(--magnesie); }
+.wip-liens a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* Bascule à 1040 px et non plus 940 : cinq entrées plus un bouton de
+   28 caractères demandent ~945 px avec le logo, contre ~810 px du temps
+   de « Réserver ma séance ». Elle débordait donc juste sous 940 px. */
+@media (max-width: 1040px) {
+  .wip { --nav-h: 108px; }
+  .wip-nav-in { flex-wrap: wrap; height: auto; }
+  .wip-logo, .wip-nav-in > .wip-cta { height: 64px; display: inline-flex; align-items: center; }
+  .wip-liens {
+    order: 3; width: 100%; gap: 20px; overflow-x: auto; padding-bottom: 8px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain; /* pas de navigation arrière déclenchée par erreur */
+  }
+  .wip-liens::-webkit-scrollbar { display: none; }
+  /* cible tactile agrandie sur mobile : 28 px de haut, 20 px entre deux liens */
+  .wip-liens a { white-space: nowrap; font-size: 13.5px; padding: 7px 0; min-height: 28px; }
+}
+
+/* ———————————————————————————————— boutons ———————————————————————————————— */
+.wip-cta, .wip-cta-fant {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-flex; align-items: center; gap: 11px;
+  padding: 14px 22px; font-size: 14.5px; font-weight: 600; font-stretch: 105%;
+  letter-spacing: -.005em;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)), calc(100% - var(--chanfrein)) 100%, 0 100%);
+  border-bottom-left-radius: var(--talon);
+  transition: color .2s ease;
+}
+.wip-cta { background: var(--bleu); color: #fff; }
+.wip-cta-fant { color: var(--fonte); box-shadow: inset 0 0 0 1.5px var(--fonte); }
+
+/* le balayage suit la diagonale 4:3 du logo */
+.wip-cta::before, .wip-cta-fant::before {
+  content: ''; position: absolute; inset: -2px -34%; z-index: -1;
+  transform: translateX(-102%) skewX(-36.87deg);
+  transition: transform .42s cubic-bezier(.16,1,.3,1);
+}
+.wip-cta::before { background: var(--fonte); }
+.wip-cta-fant::before { background: var(--fonte); }
+.wip-cta:hover::before, .wip-cta-fant:hover::before { transform: translateX(0) skewX(-36.87deg); }
+.wip-cta-fant:hover { color: var(--magnesie); }
+
+.wip-cta i, .wip-cta-fant i {
+  font-style: normal; font-family: var(--mono); font-size: 12px;
+  transition: transform .3s cubic-bezier(.16,1,.3,1);
+}
+.wip-cta:hover i, .wip-cta-fant:hover i { transform: translateX(4px); }
+
+/* le clip-path masquerait l'outline : anneau intérieur au focus */
+.wip-cta:focus-visible, .wip-cta-fant:focus-visible {
+  outline: none; box-shadow: inset 0 0 0 2.5px var(--magnesie), inset 0 0 0 4.5px var(--bleu);
+}
+.wip-cta-sm { padding: 10px 17px; font-size: 13px; --chanfrein: 11px; --talon: 8px; }
+
+/* ———————————————————————— hero : le nom se déplie ———————————————————————— */
+.wip-hero { background: var(--fonte); color: var(--magnesie); position: relative; }
+/* le béton clair (5,9:1 sur noir plein) tombe sous le seuil dès qu'une image
+   passe derrière : dans le hero, les textes secondaires montent d'un cran */
+.wip-hero .wip-mono { color: #CBCEC7; }
+
+/* repères de colonnes — un plan de chantier, pas une décoration */
+.wip-hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  max-width: 1240px; margin: 0 auto; left: 0; right: 0;
+  background-image: repeating-linear-gradient(to right, rgba(236,235,229,.055) 0 1px, transparent 1px calc(100% / 12));
+  background-position: 30px 0; background-size: calc(100% - 60px) 100%; background-repeat: no-repeat;
+}
+@media (max-width: 760px) { .wip-hero::before { display: none; } }
+
+/* ——— fond vidéo ———
+   La vidéo est une TEXTURE EN MOUVEMENT, pas une image à regarder : très
+   assombrie et désaturée, elle donne de la vie au premier écran sans jamais
+   disputer la lecture au titre. Le voile est calculé pour garder le texte
+   magnésie à 5,8:1 même sur une image vidéo blanche (AA tenu au pire cas).
+   Elle ne se charge ni sur mobile ni en animations réduites (voir le script). */
+.wip-hero-fond { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+
+/* La vidéo est ÉCLAIRCIE, pas assombrie : c'est le voile qui gère le
+   contraste, pas le filtre. Assombrir les deux revenait à la noyer. */
+.wip-hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(.3) contrast(1.14) brightness(1.16) saturate(.85);
+}
+
+/* ⚠ DEUX DÉGRADÉS SUPERPOSÉS SE COMPOSENT : 0,94 au-dessus de 0,70 donne
+   0,982, pas 0,94. D'où un seul voile directionnel, plus un liseré bas qui
+   ne mord que là où le voile principal est déjà faible.
+
+   Le contraste du texte n'est PLUS porté par le voile mais par le halo que
+   chaque texte se dessine à lui-même (.wip-hero-lisible ci-dessous). Le
+   voile ne fait plus qu'asseoir la zone gauche, ce qui libère la vidéo :
+     0 → 40 %   0,86-0,82   assise de la colonne de texte
+     68 %       0,54        la vidéo commence à se lire franchement
+     88 → 100 % 0,26-0,15   la vidéo à nu, plus aucun texte              */
+.wip-hero-voile {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(11,13,12,0) 74%, rgba(11,13,12,.6) 100%),
+    linear-gradient(101deg,
+      rgba(11,13,12,.86) 0%,
+      rgba(11,13,12,.82) 40%,
+      rgba(11,13,12,.54) 68%,
+      rgba(11,13,12,.26) 88%,
+      rgba(11,13,12,.15) 100%);
+}
+
+/* Halo, pas ombre portée : un flou centré, sans décalage, qui donne à chaque
+   glyphe son propre fond sombre. C'est ce qui permet de baisser le voile
+   général sans perdre la lisibilité — et ça reste invisible à l'œil. */
+.wip-hero .wip-mono,
+.wip-hero .wip-titre,
+.wip-hero .wip-sous {
+  text-shadow:
+    0 0 34px rgba(11,13,12,.96),
+    0 0 12px rgba(11,13,12,.9),
+    0 0 4px rgba(11,13,12,.75);
+}
+
+/* le bouton fantôme n'a pas de fond : sur une vidéo claire il lui en faut un */
+.wip-hero .wip-cta-fant {
+  background: rgba(11,13,12,.5);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+
+/* WCAG 2.2.2 — tout mouvement de plus de 5 s doit pouvoir être arrêté */
+.wip-hero-pause {
+  position: absolute; right: 30px; bottom: 26px; z-index: 3;
+  display: none; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 9px; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; color: #CBCEC7;
+  padding: 9px 13px; background: rgba(11,13,12,.8);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px #3C403A; transition: color .2s, box-shadow .2s;
+}
+.wip-hero-pause.actif { display: inline-flex; }
+.wip-hero-pause:hover { color: var(--magnesie); box-shadow: inset 0 0 0 1px #565B53; }
+.wip-hero-pause i { font-style: normal; font-size: 11px; }
+@media (max-width: 620px) { .wip-hero-pause { right: 20px; } }
+
+.wip-hero-piste { height: 240vh; }
+.wip-hero-colle {
+  position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h));
+  display: flex; align-items: center;
+}
+.wip-hero-colle > .wip-wrap { z-index: 1; }
+.wip-hero-colle > .wip-wrap { width: 100%; position: relative; }
+.wip-hero-piste.statique { height: auto; }
+.wip-hero-colle.statique { position: static; height: auto; padding: 74px 0 84px; }
+
+.wip-hero-in { display: grid; grid-template-columns: 46px 1fr; gap: 32px; align-items: center; margin-top: 30px; }
+
+/* la jauge : trois incréments, le nom même de la marque */
+.wip-rail { display: flex; flex-direction: column; gap: 7px; }
+.wip-rail-seg { width: 4px; height: 62px; background: #1C1F1B; position: relative; overflow: hidden; }
+.wip-rail-seg i { position: absolute; inset: 0; transform-origin: top; display: block; transform: scaleY(0); }
+
+.wip-titre { font-size: clamp(48px, 9.6vw, 132px); text-transform: uppercase; font-stretch: 125%; }
+.wip-titre .l { display: block; }
+.wip-titre .mot {
+  position: relative; display: inline-block; padding-bottom: .1em;
+  color: var(--magnesie); /* état de repli : sans JS, le titre est simplement lisible */
+  transition: color .6s ease;
+}
+
+/* ————————————— le rouleau —————————————
+   Le mot est écrit deux fois, superposé dans la même cellule de grille et
+   découpé lettre à lettre. La lettre ÉTEINTE s'écrase sur sa ligne de base
+   pendant que la même lettre ALLUMÉE se déplie depuis le haut : un volet à
+   lamelles. Le décalage lettre à lettre fait courir une vague de gauche à
+   droite, et c'est le scroll qui la pilote (voir le script).
+
+   L'écart avec la référence est volontaire : là où un rouleau classique
+   substitue un texte à l'identique — un effet pour l'effet —, ici les deux
+   faces n'ont pas la même couleur. La vague ALLUME le mot, ce qui rejoint
+   ce que la page raconte déjà : on ne l'a pas plaqué dessus.
+
+   Les deux faces sont aria-hidden : le texte réel du h1 est dans .wip-sr,
+   il n'est donc jamais lu deux fois par un lecteur d'écran.             */
+.wip-rouleau { display: inline-grid; }
+.wip-face { grid-area: 1 / 1; white-space: pre; }
+.wip-face i {
+  display: inline-block; font-style: normal;
+  backface-visibility: hidden;
+}
+.wip-face-bas  i { transform-origin: bottom; color: #33382F; }
+.wip-face-haut i { transform-origin: top; color: var(--magnesie); transform: scaleY(0); }
+.wip-titre .mot em {
+  position: absolute; left: 0; bottom: 0; height: .07em; width: 100%;
+  transform-origin: left; display: block; transform: scaleX(0);
+}
+
+.wip-sous {
+  margin-top: 34px; font-size: 18px; max-width: 540px; color: #D5D8D1;
+  line-height: 1.6; font-weight: 400;
+}
+.wip-actions { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+.wip-hero .wip-cta-fant { color: var(--magnesie); box-shadow: inset 0 0 0 1.5px #454842; }
+.wip-hero .wip-cta-fant::before { background: var(--magnesie); }
+.wip-hero .wip-cta-fant:hover { color: var(--fonte); }
+
+.wip-faits {
+  margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--trait-n);
+  display: flex; gap: 0; flex-wrap: wrap; align-items: center;
+}
+.wip-faits .wip-mono { color: var(--magnesie); font-weight: 500; }
+.wip-faits > span + span::before {
+  content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 16px;
+  background: #3A3E38; transform: skewX(-36.87deg); vertical-align: -1px;
+}
+
+@media (max-width: 760px) {
+  .wip-hero-in { grid-template-columns: 26px 1fr; gap: 16px; }
+  .wip-rail-seg { height: 46px; width: 3px; }
+  .wip-sous { font-size: 16.5px; margin-top: 26px; }
+}
+
+/* ————————————————— en-tête de section : index, règle, titre ————————————————— */
+.wip-tsec { margin-bottom: 50px; }
+
+.wip-tsec-regle {
+  display: block; height: 6px; width: 100%;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  transform-origin: left; transform: scaleX(0);
+  transition: transform .85s cubic-bezier(.16, 1, .3, 1);
+}
+.wip-tsec.vu .wip-tsec-regle { transform: scaleX(1); }
+
+.wip-tsec-oeil {
+  display: flex; align-items: center; gap: 14px; margin-top: 17px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .5s ease .2s, transform .5s ease .2s;
+}
+.wip-tsec.vu .wip-tsec-oeil { opacity: 1; transform: none; }
+.wip-tsec-oeil b { font-weight: 600; color: var(--fonte); }
+.wip-nom .wip-tsec-oeil b { color: var(--magnesie); }
+
+.wip-tsec h2 {
+  font-family: var(--display); font-weight: 900; font-stretch: 112%;
+  font-size: clamp(34px, 6vw, 74px); letter-spacing: -.035em; line-height: .96;
+  margin-top: 14px; max-width: 16ch;
+}
+.wip-tsec h2 .m { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .05em; }
+.wip-tsec h2 .m > i {
+  display: inline-block; font-style: normal;
+  transform: translateY(110%);
+  transition: transform .85s cubic-bezier(.16, 1, .3, 1);
+  transition-delay: calc(.26s + var(--i) * .05s);
+}
+.wip-tsec.vu h2 .m > i { transform: none; }
+
+.wip-tsec-intro {
+  max-width: 600px; margin-top: 22px; font-size: 17px; line-height: 1.6; color: var(--encre);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .6s ease .42s, transform .6s ease .42s;
+}
+.wip-tsec.vu .wip-tsec-intro { opacity: 1; transform: none; }
+
+.wip-nom .wip-tsec h2 { color: var(--magnesie); }
+.wip-nom .wip-tsec-intro { color: var(--beton-c); }
+
+@media (max-width: 700px) {
+  .wip-tsec h2 { max-width: none; }
+  .wip-tsec { margin-bottom: 36px; }
+  .wip-tsec-intro { font-size: 16px; }
+}
+
+/* ———————————————————————————————— sections ———————————————————————————————— */
+.wip-sec { padding: 96px 0; border-top: 1px solid var(--trait); }
+.wip-sec.sans-trait { border-top: 0; }
+.wip-sec.pose { background: var(--papier); border-top: 0; }
+@media (max-width: 700px) { .wip-sec { padding: 62px 0; } }
+
+/* ———————————————————————————————— planning ———————————————————————————————— */
+.wip-legende { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 28px; }
+.wip-legende span { display: flex; align-items: center; gap: 9px; }
+
+.wip-pastille { width: 10px; height: 10px; flex: none; border-radius: 50%; }
+.wip-pastille.anneau { background: transparent; }
+
+.wip-planning {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px; background: var(--trait);
+  box-shadow: 0 0 0 1px var(--trait);
+}
+.wip-jour { background: var(--magnesie); display: flex; flex-direction: column; }
+.wip-jour-tete { padding: 15px 15px 13px; border-bottom: 1px solid var(--trait); }
+.wip-jour-tete strong {
+  font-family: var(--display); font-size: 12px; font-weight: 700; font-stretch: 90%;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+.wip-creneau {
+  position: relative; padding: 13px 15px; border-bottom: 1px solid #DFDED5;
+  display: flex; flex-direction: column; gap: 5px;
+  transition: background .2s ease;
+}
+.wip-creneau::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--c); transform: scaleY(0); transform-origin: bottom;
+  transition: transform .28s cubic-bezier(.16,1,.3,1);
+}
+.wip-creneau:last-child { border-bottom: 0; }
+.wip-creneau:hover { background: #E6E5DC; }
+.wip-creneau:hover::before { transform: scaleY(1); transform-origin: top; }
+.wip-creneau b { font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: -.01em; }
+.wip-creneau span { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; color: var(--encre); }
+.wip-note { margin-top: 22px; display: flex; gap: 0; flex-wrap: wrap; align-items: center; }
+.wip-note > span + span::before {
+  content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 16px;
+  background: var(--trait); transform: skewX(-36.87deg); vertical-align: -1px;
+}
+
+@media (max-width: 900px) { .wip-planning { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .wip-planning { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wip-creneau { padding: 11px 12px; }
+}
+
+/* ———————————————————————————————— étapes ———————————————————————————————— */
+.wip-etapes { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--fonte); }
+.wip-etape { position: relative; padding: 30px 30px 34px; border-right: 1px solid var(--trait); }
+.wip-etape:last-child { border-right: 0; }
+.wip-etape::before {
+  content: ''; position: absolute; top: -2px; left: 0; right: 0; height: 2px;
+  background: var(--bleu); transform: scaleX(0); transform-origin: left;
+  transition: transform .45s cubic-bezier(.16,1,.3,1);
+}
+.wip-etape:hover::before { transform: scaleX(1); }
+.wip-etape-n {
+  font-family: var(--mono); font-size: 26px; font-weight: 600; color: var(--bleu);
+  letter-spacing: -.04em; display: block; line-height: 1;
+}
+.wip-etape h3 {
+  font-family: var(--display); font-size: 22px; font-weight: 700; font-stretch: 105%;
+  letter-spacing: -.025em; margin-top: 16px; line-height: 1.15;
+}
+.wip-etape p { margin-top: 11px; color: var(--encre); font-size: 15.5px; }
+.wip-etape .wip-mono { display: inline-block; margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--trait); }
+@media (max-width: 820px) {
+  .wip-etapes { grid-template-columns: 1fr; }
+  .wip-etape { border-right: 0; border-bottom: 1px solid var(--trait); padding: 26px 0 28px; }
+  .wip-etape:last-child { border-bottom: 0; }
+}
+
+/* ———————————————————————————————— espaces ———————————————————————————————— */
+.wip-espaces { border-top: 2px solid var(--fonte); }
+.wip-espace { border-bottom: 1px solid var(--trait); }
+.wip-espace.on { background: var(--papier); }
+.wip-espace-tete {
+  width: 100%; display: grid; grid-template-columns: 52px 1fr auto 34px;
+  gap: 20px; align-items: center; padding: 24px 0; text-align: left;
+  transition: padding .26s cubic-bezier(.16,1,.3,1), background .26s ease;
+}
+.wip-espace-tete:hover { padding-left: 14px; padding-right: 14px; }
+.wip-espace.on .wip-espace-tete { padding-left: 14px; padding-right: 14px; }
+
+/* le disque : anneau de couleur sur corps de fonte, comme un disque calibré */
+.wip-disque {
+  width: 46px; height: 46px; border-radius: 50%; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: -.03em;
+  border: 4px solid; box-shadow: 0 0 0 1px var(--trait);
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.wip-espace-tete:hover .wip-disque { transform: rotate(-12deg); }
+
+.wip-espace-nom {
+  font-family: var(--display); font-size: clamp(21px, 3.1vw, 34px); font-weight: 800;
+  font-stretch: 108%; letter-spacing: -.03em; line-height: 1.05;
+}
+.wip-espace-meta { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--beton-f); }
+.wip-croix {
+  position: relative; width: 18px; height: 18px; justify-self: end;
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.wip-croix::before, .wip-croix::after {
+  content: ''; position: absolute; background: var(--fonte);
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+}
+.wip-croix::before { width: 18px; height: 2px; }
+.wip-croix::after { width: 2px; height: 18px; transition: opacity .3s ease; }
+.wip-croix.on { transform: rotate(180deg); }
+.wip-croix.on::after { opacity: 0; }
+
+.wip-espace-corps {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .48s cubic-bezier(.16, 1, .3, 1);
+}
+.wip-espace-corps.on { grid-template-rows: 1fr; }
+.wip-espace-corps > div { overflow: hidden; min-height: 0; }
+.wip-espace-in {
+  display: grid; grid-template-columns: 52px 1fr .92fr; gap: 28px;
+  padding: 4px 14px 36px; align-items: start;
+}
+.wip-espace-texte { display: flex; flex-direction: column; gap: 26px; }
+.wip-espace-in p { color: var(--encre); font-size: 16px; line-height: 1.62; max-width: 430px; }
+.wip-fiche { display: flex; flex-direction: column; gap: 10px; align-self: start; }
+.wip-fiche div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--trait); padding-bottom: 8px; }
+.wip-fiche span:last-child { font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--fonte); }
+@media (max-width: 760px) {
+  .wip-espace-tete { grid-template-columns: 40px 1fr 24px; gap: 16px; }
+  .wip-espace-tete .wip-espace-meta { display: none; }
+  .wip-disque { width: 38px; height: 38px; border-width: 3px; font-size: 8px; }
+  .wip-espace-in { grid-template-columns: 1fr; gap: 24px; padding: 4px 0 28px; }
+  .wip-espace-in > span:first-child { display: none; }
+}
+
+/* ———————————————————— section sombre : pourquoi ce nom ———————————————————— */
+.wip-nom { background: var(--fonte); color: var(--magnesie); padding: 96px 0; position: relative; overflow: hidden; }
+.wip-nom .wip-mono { color: var(--beton-c); }
+/* ————————————— le colophon de section —————————————
+   Le symbole officiel (le w) signe la fin de chaque section, comme le
+   point final d'un article de revue : un filet court qui vient buter sur
+   le w, l'ensemble aligné à droite du bloc de contenu.
+
+   Ce qui a remplacé le filigrane, et pourquoi. Le grand w posé en absolu
+   dans le coin à 4 % échouait sur trois points :
+   — à cette opacité on perçoit une salissure sans identifier le signe,
+     c'est la zone morte entre le visible et l'absent ;
+   — posé en bas à droite, il passait derrière le dernier bloc de presque
+     chaque section et n'était jamais vu entier ;
+   — répété huit fois à 380 px, le signe le plus fort de la marque
+     devenait du papier peint et perdait sa valeur de signature.
+
+   Règle qui en découle : petit et net plutôt que grand et pâle. 34 px
+   dans le flux, en béton foncé (5,2:1 sur magnésie) — présent, lisible,
+   jamais en concurrence avec le contenu, et impossible à recouvrir.
+   Pas d'animation d'entrée : un point final n'entre pas en scène.     */
+.wip-colophon {
+  display: flex; align-items: center; justify-content: flex-end; gap: 16px;
+  margin-top: 72px;
+}
+.wip-colophon i {
+  display: block; height: 1px; flex: 0 1 clamp(52px, 10vw, 120px);
+  background: var(--trait);
+}
+.wip-colophon svg {
+  display: block; width: 34px; height: auto; flex: none;
+  color: var(--beton-f); fill: var(--beton-f);
+}
+/* sur les fonds sombres, le colophon s'inverse */
+.wip-nom .wip-colophon i, .wip-final.pose-sombre .wip-colophon i { background: var(--trait-n); }
+.wip-nom .wip-colophon svg, .wip-final.pose-sombre .wip-colophon svg {
+  color: var(--beton-c); fill: var(--beton-c);
+}
+@media (max-width: 700px) { .wip-colophon { margin-top: 50px; gap: 13px; } }
+
+.wip-nom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 50px; background: var(--trait-n); }
+.wip-nom-col { position: relative; background: var(--fonte); border-top: 4px solid; padding: 22px 26px 30px 0; }
+.wip-nom-col:not(:first-child) { padding-left: 26px; }
+.wip-nom-col h3 {
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  letter-spacing: -.035em; font-size: clamp(26px, 3.4vw, 40px); line-height: 1;
+  text-transform: uppercase;
+}
+.wip-nom-col p { margin-top: 14px; color: var(--beton-c); font-size: 15.5px; line-height: 1.6; max-width: 34ch; }
+@media (max-width: 800px) {
+  .wip-nom-grid { grid-template-columns: 1fr; gap: 0; background: none; }
+  .wip-nom-col { padding: 22px 0 28px !important; border-bottom: 1px solid var(--trait-n); }
+}
+
+.wip-sign {
+  margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--trait-n);
+  display: flex; gap: 0; flex-wrap: wrap; align-items: center;
+}
+.wip-sign > span + span::before {
+  content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 16px;
+  background: #3A3E38; transform: skewX(-36.87deg); vertical-align: -1px;
+}
+
+/* ———————————————— photo & emplacement : coupe 4:3, même côté ————————————————
+   Un seul composant pour les deux états : cadre d'une vraie photo (avec sa
+   légende), ou emplacement vide portant le brief de prise de vue. Aucune
+   image de banque, aucune image générée : le brand book l'interdit, et une
+   salle qui n'existe pas encore ne se montre pas avec la salle d'un autre.
+   Les seules photos posées ici sont celles du bâtiment avant travaux. */
+.wip-photo {
+  position: relative; overflow: hidden; background: var(--papier);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  display: flex; align-items: flex-end; padding: 16px; min-height: 220px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
+}
+.wip-photo::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: repeating-linear-gradient(126.87deg, transparent 0 11px, rgba(94,98,92,.09) 11px 12px);
+}
+.wip-photo:has(img:not([hidden]))::before { content: none; }
+
+.wip-photo img {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  /* charte photo : désaturation légère, noirs un rien relevés */
+  filter: grayscale(.28) contrast(1.06) brightness(1.02);
+  transition: transform .8s cubic-bezier(.16,1,.3,1), filter .5s ease;
+}
+.wip-photo:hover img { transform: scale(1.035); filter: grayscale(.1) contrast(1.06); }
+
+.wip-photo span {
+  position: relative; z-index: 2;
+  font-family: var(--mono); font-size: 9px; font-weight: 400;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--beton-f); line-height: 1.7;
+  max-width: 24ch;
+}
+/* sur une image, la légende a besoin de son propre fond pour rester lisible */
+.wip-photo:has(img) span {
+  color: var(--magnesie); background: rgba(11,13,12,.84);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  padding: 8px 11px; max-width: 28ch;
+}
+.wip-photo span b {
+  display: block; font-family: var(--display); font-weight: 700; font-stretch: 105%;
+  font-size: 13px; letter-spacing: -.01em; text-transform: none;
+  color: var(--magnesie); margin-bottom: 3px;
+}
+.wip-photo:not(:has(img)) span b { color: var(--fonte); }
+
+/* ═══ VISUELS PROVISOIRES — section 03 ═══
+   Décision du 25/08/2026 : dérogation assumée aux §5ter et §6 du brand book
+   (« interdit : photo de banque d'images ») pour la seule phase de maquette.
+   Ces quatre images montrent la salle de quelqu'un d'autre sous VOS chiffres
+   (420 m², 6 barres, 4,20 m). Elles DOIVENT partir avant la mise en ligne —
+   d'où le marquage visible, le préfixe « provisoire- » sur les fichiers et
+   le relevé de sources dans media/CREDITS.md.
+
+   ┌─ POUR TOUT RETIRER D'UN COUP ───────────────────────────────────┐
+   │  décommenter la ligne ci-dessous : les quatre cadres            │
+   │  redeviennent des emplacements portant leur brief de shooting.  │
+   └─────────────────────────────────────────────────────────────────┘
+   .wip-photo[data-provisoire] img { display: none !important; }
+*/
+.wip-photo[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
+.wip-photo[data-provisoire]::after {
+  content: 'Visuel provisoire'; position: absolute; top: 0; left: 0; z-index: 3;
+  background: var(--bleu); color: #fff;
+  font-family: var(--mono); font-size: 8px; font-weight: 500;
+  letter-spacing: .11em; text-transform: uppercase; padding: 6px 9px;
+}
+
+/* Même logique pour le texte : une valeur que seul le user peut fournir
+   (le nombre de places du tarif fondateur) reste visible à l'écran tant
+   qu'elle n'est pas renseignée, plutôt que d'être devinée. Chercher
+   « wip-arenseigner » avant toute mise en ligne.                       */
+.wip-arenseigner {
+  background: var(--bleu); color: #fff; font-family: var(--mono);
+  font-size: .78em; font-weight: 500; letter-spacing: .04em;
+  padding: 2px 8px; white-space: nowrap; vertical-align: .06em;
+}
+
+/* ———————————— bande de visuels : la respiration après les espaces ———————————— */
+.wip-bande-sec { background: var(--papier); padding: 62px 0 70px; }
+.wip-bande-tete {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 26px;
+}
+.wip-bande-titre {
+  font-family: var(--display); font-weight: 900; font-stretch: 112%;
+  font-size: clamp(24px, 3.4vw, 40px); letter-spacing: -.035em; line-height: 1;
+  margin-top: 12px;
+}
+.wip-bande {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr);
+  gap: 18px; overflow-x: auto; padding-bottom: 14px;
+  scroll-snap-type: x proximity; scrollbar-width: thin;
+}
+.wip-bande > .wip-photo { scroll-snap-align: start; min-height: 300px; }
+.wip-bande > .wip-photo:nth-child(even) { min-height: 340px; align-self: start; }
+@media (max-width: 700px) { .wip-bande { grid-auto-columns: minmax(190px, 1fr); } }
+
+/* ———————————————————————————————— équipe ———————————————————————————————— */
+.wip-equipe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.wip-equipe > div:nth-child(2) { transform: translateY(38px); }
+.wip-equipe h3 {
+  font-family: var(--display); font-size: 24px; font-weight: 800; font-stretch: 108%;
+  letter-spacing: -.03em; margin-top: 18px;
+}
+@media (max-width: 800px) { .wip-equipe { grid-template-columns: 1fr; gap: 40px; } .wip-equipe > div:nth-child(2) { transform: none; } }
+
+/* ———————————————————————————— formules & appel ———————————————————————————— */
+.wip-formules { border-top: 2px solid var(--fonte); margin-bottom: 48px; }
+.wip-formule {
+  display: grid; grid-template-columns: 1fr 1.7fr; gap: 30px;
+  padding: 24px 0; border-bottom: 1px solid var(--trait);
+  transition: padding .26s cubic-bezier(.16,1,.3,1);
+}
+.wip-formule:hover { padding-left: 14px; }
+.wip-formule h3 {
+  font-family: var(--display); font-size: 23px; font-weight: 800; font-stretch: 105%;
+  letter-spacing: -.03em; line-height: 1.1;
+}
+.wip-formule p { color: var(--encre); font-size: 15.5px; }
+@media (max-width: 740px) { .wip-formule { grid-template-columns: 1fr; gap: 8px; } }
+
+.wip-appel {
+  background: var(--fonte); color: var(--magnesie); padding: 48px;
+  display: grid; grid-template-columns: 1.2fr auto; gap: 36px; align-items: center;
+}
+.wip-appel .wip-mono { color: var(--beton-c); }
+.wip-appel h3 {
+  font-family: var(--display); font-weight: 900; font-stretch: 112%; letter-spacing: -.035em;
+  font-size: clamp(25px, 3.3vw, 38px); line-height: 1.04; margin-top: 14px; max-width: 500px;
+}
+.wip-appel p { margin-top: 16px; color: var(--beton-c); font-size: 16px; max-width: 480px; }
+.wip-tel {
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  font-size: clamp(27px, 3.6vw, 40px); letter-spacing: -.04em; white-space: nowrap;
+  display: block; font-feature-settings: 'tnum' 1; transition: color .2s ease;
+}
+.wip-tel:hover { color: var(--bleu-c); }
+@media (max-width: 820px) { .wip-appel { grid-template-columns: 1fr; padding: 30px; gap: 26px; } }
+
+/* ———————————————————————————————— questions ———————————————————————————————— */
+/* Les quatre phrases sont la meilleure matière de la page : ce sont les mots
+   du visiteur, pas ceux de la salle. Elles étaient composées à 20 px, soit
+   moins que les titres d'étape (22 px) — traitées en contenu secondaire alors
+   qu'elles portent tout l'argument d'accueil. Elles passent au rang de titre,
+   et le rapport de la grille s'inverse en leur faveur.                     */
+.wip-q { border-top: 2px solid var(--fonte); }
+.wip-q-item {
+  border-bottom: 1px solid var(--trait); padding: 38px 0;
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: start;
+}
+.wip-q-item h3 {
+  font-family: var(--display); font-weight: 800; font-stretch: 104%;
+  font-size: clamp(23px, 2.9vw, 33px); letter-spacing: -.03em; line-height: 1.13;
+  color: var(--fonte); text-wrap: balance;
+}
+/* rattrape l'écart de hauteur d'œil : la réponse s'aligne optiquement sur la
+   première ligne de la question, qui est désormais bien plus grosse qu'elle */
+.wip-q-item p { color: var(--encre); font-size: 16px; line-height: 1.62; padding-top: 7px; }
+@media (max-width: 760px) {
+  .wip-q-item { grid-template-columns: 1fr; gap: 14px; padding: 30px 0; }
+  .wip-q-item p { padding-top: 0; }
+}
+
+/* ———————————————————————————————— lieu ———————————————————————————————— */
+.wip-lieu { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+@media (max-width: 860px) { .wip-lieu { grid-template-columns: 1fr; gap: 34px; } }
+
+.wip-carte { background: var(--magnesie); box-shadow: inset 0 0 0 1px var(--trait); }
+.wip-carte-vue { position: relative; aspect-ratio: 4 / 3; min-height: 300px; }
+.wip-carte-vue iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
+  filter: grayscale(1) contrast(1.08) brightness(1.04);
+  transition: filter .55s ease;
+}
+.wip-carte:hover .wip-carte-vue iframe, .wip-carte:focus-within .wip-carte-vue iframe { filter: none; }
+/* padding droit majoré : le chanfrein du bloc mangerait la fin du lien */
+.wip-carte-pied {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 14px 44px 14px 16px; border-top: 1px solid var(--trait); flex-wrap: wrap;
+}
+.wip-carte-pied a {
+  font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1.5px solid var(--fonte); padding: 4px 0 3px; min-height: 24px;
+  transition: color .2s, border-color .2s;
+}
+.wip-carte-pied a:hover { color: var(--bleu); border-bottom-color: var(--bleu); }
+.wip-carte-pied a i { font-style: normal; font-family: var(--mono); font-size: 11px; }
+
+.wip-fiche-lieu { margin-top: 30px; display: flex; flex-direction: column; gap: 11px; max-width: 420px; }
+.wip-fiche-lieu > div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--trait); padding-bottom: 9px; }
+.wip-fiche-lieu span:last-child { color: var(--fonte); font-weight: 500; }
+
+/* ———————————————————————————————— final ———————————————————————————————— */
+.wip-final { background: var(--papier); border-top: 1px solid var(--trait); padding: 104px 0; text-align: center; position: relative; }
+.wip-final h2 {
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  font-size: clamp(34px, 6.2vw, 70px); letter-spacing: -.04em; line-height: .98;
+  text-wrap: balance;
+}
+.wip-final p { margin: 22px auto 32px; max-width: 470px; color: var(--encre); font-size: 17px; }
+
+/* ———————————————————————————————— pied ———————————————————————————————— */
+.wip-pied { background: var(--fonte); color: var(--beton-c); padding: 62px 0 34px; overflow: hidden; }
+.wip-pied-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-bottom: 52px; }
+/* #5E625C ne tient pas sur le noir de fonte (3,1:1) : béton clair, 5,9:1 */
+.wip-pied-grid h4 {
+  font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--beton-c); margin-bottom: 14px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--trait-n);
+}
+.wip-pied-grid li { font-size: 14.5px; color: #C4C7C0; margin-bottom: 2px; }
+/* cible tactile : 24 px minimum en web (WCAG 2.2 Target Size), 8 px entre deux */
+.wip-pied-grid a {
+  display: inline-block; padding: 5px 0; min-height: 24px;
+  transition: color .18s ease;
+}
+.wip-pied-grid a:hover { color: var(--magnesie); }
+@media (max-width: 760px) { .wip-pied-grid { grid-template-columns: repeat(2, 1fr); gap: 26px; } }
+
+/* Le lockup complet (wip + ATHLETICS) : la fin de page est l'endroit où
+   la marque se signe en entier. 340 px de large = bien au-dessus du seuil
+   de lisibilité de 160 px du master v02. */
+.wip-pied-logo { color: var(--magnesie); }
+.wip-pied-logo svg { display: block; width: clamp(220px, 34vw, 340px); height: auto; color: var(--magnesie); fill: var(--magnesie); }
+
+/* zone de protection = 45,5 % de la hauteur de lettre, soit 39 px au plus
+   grand cadran : le filet de la devise ne doit pas entrer dedans */
+.wip-pied-devise {
+  font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--magnesie); margin-top: 46px;
+  padding-top: 20px; border-top: 1px solid var(--trait-n);
+}
+.wip-pied-legal { margin-top: 16px; font-size: 12.5px; line-height: 1.85; color: var(--beton-c); max-width: 70ch; }
+
+/* texte lu par les moteurs et les lecteurs d'écran, invisible à l'œil */
+.wip-sr { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES QUATRE REGISTRES — dispositif de comparaison, PROVISOIRE
+
+   Seul le registre change d'une variante à l'autre. Sont figés partout :
+   la palette (bleu de chauffe §3), l'alternance clair/sombre, la composition
+   du hero, le logo v02, la typo Archivo + Martian Mono.
+
+   ⚠ À la validation : garder le bloc du registre retenu, supprimer les trois
+   autres, le sélecteur .wip-registres et son script.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─────────── 1. SUISSE — l'existant, affiné ───────────
+   Grille stricte, filets d'un pixel, air généreux, titres en bas de casse.
+   C'est l'état de référence : presque aucune surcharge.                  */
+.r-suisse .wip-tsec-oeil b { letter-spacing: .12em; }
+.r-suisse .wip-tsec h2 { max-width: 15ch; }
+.r-suisse .wip-sec { padding: 100px 0; }
+
+/* ─────────── 2. ATELIER — brutaliste ───────────
+   Filets épais, bandeaux pleins, capitales à chasse maximale, densité
+   resserrée. Le registre du lieu de fabrication : c'est le sens même du nom. */
+.r-atelier { --chanfrein: 20px; --talon: 6px; }
+.r-atelier .wip-sec { padding: 74px 0; border-top-width: 3px; border-top-color: var(--fonte); }
+.r-atelier .wip-tsec { margin-bottom: 40px; }
+.r-atelier .wip-tsec-regle { height: 14px; clip-path: none; }
+.r-atelier .wip-tsec-oeil {
+  background: var(--fonte); color: var(--magnesie);
+  padding: 9px 14px; margin-top: 0; align-self: flex-start; display: inline-flex;
+}
+.r-atelier .wip-tsec-oeil b, .r-atelier .wip-nom .wip-tsec-oeil b { color: var(--magnesie); }
+.r-atelier .wip-tsec h2 {
+  text-transform: uppercase; font-stretch: 125%; letter-spacing: -.045em;
+  line-height: .88; max-width: 13ch; margin-top: 20px;
+}
+.r-atelier .wip-tsec-intro { border-left: 5px solid var(--fonte); padding-left: 18px; }
+
+.r-atelier .wip-planning { gap: 3px; background: var(--fonte); box-shadow: 0 0 0 3px var(--fonte); }
+.r-atelier .wip-jour-tete { background: var(--fonte); border-bottom: 0; padding: 13px 14px; }
+.r-atelier .wip-jour-tete strong { color: var(--magnesie); font-stretch: 125%; font-weight: 800; }
+.r-atelier .wip-creneau { border-bottom: 2px solid var(--fonte); }
+.r-atelier .wip-creneau::before { width: 6px; }
+.r-atelier .wip-creneau b { font-size: 13px; font-weight: 600; }
+
+.r-atelier .wip-espaces, .r-atelier .wip-etapes,
+.r-atelier .wip-formules, .r-atelier .wip-q { border-top-width: 6px; }
+.r-atelier .wip-espace { border-bottom-width: 3px; border-bottom-color: var(--fonte); }
+.r-atelier .wip-espace-nom { text-transform: uppercase; font-stretch: 118%; font-weight: 900; }
+.r-atelier .wip-disque { width: 56px; height: 56px; border-width: 7px; box-shadow: none; }
+.r-atelier .wip-espace-tete { grid-template-columns: 62px 1fr auto 34px; }
+.r-atelier .wip-espace-in { grid-template-columns: 62px 1fr .92fr; }
+
+.r-atelier .wip-etape { border-right-width: 3px; border-right-color: var(--fonte); }
+.r-atelier .wip-etape-n { font-size: 40px; }
+.r-atelier .wip-etape h3, .r-atelier .wip-formule h3 { text-transform: uppercase; font-stretch: 112%; font-weight: 900; }
+.r-atelier .wip-formule { border-bottom-width: 3px; border-bottom-color: var(--fonte); }
+.r-atelier .wip-q-item { border-bottom-width: 3px; border-bottom-color: var(--fonte); }
+.r-atelier .wip-nom-col { border-top-width: 10px; }
+.r-atelier .wip-final h2, .r-atelier .wip-appel h3 { text-transform: uppercase; font-stretch: 118%; }
+.r-atelier .wip-cta, .r-atelier .wip-cta-fant { text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+
+/* ─────────── 3. MAGAZINE — journal de club ───────────
+   Colonnes, filet double, chapeaux, lettrine. Plus dense, plus vivant :
+   on lit la page comme un canard, pas comme une plaquette.               */
+.r-magazine .wip-sec { padding: 82px 0; }
+.r-magazine .wip-tsec { margin-bottom: 40px; }
+.r-magazine .wip-tsec-regle { height: 3px; clip-path: none; box-shadow: 0 6px 0 -3px currentColor; }
+.r-magazine .wip-tsec-oeil { border-bottom: 1px solid var(--trait); padding-bottom: 12px; }
+.r-magazine .wip-tsec h2 { max-width: 18ch; letter-spacing: -.04em; font-stretch: 105%; }
+.r-magazine .wip-tsec-intro {
+  max-width: none; column-count: 2; column-gap: 40px; column-rule: 1px solid var(--trait);
+  font-size: 16px;
+}
+.r-magazine .wip-tsec-intro::first-letter {
+  float: left; font-family: var(--display); font-weight: 900; font-stretch: 112%;
+  font-size: 3.1em; line-height: .82; padding: .06em .1em 0 0; color: var(--fonte);
+}
+.r-magazine .wip-nom .wip-tsec-intro::first-letter { color: var(--magnesie); }
+
+.r-magazine .wip-jour-tete strong { font-stretch: 75%; font-size: 13px; letter-spacing: .16em; }
+.r-magazine .wip-creneau { padding: 10px 13px; gap: 3px; }
+.r-magazine .wip-creneau b { font-size: 10.5px; }
+.r-magazine .wip-creneau span { font-size: 12.5px; }
+
+.r-magazine .wip-q { column-count: 2; column-gap: 48px; border-top-width: 3px; }
+.r-magazine .wip-q-item { grid-template-columns: 1fr; gap: 8px; break-inside: avoid; padding: 20px 0; }
+.r-magazine .wip-q-item h3 { font-size: 18px; }
+.r-magazine .wip-espace-in p { column-count: 2; column-gap: 30px; max-width: none; font-size: 15px; }
+.r-magazine .wip-etape p { font-size: 15px; }
+.r-magazine .wip-nom-col p { font-size: 15px; }
+@media (max-width: 860px) {
+  .r-magazine .wip-tsec-intro, .r-magazine .wip-q, .r-magazine .wip-espace-in p { column-count: 1; }
+}
+
+/* ─────────── 4. MINIMAL — minimalisme exagéré ───────────
+   Titres gigantesques, filets presque tous supprimés, espace doublé.
+   Très haut de gamme ; la page s'allonge et le planning perd en densité. */
+.r-minimal .wip-sec { padding: 150px 0; border-top: 0; }
+.r-minimal .wip-tsec { margin-bottom: 76px; }
+.r-minimal .wip-tsec-regle { height: 2px; width: 64px; clip-path: none; }
+.r-minimal .wip-tsec-oeil { margin-top: 26px; }
+.r-minimal .wip-tsec-oeil span[aria-hidden] { display: none; }
+.r-minimal .wip-tsec h2 {
+  font-size: clamp(42px, 9vw, 118px); letter-spacing: -.05em; line-height: .9;
+  max-width: 12ch; margin-top: 26px;
+}
+.r-minimal .wip-tsec-intro { font-size: 20px; line-height: 1.65; margin-top: 34px; max-width: 620px; }
+
+.r-minimal .wip-planning { gap: 0; background: none; box-shadow: none; }
+.r-minimal .wip-jour { background: none; }
+.r-minimal .wip-jour-tete { border-bottom: 0; padding: 0 0 18px; }
+.r-minimal .wip-creneau { border-bottom: 0; padding: 0 0 16px; }
+.r-minimal .wip-creneau:hover { background: none; }
+.r-minimal .wip-creneau::before { display: none; }
+
+.r-minimal .wip-espaces, .r-minimal .wip-etapes,
+.r-minimal .wip-formules, .r-minimal .wip-q { border-top: 0; }
+.r-minimal .wip-espace { border-bottom-color: var(--trait); }
+.r-minimal .wip-espace.on { background: none; }
+.r-minimal .wip-espace-tete { padding: 40px 0; }
+.r-minimal .wip-espace-nom { font-size: clamp(26px, 4.4vw, 46px); font-weight: 900; }
+.r-minimal .wip-disque { box-shadow: none; }
+.r-minimal .wip-etape { border-right: 0; padding: 0 40px 0 0; }
+.r-minimal .wip-etapes { gap: 40px; }
+.r-minimal .wip-etape-n { font-size: 14px; }
+.r-minimal .wip-formule { border-bottom-color: var(--trait); padding: 38px 0; }
+.r-minimal .wip-q-item { border-bottom-color: var(--trait); padding: 40px 0; }
+.r-minimal .wip-final { padding: 170px 0; }
+.r-minimal .wip-fiche div, .r-minimal .wip-fiche-lieu > div { border-bottom-color: transparent; }
+@media (max-width: 700px) {
+  .r-minimal .wip-sec { padding: 84px 0; }
+  .r-minimal .wip-etape { padding-right: 0; }
+}
+
+/* ─────────── le sélecteur, provisoire ─────────── */
+.wip-registres {
+  position: fixed; z-index: 70; left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 4px; padding: 5px;
+  background: rgba(11,13,12,.93); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px #3C403A, 0 8px 30px rgba(0,0,0,.4);
+  border-bottom-left-radius: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+.wip-registres em {
+  font-style: normal; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+  text-transform: uppercase; color: #6E736B; padding: 0 10px 0 6px;
+}
+.wip-registres button {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: #B9BCB5; padding: 9px 13px; min-height: 30px;
+  transition: background .2s ease, color .2s ease;
+}
+.wip-registres button:hover { color: var(--magnesie); background: #22261F; }
+.wip-registres button.on { background: var(--bleu); color: #fff; }
+@media (max-width: 620px) {
+  .wip-registres em { display: none; }
+  .wip-registres button { padding: 9px 10px; font-size: 9px; }
+}
+
+/* ———————————————————————————————— reveal ———————————————————————————————— */
+.wip-rev { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+.wip-rev.vu { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wip *, .wip *::before, .wip *::after { animation: none !important; transition: none !important; }
+  .wip-rev { opacity: 1; transform: none; }
+  .wip-tsec-regle { transform: scaleX(1) !important; }
+  .wip-tsec h2 .m > i, .wip-tsec-oeil, .wip-tsec-intro { transform: none !important; opacity: 1 !important; }
+}
+</style>
+
+<noscript><style>
+  /* sans JavaScript, la page se donne entièrement : rien d'essentiel n'est animé */
+  .wip-hero-piste { height: auto; }
+  .wip-hero-colle { position: static; height: auto; padding: 74px 0 84px; }
+  .wip-titre .mot { color: var(--magnesie); }
+  .wip-titre .mot em, .wip-rail-seg i, .wip-tsec-regle { transform: none !important; }
+  .wip-rev, .wip-tsec-oeil, .wip-tsec-intro { opacity: 1; transform: none; }
+  .wip-tsec h2 .m > i { transform: none; }
+  .wip-espace-corps { grid-template-rows: 1fr; }
+  .wip-croix { display: none; }
+</style></noscript>
+</head>
+
+<body>
+
+<!-- ————————————————————————————————————————————————————————————————
+     BANQUE DE SIGNES — master vectoriel v02, tracés officiels.
+     Repris tels quels depuis brand/logos/v02/ : aucun nœud modifié,
+     aucune déformation. `fill` est laissé à currentColor sur chaque
+     instance, ce qui permet de poser le logo en magnésie ou en noir
+     de fonte sans jamais toucher au fichier source.
+     Les fichiers d'origine sont dans logo/ pour tous les autres usages.
+———————————————————————————————————————————————————————————————— -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <symbol id="sig-wordmark" viewBox="0 0 4000 1090">
+      <path fill="currentColor" d="M 0,0 L 455,0 L 455,632 A 48,48 0 0 0 503,680 L 707,680 A 48,48 0 0 0 755,632 L 755,0 L 1210,0 L 1210,632 A 48,48 0 0 0 1258,680 L 1462,680 A 48,48 0 0 0 1510,632 L 1510,0 L 1965,0 L 1965,661.36 A 45,45 0 0 1 1951.82,693.18 L 1658.18,986.82 A 45,45 0 0 1 1626.36,1000 L 1027.5,1000 A 45,45 0 0 1 982.5,955 L 982.5,750 L 661.17,991 A 45,45 0 0 1 634.17,1000 L 224,1000 A 224,224 0 0 1 0,776 Z M 2029,0 L 2484,0 L 2484,1000 L 2029,1000 Z M 2548,0 L 3003,0 L 3003,120.86 A 10,10 0 0 0 3020.07,127.93 L 3144.49,3.51 A 12,12 0 0 1 3152.97,0 L 3564,0 A 436,436 0 0 1 4000,436 A 436,436 0 0 1 3564,872 L 3078.97,872 A 12,12 0 0 1 3070.49,868.49 L 3020.07,818.07 A 10,10 0 0 0 3003,825.14 L 3003,1090 L 2548,1090 Z M 3003,298 L 3003,574 L 3563.4,574 A 96.6,96.6 0 0 0 3660,477.4 L 3660,394.6 A 96.6,96.6 0 0 0 3563.4,298 Z"/>
+    </symbol>
+    <symbol id="sig-symbole" viewBox="0 0 1965 1000">
+      <path fill="currentColor" d="M 0,0 L 455,0 L 455,632 A 48,48 0 0 0 503,680 L 707,680 A 48,48 0 0 0 755,632 L 755,0 L 1210,0 L 1210,632 A 48,48 0 0 0 1258,680 L 1462,680 A 48,48 0 0 0 1510,632 L 1510,0 L 1965,0 L 1965,661.36 A 45,45 0 0 1 1951.82,693.18 L 1658.18,986.82 A 45,45 0 0 1 1626.36,1000 L 1027.5,1000 A 45,45 0 0 1 982.5,955 L 982.5,750 L 661.17,991 A 45,45 0 0 1 634.17,1000 L 224,1000 A 224,224 0 0 1 0,776 Z"/>
+    </symbol>
+    <symbol id="sig-lockup" viewBox="0 0 4000 1288">
+      <path fill="currentColor" d="M 0,0 L 455,0 L 455,632 A 48,48 0 0 0 503,680 L 707,680 A 48,48 0 0 0 755,632 L 755,0 L 1210,0 L 1210,632 A 48,48 0 0 0 1258,680 L 1462,680 A 48,48 0 0 0 1510,632 L 1510,0 L 1965,0 L 1965,661.36 A 45,45 0 0 1 1951.82,693.18 L 1658.18,986.82 A 45,45 0 0 1 1626.36,1000 L 1027.5,1000 A 45,45 0 0 1 982.5,955 L 982.5,750 L 661.17,991 A 45,45 0 0 1 634.17,1000 L 224,1000 A 224,224 0 0 1 0,776 Z M 2029,0 L 2484,0 L 2484,1000 L 2029,1000 Z M 2548,0 L 3003,0 L 3003,120.86 A 10,10 0 0 0 3020.07,127.93 L 3144.49,3.51 A 12,12 0 0 1 3152.97,0 L 3564,0 A 436,436 0 0 1 4000,436 A 436,436 0 0 1 3564,872 L 3078.97,872 A 12,12 0 0 1 3070.49,868.49 L 3020.07,818.07 A 10,10 0 0 0 3003,825.14 L 3003,1090 L 2548,1090 Z M 3003,298 L 3003,574 L 3563.4,574 A 96.6,96.6 0 0 0 3660,477.4 L 3660,394.6 A 96.6,96.6 0 0 0 3563.4,298 Z"/>
+      <path fill="currentColor" d="M2649 1285 2704.31 1145H2729.82L2785.33 1285H2764.31L2750.63 1250.31H2682.47L2669 1285ZM2688.8 1233.78H2744.1L2727.16 1189.9Q2726.35 1187.45 2724.51 1182.55Q2722.67 1177.65 2720.73 1172.04Q2718.8 1166.43 2717.16 1161.73H2715.94Q2714.51 1165.82 2712.67 1171.12Q2710.84 1176.43 2709 1181.43Q2707.16 1186.43 2705.94 1189.9Z M2867.19 1285V1161.94H2819.23V1145H2934.94V1161.94H2886.57V1285Z M2985.17 1285V1145H3004.56V1205H3080.68V1145H3100.27V1285H3080.68V1221.94H3004.56V1285Z M3163.97 1285V1145H3183.35V1268.06H3252.95V1285Z M3301.95 1285V1145H3409.7V1161.73H3321.34V1205H3400.72V1221.73H3321.34V1268.27H3410.93V1285Z M3502.99 1285V1161.94H3455.03V1145H3570.75V1161.94H3522.38V1285Z M3620.97 1285V1145H3640.36V1285Z M3763.85 1287.45Q3731.61 1287.45 3714.26 1269.69Q3696.92 1251.94 3696.92 1215Q3696.92 1178.67 3714.57 1160.61Q3732.22 1142.55 3764.06 1142.55Q3782.02 1142.55 3795.9 1148.37Q3809.77 1154.18 3817.63 1165.92Q3825.49 1177.65 3825.49 1195.41H3805.9Q3805.9 1177.24 3794.47 1168.27Q3783.04 1159.29 3764.06 1159.29Q3741.81 1159.29 3729.47 1172.24Q3717.12 1185.2 3717.12 1213.37V1217.65Q3717.12 1245.61 3729.36 1258.16Q3741.61 1270.71 3764.06 1270.71Q3783.45 1270.71 3794.98 1261.84Q3806.51 1252.96 3806.51 1234.59H3825.49Q3825.49 1252.76 3817.53 1264.39Q3809.57 1276.02 3795.59 1281.73Q3781.61 1287.45 3763.85 1287.45Z M3932.65 1287.45Q3917.35 1287.45 3904.08 1283.37Q3890.82 1279.29 3882.55 1270Q3874.29 1260.71 3874.29 1245.41Q3874.29 1244.39 3874.39 1243.37Q3874.49 1242.35 3874.49 1241.33H3894.08Q3894.08 1242.14 3893.98 1243.37Q3893.88 1244.59 3893.88 1245.61Q3893.88 1258.06 3904.69 1264.39Q3915.51 1270.71 3932.04 1270.71Q3938.37 1270.71 3945 1269.8Q3951.63 1268.88 3957.35 1266.33Q3963.06 1263.78 3966.73 1259.39Q3970.41 1255 3970.41 1248.27Q3970.41 1240.51 3965.41 1235.51Q3960.41 1230.51 3952.14 1227.35Q3943.88 1224.18 3933.98 1221.73Q3924.08 1219.29 3914.18 1216.43Q3904.29 1213.57 3896.02 1209.18Q3887.76 1204.8 3882.76 1197.76Q3877.76 1190.71 3877.76 1179.9Q3877.76 1162.35 3892.04 1152.45Q3906.33 1142.55 3933.27 1142.55Q3947.96 1142.55 3959.9 1146.63Q3971.84 1150.71 3978.88 1159.49Q3985.92 1168.27 3985.92 1181.94V1184.39H3966.73V1181.33Q3966.73 1171.12 3957.45 1165.2Q3948.16 1159.29 3933.88 1159.29Q3915.31 1159.29 3906.33 1164.59Q3897.35 1169.9 3897.35 1178.27Q3897.35 1185.61 3902.45 1190.1Q3907.55 1194.59 3915.82 1197.55Q3924.08 1200.51 3933.88 1202.96Q3943.67 1205.41 3953.57 1208.37Q3963.47 1211.33 3971.73 1215.82Q3980 1220.31 3985 1227.45Q3990 1234.59 3990 1245.41Q3990 1260.31 3982.65 1269.59Q3975.31 1278.88 3962.35 1283.16Q3949.39 1287.45 3932.65 1287.45Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wip r-suisse">
+  <div class="wip-grain" aria-hidden="true"></div>
+
+  <!-- PROVISOIRE — bascule entre les quatre registres. À supprimer, avec son
+       script et les blocs CSS non retenus, une fois le choix arrêté. -->
+  <div class="wip-registres" role="group" aria-label="Registre visuel (aperçu)">
+    <em>Registre</em>
+    <button type="button" data-registre="suisse" class="on">Suisse</button>
+    <button type="button" data-registre="atelier">Atelier</button>
+    <button type="button" data-registre="magazine">Magazine</button>
+    <button type="button" data-registre="minimal">Minimal</button>
+  </div>
+
+  <!-- ————— annonce ————— -->
+  <div class="wip-annonce">
+    <span>Ouverture <b>samedi 31 octobre 2026</b></span>
+    <span>Amboise · Indre-et-Loire</span>
+    <span><b>Tarif fondateur ouvert</b></span>
+  </div>
+
+  <!-- ————— nav ————— -->
+  <nav class="wip-nav">
+    <div class="wip-wrap wip-nav-in">
+      <!-- Bandeau étroit → wordmark seul (LISEZ-MOI v02). 128 px de large :
+           au-dessus du seuil de 90 px, sous les 160 px qu'exigerait le lockup. -->
+      <a href="#top" class="wip-logo" aria-label="WIP Athletics — retour en haut">
+        <svg class="wip-logo-sig" viewBox="0 0 4000 1090" fill="currentColor" aria-hidden="true" focusable="false"><use href="#sig-wordmark"/></svg>
+      </a>
+      <!-- la nav suit l'ordre de lecture de la page -->
+      <div class="wip-liens">
+        <a href="#espaces">Les espaces</a>
+        <a href="#premiere-fois">Première fois</a>
+        <a href="#equipe">L'équipe</a>
+        <a href="#planning">Planning</a>
+        <a href="#lieu">Nous trouver</a>
+      </div>
+      <a href="#reserver" class="wip-cta wip-cta-sm">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+    </div>
+  </nav>
+
+  <!-- ————— hero sombre : le nom se déplie au scroll ————— -->
+  <header class="wip-hero" id="top">
+    <div class="wip-hero-piste">
+      <div class="wip-hero-colle">
+
+        <!-- src posé par le script : rien n'est téléchargé sur mobile -->
+        <div class="wip-hero-fond" aria-hidden="true">
+          <video class="wip-hero-video" data-src="media/wip-hero.mp4"
+                 muted loop playsinline preload="none" tabindex="-1"></video>
+          <div class="wip-hero-voile"></div>
+        </div>
+        <button class="wip-hero-pause" type="button" hidden><i aria-hidden="true">❚❚</i><span>Pause</span></button>
+
+        <div class="wip-wrap">
+          <p class="wip-mono">Salle de cross-training &amp; fitness fonctionnel · Amboise (37) · Ouverture 31 octobre 2026</p>
+
+          <div class="wip-hero-in">
+            <div class="wip-rail" aria-hidden="true">
+              <div class="wip-rail-seg"><i style="background: var(--d25)"></i></div>
+              <div class="wip-rail-seg"><i style="background: var(--d15)"></i></div>
+              <div class="wip-rail-seg"><i style="background: var(--bleu-c)"></i></div>
+            </div>
+
+            <h1 class="wip-titre wip-h">
+              <span class="wip-sr">WIP Athletics — salle de cross-training, Hyrox et pole dance à Amboise en Indre-et-Loire. </span>
+              <span class="l"><span class="mot">Work.<em style="background: var(--d25)"></em></span></span>
+              <span class="l"><span class="mot">Improve.<em style="background: var(--d15)"></em></span></span>
+              <span class="l"><span class="mot">Progress.<em style="background: var(--bleu-c)"></em></span></span>
+            </h1>
+          </div>
+
+          <p class="wip-sous">
+            On travaille, on s'améliore, on progresse — chacun par rapport à soi,
+            jamais par rapport au voisin. Quatre espaces sur 1 000 m² à Amboise, et des coachs
+            qui adaptent la séance à ce que vous savez faire aujourd'hui.
+          </p>
+
+          <div class="wip-actions">
+            <a href="#reserver" class="wip-cta">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+            <a href="#espaces" class="wip-cta-fant">Voir les quatre espaces<i aria-hidden="true">↓</i></a>
+          </div>
+
+          <div class="wip-faits">
+            <span class="wip-mono">1 000 m²</span>
+            <span class="wip-mono">4 espaces</span>
+            <span class="wip-mono">12 par cours max</span>
+            <span class="wip-mono">Sans engagement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ————— espaces ————— -->
+  <section class="wip-wrap wip-sec sans-trait" id="espaces">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">01</span><b>Quatre espaces</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Chacun</i></span>
+        <span class="m"><i style="--i:1">sa</i></span>
+        <span class="m"><i style="--i:2">couleur,</i></span>
+        <span class="m"><i style="--i:3">chacun</i></span>
+        <span class="m"><i style="--i:4">son</i></span>
+        <span class="m"><i style="--i:5">rythme</i></span>
+      </h2>
+      <p class="wip-tsec-intro">On a repris le code des disques olympiques : rouge, jaune, noir, blanc. Vous saurez toujours où vous allez, et vous n'êtes jamais obligé d'aller ailleurs.</p>
+    </div>
+
+    <div class="wip-espaces wip-rev">
+
+      <div class="wip-espace on" data-espace>
+        <button class="wip-espace-tete" aria-expanded="true" aria-controls="espace-cf">
+          <span class="wip-disque" style="background: var(--fonte); border-color: var(--d25); color: var(--d25)">25</span>
+          <span class="wip-espace-nom">Cross-training &amp; Hyrox</span>
+          <span class="wip-espace-meta">420 m² · 12 par cours</span>
+          <span class="wip-croix on" aria-hidden="true"></span>
+        </button>
+        <div class="wip-espace-corps on" id="espace-cf">
+          <div>
+            <div class="wip-espace-in">
+              <span></span>
+              <div class="wip-espace-texte">
+                <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence.</p>
+                <div class="wip-fiche">
+                  <div><span class="wip-mono">Surface</span><span>420 m²</span></div>
+                  <div><span class="wip-mono">Groupe</span><span>12 max</span></div>
+                  <div><span class="wip-mono">Durée</span><span>60 min</span></div>
+                  <div><span class="wip-mono">Créneaux</span><span>6h30 → 21h</span></div>
+                </div>
+              </div>
+              <div class="wip-photo" data-provisoire style="min-height: 290px">
+                <img src="media/provisoire-cf.jpg" width="1200" height="1800" alt="" loading="lazy" decoding="async">
+                <span><b>À photographier</b>Le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wip-espace" data-espace>
+        <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-pole">
+          <span class="wip-disque" style="background: var(--fonte); border-color: var(--d15); color: var(--d15)">15</span>
+          <span class="wip-espace-nom">Studio Pole Dance </span>
+          <span class="wip-espace-meta">80 m² · 12 par cours</span>
+          <span class="wip-croix" aria-hidden="true"></span>
+        </button>
+        <div class="wip-espace-corps" id="espace-pole">
+          <div>
+            <div class="wip-espace-in">
+              <span></span>
+              <div class="wip-espace-texte">
+                <p>Un studio dédié, pas un coin de salle. Six barres, 4,20 m sous plafond, sol amortissant et rideaux occultants — parce que la première séance, on n'a pas envie d'être vue depuis le parking.</p>
+                <div class="wip-fiche">
+                  <div><span class="wip-mono">Surface</span><span>80 m²</span></div>
+                  <div><span class="wip-mono">Barres</span><span>6</span></div>
+                  <div><span class="wip-mono">Hauteur</span><span>4,20 m</span></div>
+                  <div><span class="wip-mono">Durée</span><span>75 min</span></div>
+                </div>
+              </div>
+              <div class="wip-photo" data-provisoire style="min-height: 290px">
+                <img src="media/provisoire-pole.jpg" width="1200" height="800" alt="" loading="lazy" decoding="async">
+                <span><b>À photographier</b>Studio pole, rideaux tirés, contre-jour. Le chrome de la barre, pas le visage. Ni rose, ni sourire posé face caméra</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wip-espace" data-espace>
+        <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-open">
+          <span class="wip-disque" style="background: var(--magnesie); border-color: var(--d2); color: var(--fonte)">2.5</span>
+          <span class="wip-espace-nom">Open Gym</span>
+          <span class="wip-espace-meta">70 m² · accès libre</span>
+          <span class="wip-croix" aria-hidden="true"></span>
+        </button>
+        <div class="wip-espace-corps" id="espace-open">
+          <div>
+            <div class="wip-espace-in">
+              <span></span>
+              <div class="wip-espace-texte">
+                <p>Rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, vous faites ce que vous voulez. Un coach est toujours dans la salle si vous avez une question — il ne viendra pas vous corriger sans qu'on lui demande.</p>
+                <div class="wip-fiche">
+                  <div><span class="wip-mono">Surface</span><span>70 m²</span></div>
+                  <div><span class="wip-mono">Accès</span><span>Horaire d'ouverture</span></div>
+                  <div><span class="wip-mono">Racks</span><span>6</span></div>
+                  <div><span class="wip-mono">Plateforme</span><span>1</span></div>
+                </div>
+              </div>
+              <div class="wip-photo" data-provisoire style="min-height: 290px">
+                <img src="media/provisoire-open.jpg" width="1200" height="797" alt="" loading="lazy" decoding="async">
+                <span><b>À photographier</b>Plateforme d'haltérophilie, cadrage serré sur les mains et la magnésie. La troisième tentative, pas le record</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wip-espace" data-espace>
+        <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-chill">
+          <span class="wip-disque" style="background: var(--fonte); border-color: var(--d5); color: var(--d5)">5</span>
+          <span class="wip-espace-nom">Zone Chill</span>
+          <span class="wip-espace-meta">60 m² · café</span>
+          <span class="wip-croix" aria-hidden="true"></span>
+        </button>
+        <div class="wip-espace-corps" id="espace-chill">
+          <div>
+            <div class="wip-espace-in">
+              <span></span>
+              <div class="wip-espace-texte">
+                <p>Canapés, café, grande table. C'est ici que les gens restent vingt minutes après la séance et que la salle devient autre chose qu'une salle. On l'a dessiné en premier, avant les racks.</p>
+                <div class="wip-fiche">
+                  <div><span class="wip-mono">Surface</span><span>60 m²</span></div>
+                  <div><span class="wip-mono">Places assises</span><span>24</span></div>
+                  <div><span class="wip-mono">Café</span><span>torréfié à Tours</span></div>
+                  <div><span class="wip-mono">Wifi</span><span>oui</span></div>
+                </div>
+              </div>
+              <div class="wip-photo" data-provisoire style="min-height: 290px">
+                <img src="media/provisoire-chill.jpg" width="1200" height="800" alt="" loading="lazy" decoding="async">
+                <span><b>À photographier</b>La Zone Chill vingt minutes après la séance. Plusieurs personnes, lumière du jour, personne ne pose</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— pourquoi ce nom ————— -->
+  <section class="wip-nom">
+    <div class="wip-wrap">
+      <div class="wip-tsec">
+        <span class="wip-tsec-regle" style="background: var(--magnesie)" aria-hidden="true"></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">02</span><b>Pourquoi ce nom</b></span>
+        <h2>
+          <span class="m"><i style="--i:0">Trois</i></span>
+          <span class="m"><i style="--i:1">verbes,</i></span>
+          <span class="m"><i style="--i:2">et</i></span>
+          <span class="m"><i style="--i:3">aucun</i></span>
+          <span class="m"><i style="--i:4">n'est</i></span>
+          <span class="m"><i style="--i:5">un</i></span>
+          <span class="m"><i style="--i:6">niveau</i></span>
+          <span class="m"><i style="--i:7">à</i></span>
+          <span class="m"><i style="--i:8">atteindre</i></span>
+        </h2>
+      </div>
+
+      <div class="wip-nom-grid wip-rev">
+        <div class="wip-nom-col" style="border-top-color: var(--d25)">
+          <h3>Work.</h3>
+          <p>Quel que soit le point de départ, quel que soit le dernier sport pratiqué — même si c'était il y a quinze ans.</p>
+        </div>
+        <div class="wip-nom-col" style="border-top-color: var(--d15)">
+          <h3>Improve.</h3>
+          <p>Par rapport à soi, jamais par rapport au voisin. C'est la seule comparaison qui a du sens, et la seule qu'on encourage ici.</p>
+        </div>
+        <div class="wip-nom-col" style="border-top-color: var(--bleu-c)">
+          <h3>Progress.</h3>
+          <p>Et ça ne s'arrête pas : ni pour celui qui pousse la porte en octobre, ni pour celui qui vise les qualifications.</p>
+        </div>
+      </div>
+
+      <div class="wip-sign">
+        <span class="wip-mono">Sébastien, Clément &amp; Marion — fondateurs</span>
+        <span class="wip-mono">Amboise, 2026</span>
+      </div>
+
+      <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+    </div>
+  </section>
+
+  <!-- ————— questions ————— -->
+  <section class="wip-wrap wip-sec sans-trait">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">03</span><b>Ce qu'on nous dit le plus souvent</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Les</i></span>
+        <span class="m"><i style="--i:1">quatre</i></span>
+        <span class="m"><i style="--i:2">phrases</i></span>
+        <span class="m"><i style="--i:3">qu'on</i></span>
+        <span class="m"><i style="--i:4">entend</i></span>
+        <span class="m"><i style="--i:5">au</i></span>
+        <span class="m"><i style="--i:6">téléphone</i></span>
+      </h2>
+    </div>
+    <div class="wip-q wip-rev">
+      <div class="wip-q-item">
+        <h3>« Je n'ai jamais mis les pieds dans une salle. »</h3>
+        <p>C'est le profil le plus fréquent chez nous, et de loin. La séance découverte est faite exactement pour ça : on ne vous met pas dans un cours, on vous fait visiter et on bouge à deux.</p>
+      </div>
+      <div class="wip-q-item">
+        <h3>« Il faut être en forme avant de commencer ? »</h3>
+        <p>Non. C'est comme attendre de savoir nager pour prendre un cours de natation. On adapte les charges et les mouvements dès la première minute — c'est le métier du coach, pas une faveur.</p>
+      </div>
+      <div class="wip-q-item">
+        <h3>« J'ai 55 ans, ce n'est plus pour moi. »</h3>
+        <p>Nos adhérents vont de 16 à 71 ans. Les mouvements sont les mêmes que ceux de la vie courante : se relever, porter, pousser. Ils deviennent plus utiles avec l'âge, pas moins.</p>
+      </div>
+      <div class="wip-q-item">
+        <h3>« Je ne veux pas qu'on me regarde. »</h3>
+        <p>Personne ne regarde. Tout le monde est occupé à finir sa propre série. Et si vous préférez commencer seul, l'Open Gym et le coaching individuel existent pour ça.</p>
+      </div>
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— première fois ————— -->
+  <section class="wip-wrap wip-sec" id="premiere-fois">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">04</span><b>Première visite</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">La</i></span>
+        <span class="m"><i style="--i:1">première</i></span>
+        <span class="m"><i style="--i:2">fois,</i></span>
+        <span class="m"><i style="--i:3">ça</i></span>
+        <span class="m"><i style="--i:4">se</i></span>
+        <span class="m"><i style="--i:5">passe</i></span>
+        <span class="m"><i style="--i:6">comme</i></span>
+        <span class="m"><i style="--i:7">ça</i></span>
+      </h2>
+      <p class="wip-tsec-intro">Trois étapes, dans cet ordre, sans surprise. Vous décidez à la fin — pas au début.</p>
+    </div>
+
+    <div class="wip-etapes wip-rev">
+      <div class="wip-etape">
+        <span class="wip-etape-n">01</span>
+        <h3>Vous réservez un créneau</h3>
+        <p>Un formulaire, trois champs. On vous rappelle dans la journée pour caler l'heure qui vous arrange, y compris en dehors des cours.</p>
+        <span class="wip-mono">2 minutes</span>
+      </div>
+      <div class="wip-etape">
+        <span class="wip-etape-n">02</span>
+        <h3>On visite, on discute</h3>
+        <p>Tour du lieu, présentation des espaces. On parle de votre passé sportif, de vos douleurs, de vos horaires. Et de ce qui vous fait hésiter.</p>
+        <span class="wip-mono">20 minutes</span>
+      </div>
+      <div class="wip-etape">
+        <span class="wip-etape-n">03</span>
+        <h3>Vous bougez pour de vrai</h3>
+        <p>Une séance construite pour vous, avec un coach, sans le reste du groupe. Puis on vous laisse partir sans rien vous faire signer.</p>
+        <span class="wip-mono">45 minutes · offert</span>
+      </div>
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— équipe ————— -->
+  <section class="wip-wrap wip-sec" id="equipe">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--fonte)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>L'équipe</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Vous</i></span>
+        <span class="m"><i style="--i:1">choisissez</i></span>
+        <span class="m"><i style="--i:2">une</i></span>
+        <span class="m"><i style="--i:3">salle</i></span>
+        <span class="m"><i style="--i:4">pour</i></span>
+        <span class="m"><i style="--i:5">ses</i></span>
+        <span class="m"><i style="--i:6">coachs</i></span>
+      </h2>
+      <p class="wip-tsec-intro">Trois personnes, trois spécialités, la même façon de corriger : à voix basse, à côté de vous, jamais devant le groupe.</p>
+    </div>
+
+    <div class="wip-equipe wip-rev">
+      <div>
+        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — plein pied dans le rig, lumière naturelle, 12-100 à 35 mm</span></div>
+        <h3>Sébastien</h3>
+        <p class="wip-mono" style="margin-top: 7px">Coach cross-training &amp; Hyrox — cofondateur</p>
+        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">Huit ans de pratique de l'entraînement fonctionnel en box affiliée, dont quatre à coacher des cours collectifs. Titulaire du CQP Instructeur Fitness. Spécialisé dans l'accueil des débutants et l'adaptation des mouvements.</p>
+      </div>
+      <div>
+        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — plateforme d'haltérophilie, contre-jour, 12-100 à 50 mm</span></div>
+        <h3>Simon</h3>
+        <p class="wip-mono" style="margin-top: 7px">Coach cross-training &amp; haltérophilie — cofondateur</p>
+        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">Dix ans d'entraînement fonctionnel, cinq ans de coaching en box, compétiteur régional. Suit la progression technique en haltérophilie et la préparation aux courses Hyrox.</p>
+      </div>
+      <div>
+        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — studio pole ou tapis, lumière rasante du matin</span></div>
+        <h3>Prénom</h3>
+        <p class="wip-mono" style="margin-top: 7px">Coach pole dance &amp; disciplines aériennes</p>
+        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">À compléter — certifications, années de pratique, spécialités. Mentionnez les formations reconnues, c'est ce que les futurs adhérents vérifient en premier.</p>
+      </div>
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— planning ————— -->
+  <section class="wip-sec sans-trait pose" id="planning">
+    <div class="wip-wrap">
+      <div class="wip-tsec">
+        <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>Planning</b></span>
+        <h2>
+          <span class="m"><i style="--i:0">Les</i></span>
+          <span class="m"><i style="--i:1">horaires,</i></span>
+          <span class="m"><i style="--i:2">semaine</i></span>
+          <span class="m"><i style="--i:3">type</i></span>
+        </h2>
+        <p class="wip-tsec-intro">Cours de cross-training, préparation Hyrox et pole dance, du lundi au samedi, de 6h30 à 21h45. Tout est affiché : vous savez ce qui vous attend avant de pousser la porte.</p>
+      </div>
+
+      <div class="wip-legende wip-rev">
+        <span><span class="wip-pastille" style="background: var(--d25)"></span><span class="wip-mono" style="color: var(--fonte)">Cross-training</span></span>
+        <span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span><span class="wip-mono" style="color: var(--fonte)">Hyrox</span></span>
+        <span><span class="wip-pastille" style="background: var(--d15)"></span><span class="wip-mono" style="color: var(--fonte)">Pole Dance</span></span>
+        <span><span class="wip-pastille" style="background: var(--d2)"></span><span class="wip-mono" style="color: var(--fonte)">Open Gym</span></span>
+      </div>
+
+      <div class="wip-planning wip-rev">
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Lundi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>17:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d15)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
+        </div>
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Mardi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>07:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d2)"><b>20:45</b><span><span class="wip-pastille" style="background: var(--d2)"></span>Open Gym</span></div>
+        </div>
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Mercredi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d15)"><b>17:30</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
+        </div>
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Jeudi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d15)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d2)"><b>20:45</b><span><span class="wip-pastille" style="background: var(--d2)"></span>Open Gym</span></div>
+        </div>
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Vendredi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>07:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>17:30</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d15)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
+        </div>
+        <div class="wip-jour">
+          <div class="wip-jour-tete"><strong>Samedi</strong></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>09:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>10:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
+          <div class="wip-creneau" style="--c: var(--d25)"><b>11:30</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
+          <div class="wip-creneau" style="--c: var(--d15)"><b>14:00</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
+          <div class="wip-creneau" style="--c: var(--d2)"><b>15:30</b><span><span class="wip-pastille" style="background: var(--d2)"></span>Open Gym</span></div>
+        </div>
+      </div>
+
+      <div class="wip-note wip-rev">
+        <span class="wip-mono">Dimanche : open gym 9h – 13h</span>
+        <span class="wip-mono">Chaque cours a une version adaptée aux débutants</span>
+        <span class="wip-mono">12 personnes maximum par créneau</span>
+      </div>
+
+      <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+    </div>
+  </section>
+
+  <!-- ————— lieu ————— -->
+  <section class="wip-wrap wip-sec sans-trait" id="lieu">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>Le lieu</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Un</i></span>
+        <span class="m"><i style="--i:1">ancien</i></span>
+        <span class="m"><i style="--i:2">bâtiment</i></span>
+        <span class="m"><i style="--i:3">industriel</i></span>
+        <span class="m"><i style="--i:4">à</i></span>
+        <span class="m"><i style="--i:5">dix</i></span>
+        <span class="m"><i style="--i:6">minutes</i></span>
+        <span class="m"><i style="--i:7">du</i></span>
+        <span class="m"><i style="--i:8">centre</i></span>
+        <span class="m"><i style="--i:9">d'Amboise</i></span>
+      </h2>
+    </div>
+    <div class="wip-lieu wip-rev">
+      <div>
+        <p style="margin-top: 0; font-size: 17px; line-height: 1.62; color: var(--encre); max-width: 460px">
+          1 000 m² sous charpente, hauteur libre de 4,20 m, parking gratuit devant la porte.
+          Vestiaires neufs, douches individuelles, accès PMR complet.
+        </p>
+        <div class="wip-fiche-lieu">
+          <div><span class="wip-mono">Adresse</span><span class="wip-mono">1329 chemin du Roi, 37400 Amboise</span></div>
+          <div><span class="wip-mono">Ouverture</span><span class="wip-mono">samedi 31 octobre 2026</span></div>
+          <div><span class="wip-mono">Horaires</span><span class="wip-mono">lun–ven 6h–22h · sam 8h–18h</span></div>
+          <div><span class="wip-mono">Parking</span><span class="wip-mono">gratuit, 40 places</span></div>
+        </div>
+      </div>
+      <div class="wip-carte wip-coupe wip-coupe-l">
+        <div class="wip-carte-vue">
+          <iframe
+            title="Carte — WIP Athletics, 1329 chemin du Roi, 37400 Amboise"
+            src="https://www.google.com/maps?q=1329+chemin+du+Roi,+37400+Amboise,+France&amp;z=15&amp;output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
+        <div class="wip-carte-pied">
+          <span class="wip-mono">1329 chemin du Roi · 37400 Amboise</span>
+          <a href="https://www.google.com/maps/dir/?api=1&amp;destination=1329+chemin+du+Roi,+37400+Amboise,+France" target="_blank" rel="noopener noreferrer">Ouvrir l'itinéraire<i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— formules & contact ————— -->
+  <section class="wip-sec pose" id="tarifs">
+    <div class="wip-wrap">
+      <div class="wip-tsec">
+        <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Formules</b></span>
+        <h2>
+          <span class="m"><i style="--i:0">On</i></span>
+          <span class="m"><i style="--i:2">en</i></span>
+          <span class="m"><i style="--i:3">parle</i></span>
+          <span class="m"><i style="--i:4">de</i></span>
+          <span class="m"><i style="--i:5">vive</i></span>
+          <span class="m"><i style="--i:6">voix</i></span>
+        </h2>
+        <p class="wip-tsec-intro">Les formules dépendent de ce que vous voulez pratiquer, de votre rythme et de vos horaires. Plutôt qu'une grille qui ne correspondra à personne, on préfère en discuter cinq minutes au téléphone puis vous accueillir sur place pour une séance d'essai. En attendant l'ouverture, ce qui se réserve dès maintenant, c'est le tarif.</p>
+      </div>
+
+      <div class="wip-formules wip-rev">
+        <div class="wip-formule">
+          <h3>Séance d'essai</h3>
+          <p>Visite du lieu, discussion, et une vraie séance adaptée à votre niveau. Offerte, sans engagement — dès le 31 octobre.</p>
+        </div>
+        <div class="wip-formule">
+          <h3>Accès à un espace</h3>
+          <p>Vous ne pratiquez qu'une discipline : cross-training et Hyrox, ou pole dance. Accès illimité sur tous les créneaux de cet espace.</p>
+        </div>
+        <div class="wip-formule">
+          <h3>Accès complet</h3>
+          <p>Les quatre espaces sans restriction, y compris l'open gym en accès libre du matin au soir.</p>
+        </div>
+        <div class="wip-formule">
+          <h3>Carnet de séances</h3>
+          <p>Pour les horaires irréguliers et ceux qui ne veulent rien signer. Séances à l'unité, valables plusieurs mois.</p>
+        </div>
+      </div>
+
+      <div class="wip-appel wip-rev wip-coupe wip-coupe-l">
+        <div>
+          <span class="wip-mono">Avant l'ouverture</span>
+          <h3>Les <span class="wip-arenseigner">[nombre]</span> premières inscriptions gardent leur tarif d'ouverture.</h3>
+          <p>Tant que vous restez adhérent, il n'augmente pas — ni l'année prochaine, ni celle d'après. Rien à payer aujourd'hui : vous réservez votre place, on vous appelle en octobre pour construire votre formule en cinq minutes.</p>
+        </div>
+        <div>
+          <span class="wip-mono">Du lundi au samedi, 9h – 20h</span>
+          <a href="tel:+33000000000" class="wip-tel" style="margin-top: 10px">02 47 00 00 00</a>
+          <div style="margin-top: 20px">
+            <a href="#reserver" class="wip-cta">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+    </div>
+  </section>
+
+  <!-- ————— final ————— -->
+  <section class="wip-final" id="reserver">
+    <div class="wip-wrap wip-rev">
+      <h2>Venez voir.<br>C'est tout ce qu'on demande.</h2>
+      <p>La salle ouvre le samedi 31 octobre 2026. D'ici là vous pouvez réserver votre place et bloquer votre tarif — rien à payer, on vous rappelle avant. Et le 31, vous venez voir : 45 minutes, offertes, sans engagement. Le pire qui puisse arriver, c'est que vous repartiez en ayant visité une belle salle.</p>
+      <a href="#reserver" class="wip-cta" style="padding: 17px 30px; font-size: 15px">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+      <p class="wip-mono" style="margin-top: 24px">Ou écrivez-nous — on répond nous-mêmes</p>
+    </div>
+  </section>
+
+  <!-- ————— pied ————— -->
+  <footer class="wip-pied">
+    <div class="wip-wrap">
+      <div class="wip-pied-grid">
+        <div>
+          <h4>La salle</h4>
+          <ul>
+            <li><a href="#espaces">Les quatre espaces</a></li>
+            <li><a href="#planning">Planning des cours</a></li>
+            <li><a href="#tarifs">Formules et essai</a></li>
+            <li><a href="#equipe">Les coachs</a></li>
+            <li><a href="#premiere-fois">Première visite</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Nos activités</h4>
+          <ul>
+            <li>Cross-training à Amboise</li>
+            <li>Préparation Hyrox</li>
+            <li>Pole dance et aérien</li>
+            <li>Open gym en accès libre</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Nous trouver</h4>
+          <ul>
+            <li>1329 chemin du Roi</li>
+            <li>37400 Amboise, Indre-et-Loire</li>
+            <li>Nazelles-Négron · Pocé-sur-Cisse</li>
+            <li>Montlouis-sur-Loire · Bléré</li>
+            <li>Château-Renault · Tours Est</li>
+            <li>Parking gratuit, 40 places</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Nous parler</h4>
+          <ul>
+            <li><a href="tel:+33247000000">02 47 00 00 00</a></li>
+            <li><a href="https://instagram.com/wip.athletic">@wip.athletic</a></li>
+            <li>bonjour@wipathletics.fr</li>
+            <li>Mentions légales · CGV</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wip-pied-logo">
+        <svg viewBox="0 0 4000 1288" fill="currentColor" role="img" aria-label="WIP Athletics"><use href="#sig-lockup"/></svg>
+      </div>
+      <p class="wip-pied-devise">Work · Improve · Progress</p>
+      <p class="wip-pied-legal">
+        WIP Athletics · SARL en cours de constitution · Salle de cross-training et de fitness
+        fonctionnel à Amboise, Indre-et-Loire · Ouverture le samedi 31 octobre 2026
+        <br>
+        À moins de quinze minutes de Nazelles-Négron, Pocé-sur-Cisse, Vouvray, Montlouis-sur-Loire,
+        Bléré et Château-Renault — à vingt-cinq minutes de Tours.
+      </p>
+    </div>
+  </footer>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["HealthAndBeautyBusiness", "SportsActivityLocation"],
+      "@id": "https://wipathletics.fr/#salle",
+      "name": "WIP Athletics",
+      "description": "Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026.",
+      "slogan": "Work. Improve. Progress.",
+      "url": "https://wipathletics.fr",
+      "telephone": "+33247000000",
+      "email": "bonjour@wipathletics.fr",
+      "currenciesAccepted": "EUR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1329 chemin du Roi",
+        "addressLocality": "Amboise",
+        "postalCode": "37400",
+        "addressRegion": "Centre-Val de Loire",
+        "addressCountry": "FR"
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=1329+chemin+du+Roi,+37400+Amboise,+France",
+      "areaServed": ["Amboise","Nazelles-Négron","Pocé-sur-Cisse","Vouvray","Montlouis-sur-Loire","Bléré","Château-Renault","Tours","Tours Est","Indre-et-Loire"],
+      "sameAs": ["https://www.instagram.com/wip.athletic"],
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "06:30", "closes": "22:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "18:00" }
+      ],
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Vestiaires neufs", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Douches individuelles", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Accès PMR", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Parking gratuit", "value": true }
+      ],
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de cross-training en petit groupe" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Préparation aux courses Hyrox" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de pole dance et disciplines aériennes" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Open gym en accès libre" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Coaching individuel" } }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://wipathletics.fr/#questions",
+      "mainEntity": [
+        { "@type": "Question", "name": "Faut-il déjà être sportif pour commencer le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Les charges et les mouvements sont adaptés dès la première séance : c'est le métier du coach. La séance d'essai se fait en individuel, hors du groupe." } },
+        { "@type": "Question", "name": "Y a-t-il un âge limite pour s'inscrire ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Nos adhérents vont de 16 à 71 ans. Les mouvements travaillés sont ceux de la vie courante : se relever, porter, pousser." } },
+        { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "À Amboise, en Indre-et-Loire, au 1329 chemin du Roi (37400), à dix minutes du centre-ville avec un parking gratuit de 40 places devant la porte." } },
+        { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les séances d'essai commencent à l'ouverture, le samedi 31 octobre 2026. D'ici là, vous pouvez réserver votre place par téléphone, du lundi au samedi de 9h à 20h, ou via le formulaire de rappel : les premières inscriptions gardent leur tarif d'ouverture. La séance d'essai reste offerte et sans engagement." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ————— PROVISOIRE : bascule de registre —————
+     Le choix est retenu d'un rechargement à l'autre pour pouvoir comparer
+     tranquillement. localStorage échoue en navigation privée ou sur certains
+     réglages : on l'enveloppe, un échec ne doit pas casser la page. */
+  var racine = document.querySelector('.wip');
+  var boutonsRegistre = document.querySelectorAll('.wip-registres button');
+  var REGISTRES = ['suisse', 'atelier', 'magazine', 'minimal'];
+
+  function poserRegistre(nom) {
+    REGISTRES.forEach(function (r) { racine.classList.remove('r-' + r); });
+    racine.classList.add('r-' + nom);
+    Array.prototype.forEach.call(boutonsRegistre, function (b) {
+      b.classList.toggle('on', b.getAttribute('data-registre') === nom);
+    });
+    try { localStorage.setItem('wip-registre', nom); } catch (e) {}
+  }
+
+  if (racine && boutonsRegistre.length) {
+    var memorise = null;
+    try { memorise = localStorage.getItem('wip-registre'); } catch (e) {}
+    if (memorise && REGISTRES.indexOf(memorise) !== -1) poserRegistre(memorise);
+
+    Array.prototype.forEach.call(boutonsRegistre, function (b) {
+      b.addEventListener('click', function () {
+        poserRegistre(b.getAttribute('data-registre'));
+      });
+    });
+  }
+
+  /* ————— apparitions à l'entrée dans l'écran ————— */
+  var aReveler = document.querySelectorAll('.wip-rev, .wip-tsec');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('vu');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    Array.prototype.forEach.call(aReveler, function (el) { io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(aReveler, function (el) { el.classList.add('vu'); });
+  }
+
+  /* —————————————————————————————————————————————————————————————
+     Fond vidéo du hero.
+
+     Le `src` n'est posé qu'ici, et seulement si l'écran est large ET que
+     l'utilisateur n'a pas demandé des animations réduites : sur mobile le
+     fichier n'est jamais téléchargé, ce qui évite de brûler le forfait data
+     d'un visiteur pour une texture décorative.
+
+     Le bouton de pause n'apparaît que si la vidéo tourne vraiment (WCAG
+     2.2.2). Si la lecture automatique est refusée par le navigateur, on
+     retombe simplement sur le fond noir de fonte : rien n'est perdu.
+  ————————————————————————————————————————————————————————————— */
+  var video = document.querySelector('.wip-hero-video');
+  var boutonPause = document.querySelector('.wip-hero-pause');
+
+  if (video && boutonPause) {
+    var assezLarge = window.matchMedia('(min-width: 861px)').matches;
+    var animCalme = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var arretVoulu = false; /* l'utilisateur a explicitement demandé la pause */
+
+    if (assezLarge && !animCalme) {
+      video.src = video.getAttribute('data-src');
+      var lecture = video.play();
+      if (lecture && lecture.then) {
+        lecture.then(function () {
+          boutonPause.removeAttribute('hidden');
+          boutonPause.classList.add('actif');
+
+          /* Arrêter le travail hors écran. Décoder 66 s de vidéo pour un hero
+             qu'on ne regarde plus, c'est du processeur et de la batterie
+             brûlés pour rien — et sur un portable, ça s'entend. On ne relance
+             que si la pause ne vient pas d'une décision de l'utilisateur. */
+          if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entrees) {
+              if (!entrees[0].isIntersecting) { video.pause(); }
+              else if (!arretVoulu) { video.play().catch(function () {}); }
+            }, { threshold: 0 }).observe(document.querySelector('.wip-hero'));
+          }
+        }).catch(function () {
+          /* autoplay refusé : on laisse le fond noir, sans bouton inutile */
+        });
+      }
+    }
+
+    boutonPause.addEventListener('click', function () {
+      arretVoulu = !video.paused;
+      if (arretVoulu) { video.pause(); } else { video.play().catch(function () {}); }
+      boutonPause.querySelector('span').textContent = arretVoulu ? 'Lecture' : 'Pause';
+      boutonPause.querySelector('i').textContent = arretVoulu ? '▶' : '❚❚';
+    });
+  }
+
+  /* ————— accordéon des espaces ————— */
+  var espaces = document.querySelectorAll('[data-espace]');
+  Array.prototype.forEach.call(espaces, function (el) {
+    var tete = el.querySelector('.wip-espace-tete');
+    tete.addEventListener('click', function () {
+      var etaitOuvert = el.classList.contains('on');
+      Array.prototype.forEach.call(espaces, function (o) {
+        o.classList.remove('on');
+        o.querySelector('.wip-espace-corps').classList.remove('on');
+        o.querySelector('.wip-croix').classList.remove('on');
+        o.querySelector('.wip-espace-tete').setAttribute('aria-expanded', 'false');
+      });
+      if (!etaitOuvert) {
+        el.classList.add('on');
+        el.querySelector('.wip-espace-corps').classList.add('on');
+        el.querySelector('.wip-croix').classList.add('on');
+        tete.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* —————————————————————————————————————————————————————————————
+     Le hero : les trois verbes s'allument au fil du défilement.
+
+     `debut` = entrée dans la course de scroll (0 → 1). Work part en
+     négatif : il est déjà allumé et souligné à l'arrivée sur la page,
+     les deux autres se révèlent pendant le premier écran.
+
+     Le repli statique (tout allumé, pas d'épinglage) ne se déclenche QUE
+     si l'animation ne peut pas se jouer correctement : animations
+     réduites côté système, ou fenêtre trop basse pour afficher le hero
+     épinglé sans le tronquer. Surtout pas sur un critère de largeur.
+  ————————————————————————————————————————————————————————————— */
+  var DEBUTS = [-0.25, 0.16, 0.48];
+  var piste = document.querySelector('.wip-hero-piste');
+  var colle = document.querySelector('.wip-hero-colle');
+  var jauges = document.querySelectorAll('.wip-rail-seg > i');
+  var mots = document.querySelectorAll('.wip-titre .mot');
+  var barres = document.querySelectorAll('.wip-titre .mot em');
+  var raf = 0;
+
+  function avance(p, debut) {
+    var v = (p - debut) / 0.22;
+    return v < 0 ? 0 : v > 1 ? 1 : v;
+  }
+
+  /* ————————————— construction du rouleau —————————————
+     On dédouble chaque mot en deux faces superposées, découpées lettre à
+     lettre. Fait en JS et non dans le HTML pour deux raisons : le balisage
+     reste lisible, et si le script ne tourne pas (ou si l'utilisateur a
+     demandé des animations réduites) le titre s'affiche simplement en clair.
+
+     ÉTALEMENT / BASCULE : la course d'un mot se répartit entre le décalage
+     des départs et la durée de bascule d'une lettre. 0,55 + 0,45 = 1, donc
+     la dernière lettre finit exactement quand le mot est acquis.          */
+  var ETALEMENT = 0.55;
+  var BASCULE = 0.45;
+  var rouleaux = [];
+
+  function construireRouleaux() {
+    Array.prototype.forEach.call(mots, function (mot) {
+      var lettres = mot.textContent.trim().split('');
+      if (!lettres.length) { rouleaux.push(null); return; }
+
+      var barre = mot.querySelector('em');
+      var rouleau = document.createElement('span');
+      rouleau.className = 'wip-rouleau';
+      rouleau.setAttribute('aria-hidden', 'true');
+
+      var faces = ['wip-face-bas', 'wip-face-haut'].map(function (cls) {
+        var face = document.createElement('span');
+        face.className = 'wip-face ' + cls;
+        lettres.forEach(function (l) {
+          var glyphe = document.createElement('i');
+          glyphe.textContent = l === ' ' ? ' ' : l;
+          face.appendChild(glyphe);
+        });
+        rouleau.appendChild(face);
+        return face;
+      });
+
+      mot.textContent = '';
+      mot.appendChild(rouleau);
+      if (barre) mot.appendChild(barre); /* la barre de couleur reste au-dessus */
+
+      rouleaux.push({ bas: faces[0].children, haut: faces[1].children, n: lettres.length });
+    });
+  }
+
+  /* Fait courir la vague dans un mot : chaque lettre a sa propre fenêtre,
+     décalée de la précédente. C'est l'équivalent natif d'un stagger. */
+  function roulerMot(r, a) {
+    var pas = r.n > 1 ? ETALEMENT / (r.n - 1) : 0;
+    for (var k = 0; k < r.n; k++) {
+      var t = (a - k * pas) / BASCULE;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      r.bas[k].style.transform = 'scaleY(' + (1 - t) + ')';
+      r.haut[k].style.transform = 'scaleY(' + t + ')';
+    }
+  }
+
+  function maj() {
+    raf = 0;
+    var fige =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.innerHeight < 560;
+
+    piste.classList.toggle('statique', fige);
+    colle.classList.toggle('statique', fige);
+
+    var p = 1;
+    if (!fige) {
+      var r = piste.getBoundingClientRect();
+      var course = r.height - window.innerHeight;
+      var v = course > 0 ? -r.top / course : 0;
+      p = v < 0 ? 0 : v > 1 ? 1 : v;
+    }
+
+    for (var i = 0; i < DEBUTS.length; i++) {
+      var a = avance(p, DEBUTS[i]);
+      jauges[i].style.transform = 'scaleY(' + a + ')';
+      barres[i].style.transform = 'scaleX(' + a + ')';
+      if (rouleaux[i]) roulerMot(rouleaux[i], a);
+    }
+  }
+
+  function auScroll() {
+    if (!raf) raf = requestAnimationFrame(maj);
+  }
+
+  /* animations réduites : pas de rouleau du tout, le titre reste en clair */
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    construireRouleaux();
+  }
+
+  maj();
+  window.addEventListener('scroll', auScroll, { passive: true });
+  window.addEventListener('resize', auScroll);
+  // les polices changent la hauteur du titre : on recalcule une fois chargées
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(maj);
+})();
+</script>
+</body>
+</html>
