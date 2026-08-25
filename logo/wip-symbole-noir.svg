@@ -1,0 +1,10 @@
+<!-- WIP ATHLETICS — master vectoriel v02
+     Grille : hauteur de lettre = 1000 unités, ligne de base y=1000.
+     Fût 455 · contre-forme w 300 · approche 64 · jambage 1090.
+     Chanfreins extérieurs 45° · diagonale du w 4:3 · talon R224.
+     Ne pas déformer, ne pas recomposer. Toute évolution = nouvelle version (v02...).
+     ATHLETICS et la signature sont vectorisés depuis Archivo (SIL Open Font License). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1965 1000" width="1965" height="1000" fill="#0B0D0C" role="img" aria-label="WIP — symbole">
+  <title>WIP — symbole</title>
+  <path d="M 0,0 L 455,0 L 455,632 A 48,48 0 0 0 503,680 L 707,680 A 48,48 0 0 0 755,632 L 755,0 L 1210,0 L 1210,632 A 48,48 0 0 0 1258,680 L 1462,680 A 48,48 0 0 0 1510,632 L 1510,0 L 1965,0 L 1965,661.36 A 45,45 0 0 1 1951.82,693.18 L 1658.18,986.82 A 45,45 0 0 1 1626.36,1000 L 1027.5,1000 A 45,45 0 0 1 982.5,955 L 982.5,750 L 661.17,991 A 45,45 0 0 1 634.17,1000 L 224,1000 A 224,224 0 0 1 0,776 Z"/>
+</svg>
