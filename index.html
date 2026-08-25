@@ -9,11 +9,11 @@
      elle-même. -->
 <title>Salle de sport Amboise (37) — Hyrox, cross-training, pole dance | WIP Athletics</title>
 
-<meta name="description" content="Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026 — tarif fondateur ouvert à la réservation.">
+<meta name="description" content="Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026, séance d'essai offerte à réserver dès maintenant.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0B0D0C">
 <meta property="og:title" content="WIP Athletics — Salle de sport à Amboise (37), ouverture le 31 octobre 2026">
-<meta property="og:description" content="Cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m² à Amboise, à 25 min de Tours. Cours en petits groupes, tous niveaux. Les premières inscriptions bloquent leur tarif d'ouverture.">
+<meta property="og:description" content="Cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m² à Amboise, à 25 min de Tours. Cours en petits groupes, tous niveaux. Séance d'essai offerte, à réserver dès maintenant pour l'ouverture.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
@@ -254,6 +254,15 @@ html, body { margin: 0; padding: 0; }
   outline: none; box-shadow: inset 0 0 0 2.5px var(--magnesie), inset 0 0 0 4.5px var(--bleu);
 }
 .wip-cta-sm { padding: 10px 17px; font-size: 13px; --chanfrein: 11px; --talon: 8px; }
+
+/* bascule des deux libellés du bouton de nav (voir le commentaire dans le HTML) */
+.wip-cta-court { display: none; }
+@media (max-width: 620px) {
+  .wip-cta-long  { display: none; }
+  .wip-cta-court { display: inline; }
+  /* le bouton se resserre encore : sur 360 px, chaque pixel de la barre compte */
+  .wip-cta-sm { padding: 10px 14px; gap: 8px; }
+}
 
 /* ———————————————————————— hero : le nom se déplie ———————————————————————— */
 .wip-hero { background: var(--fonte); color: var(--magnesie); position: relative; }
@@ -739,9 +748,10 @@ html, body { margin: 0; padding: 0; }
 }
 
 /* Même logique pour le texte : une valeur que seul le user peut fournir
-   (le nombre de places du tarif fondateur) reste visible à l'écran tant
-   qu'elle n'est pas renseignée, plutôt que d'être devinée. Chercher
-   « wip-arenseigner » avant toute mise en ligne.                       */
+   reste visible à l'écran tant qu'elle n'est pas renseignée, plutôt que
+   d'être devinée. Aucun emploi actuellement — la règle est conservée pour
+   le prochain chiffre en attente. Chercher « wip-arenseigner » avant toute
+   mise en ligne.                                                        */
 .wip-arenseigner {
   background: var(--bleu); color: #fff; font-family: var(--mono);
   font-size: .78em; font-weight: 500; letter-spacing: .04em;
@@ -1133,7 +1143,7 @@ html, body { margin: 0; padding: 0; }
   <div class="wip-annonce">
     <span>Ouverture <b>samedi 31 octobre 2026</b></span>
     <span>Amboise · Indre-et-Loire</span>
-    <span><b>Tarif fondateur ouvert</b></span>
+    <span><b>Séance d'essai offerte</b></span>
   </div>
 
   <!-- ————— nav ————— -->
@@ -1152,7 +1162,17 @@ html, body { margin: 0; padding: 0; }
         <a href="#planning">Planning</a>
         <a href="#lieu">Nous trouver</a>
       </div>
-      <a href="#reserver" class="wip-cta wip-cta-sm">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+      <!-- Deux libellés, un seul visible à la fois. La nav est collante : son
+           bouton est le seul de la page à devoir tenir dans une barre déjà
+           occupée par le logo et les liens. Sur un écran de 360 px, le libellé
+           complet mangeait la moitié de la largeur. `display:none` retire
+           proprement le libellé masqué de l'arbre d'accessibilité — un lecteur
+           d'écran n'en annonce jamais deux. -->
+      <a href="#reserver" class="wip-cta wip-cta-sm">
+        <span class="wip-cta-long">Réserver ma séance d'essai</span>
+        <span class="wip-cta-court">Séance d'essai</span>
+        <i aria-hidden="true">→</i>
+      </a>
     </div>
   </nav>
 
@@ -1194,7 +1214,7 @@ html, body { margin: 0; padding: 0; }
           </p>
 
           <div class="wip-actions">
-            <a href="#reserver" class="wip-cta">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+            <a href="#reserver" class="wip-cta">Réserver ma séance d'essai<i aria-hidden="true">→</i></a>
             <a href="#espaces" class="wip-cta-fant">Voir les quatre espaces<i aria-hidden="true">↓</i></a>
           </div>
 
@@ -1658,7 +1678,7 @@ html, body { margin: 0; padding: 0; }
           <span class="m"><i style="--i:5">vive</i></span>
           <span class="m"><i style="--i:6">voix</i></span>
         </h2>
-        <p class="wip-tsec-intro">Les formules dépendent de ce que vous voulez pratiquer, de votre rythme et de vos horaires. Plutôt qu'une grille qui ne correspondra à personne, on préfère en discuter cinq minutes au téléphone puis vous accueillir sur place pour une séance d'essai. En attendant l'ouverture, ce qui se réserve dès maintenant, c'est le tarif.</p>
+        <p class="wip-tsec-intro">Les formules dépendent de ce que vous voulez pratiquer, de votre rythme et de vos horaires. Plutôt qu'une grille qui ne correspondra à personne, on préfère en discuter cinq minutes au téléphone puis vous accueillir sur place pour une séance d'essai. Elle se réserve dès maintenant, pour un créneau à partir du 31 octobre.</p>
       </div>
 
       <div class="wip-formules wip-rev">
@@ -1682,15 +1702,15 @@ html, body { margin: 0; padding: 0; }
 
       <div class="wip-appel wip-rev wip-coupe wip-coupe-l">
         <div>
-          <span class="wip-mono">Avant l'ouverture</span>
-          <h3>Les <span class="wip-arenseigner">[nombre]</span> premières inscriptions gardent leur tarif d'ouverture.</h3>
-          <p>Tant que vous restez adhérent, il n'augmente pas — ni l'année prochaine, ni celle d'après. Rien à payer aujourd'hui : vous réservez votre place, on vous appelle en octobre pour construire votre formule en cinq minutes.</p>
+          <span class="wip-mono">Réserver</span>
+          <h3>Appelez-nous, on vous réserve une séance d'essai pour l'ouverture.</h3>
+          <p>Cinq minutes au téléphone pour comprendre ce que vous cherchez et bloquer votre créneau. Le 31 octobre, on visite, on discute, et vous bougez pour de vrai. Aucun engagement à prendre le jour même.</p>
         </div>
         <div>
           <span class="wip-mono">Du lundi au samedi, 9h – 20h</span>
           <a href="tel:+33000000000" class="wip-tel" style="margin-top: 10px">02 47 00 00 00</a>
           <div style="margin-top: 20px">
-            <a href="#reserver" class="wip-cta">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+            <a href="#reserver" class="wip-cta">Réserver ma séance d'essai<i aria-hidden="true">→</i></a>
           </div>
         </div>
       </div>
@@ -1703,8 +1723,8 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-final" id="reserver">
     <div class="wip-wrap wip-rev">
       <h2>Venez voir.<br>C'est tout ce qu'on demande.</h2>
-      <p>La salle ouvre le samedi 31 octobre 2026. D'ici là vous pouvez réserver votre place et bloquer votre tarif — rien à payer, on vous rappelle avant. Et le 31, vous venez voir : 45 minutes, offertes, sans engagement. Le pire qui puisse arriver, c'est que vous repartiez en ayant visité une belle salle.</p>
-      <a href="#reserver" class="wip-cta" style="padding: 17px 30px; font-size: 15px">Bloquer mon tarif fondateur<i aria-hidden="true">→</i></a>
+      <p>La salle ouvre le samedi 31 octobre 2026, et votre séance d'essai se réserve dès maintenant — rien à payer, on vous rappelle avant. 45 minutes, offertes, sans engagement. Le pire qui puisse arriver, c'est que vous repartiez en ayant visité une belle salle.</p>
+      <a href="#reserver" class="wip-cta" style="padding: 17px 30px; font-size: 15px">Réserver ma séance d'essai<i aria-hidden="true">→</i></a>
       <p class="wip-mono" style="margin-top: 24px">Ou écrivez-nous — on répond nous-mêmes</p>
     </div>
   </section>
@@ -1819,7 +1839,7 @@ html, body { margin: 0; padding: 0; }
         { "@type": "Question", "name": "Faut-il déjà être sportif pour commencer le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Les charges et les mouvements sont adaptés dès la première séance : c'est le métier du coach. La séance d'essai se fait en individuel, hors du groupe." } },
         { "@type": "Question", "name": "Y a-t-il un âge limite pour s'inscrire ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Nos adhérents vont de 16 à 71 ans. Les mouvements travaillés sont ceux de la vie courante : se relever, porter, pousser." } },
         { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "À Amboise, en Indre-et-Loire, au 1329 chemin du Roi (37400), à dix minutes du centre-ville avec un parking gratuit de 40 places devant la porte." } },
-        { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les séances d'essai commencent à l'ouverture, le samedi 31 octobre 2026. D'ici là, vous pouvez réserver votre place par téléphone, du lundi au samedi de 9h à 20h, ou via le formulaire de rappel : les premières inscriptions gardent leur tarif d'ouverture. La séance d'essai reste offerte et sans engagement." } }
+        { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les séances d'essai commencent à l'ouverture, le samedi 31 octobre 2026, et se réservent dès maintenant : par téléphone du lundi au samedi de 9h à 20h, ou via le formulaire de rappel. La séance d'essai est offerte et sans engagement." } }
       ]
     }
   ]
