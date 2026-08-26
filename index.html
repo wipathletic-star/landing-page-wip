@@ -205,7 +205,12 @@ html, body { margin: 0; padding: 0; }
 
 /* Bascule à 1040 px et non plus 940 : cinq entrées plus un bouton de
    28 caractères demandent ~945 px avec le logo, contre ~810 px du temps
-   de « Réserver ma séance ». Elle débordait donc juste sous 940 px. */
+   de « Réserver ma séance ». Elle débordait donc juste sous 940 px.
+
+   26/08/2026 — « Formules » ajoutée en sixième entrée. Mesuré au dernier
+   pixel avant bascule (fenêtre de 1041 px) : la barre demande 946 px et en
+   a 981 de disponibles. Le seuil tient, avec 35 px de marge — mais elle
+   est désormais mince : une septième entrée obligerait à le remonter. */
 @media (max-width: 1040px) {
   .wip { --nav-h: 108px; }
   .wip-nav-in { flex-wrap: wrap; height: auto; }
@@ -1553,6 +1558,7 @@ html, body { margin: 0; padding: 0; }
         <a href="#equipe">L'équipe</a>
         <a href="#planning">Planning</a>
         <a href="#lieu">Nous trouver</a>
+        <a href="#tarifs">Formules</a>
       </div>
       <!-- Deux libellés, un seul visible à la fois. La nav est collante : son
            bouton est le seul de la page à devoir tenir dans une barre déjà
