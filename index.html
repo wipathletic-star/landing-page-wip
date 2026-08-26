@@ -53,7 +53,8 @@
 
   Logos = MASTER v02 (brand/logos/v02/), seule version en vigueur — la v01 est
   historique. Wordmark seul dans la nav (bandeau étroit), lockup complet en pied
-  de page, symbole en filigrane. Tracés inlinés tels quels dans <defs>, aucun
+  de page, symbole en colophon de section, wordmark en trame de fond sur les
+  trois surfaces noires. Tracés inlinés tels quels dans <defs>, aucun
   nœud touché ; les fichiers d'origine sont dans logo/ pour les autres supports.
 
   ⚠ RÈGLE §5 bis-A : la salle n'est pas affiliée à la marque déposée du milieu.
@@ -284,7 +285,8 @@ html, body { margin: 0; padding: 0; }
    assombrie et désaturée, elle donne de la vie au premier écran sans jamais
    disputer la lecture au titre. Le voile est calculé pour garder le texte
    magnésie à 5,8:1 même sur une image vidéo blanche (AA tenu au pire cas).
-   Elle ne se charge ni sur mobile ni en animations réduites (voir le script). */
+   Elle ne se charge pas en animations réduites, ni sur connexion ménagée
+   (économiseur de données, 3G et en dessous) — voir le script. */
 .wip-hero-fond { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
 
 /* La vidéo est ÉCLAIRCIE, pas assombrie : c'est le voile qui gère le
@@ -619,6 +621,27 @@ html, body { margin: 0; padding: 0; }
 /* ———————————————————— section sombre : pourquoi ce nom ———————————————————— */
 .wip-nom { background: var(--fonte); color: var(--magnesie); padding: 96px 0; position: relative; overflow: hidden; }
 .wip-nom .wip-mono { color: var(--beton-c); }
+
+/* ————————————— la trame des surfaces noires —————————————
+   Voir le commentaire du <pattern> dans le sprite pour le dessin du motif.
+
+   Dosage à 7 %, soit près du double du filigrane unique qui avait été retiré
+   (4 %) — et pourtant bien plus discret à l'œil. C'est le propre d'une trame :
+   la répétition fait la lecture, chaque occurrence n'a donc pas besoin d'être
+   forte. Un signe isolé, lui, doit être net ou ne pas être.
+
+   Sur noir de fonte, le magnésie à 7 % donne ≈ #1C1D1B : présent sur un bon
+   écran, jamais assez pour concurrencer un texte à 5,9:1.                  */
+.wip-trame {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  color: var(--magnesie); fill: var(--magnesie); opacity: .07;
+  pointer-events: none; user-select: none;
+}
+/* le contenu repasse au-dessus — ciblé, pour ne toucher aucun autre bloc */
+.wip-nom > .wip-wrap,
+.wip-appel > div,
+.wip-pied > .wip-wrap { position: relative; z-index: 1; }
 /* ————————————— le colophon de section —————————————
    Le symbole officiel (le w) signe la fin de chaque section, comme le
    point final d'un article de revue : un filet court qui vient buter sur
@@ -725,19 +748,27 @@ html, body { margin: 0; padding: 0; }
 }
 .wip-photo:not(:has(img)) span b { color: var(--fonte); }
 
-/* ═══ VISUELS PROVISOIRES — section 03 ═══
+/* ═══ VISUELS PROVISOIRES — sections 03 et 05 ═══
    Décision du 25/08/2026 : dérogation assumée aux §5ter et §6 du brand book
    (« interdit : photo de banque d'images ») pour la seule phase de maquette.
-   Ces quatre images montrent la salle de quelqu'un d'autre sous VOS chiffres
-   (420 m², 6 barres, 4,20 m). Elles DOIVENT partir avant la mise en ligne —
-   d'où le marquage visible, le préfixe « provisoire- » sur les fichiers et
-   le relevé de sources dans media/CREDITS.md.
+   Les quatre images de la section 03 montrent la salle de quelqu'un d'autre
+   sous VOS chiffres (420 m², 6 barres, 4,20 m). Elles DOIVENT partir avant la
+   mise en ligne — d'où le marquage visible, le préfixe « provisoire- » sur les
+   fichiers et le relevé de sources dans media/CREDITS.md.
+
+   26/08/2026 — trois portraits provisoires ajoutés aux fiches coachs (05).
+   ⚠ CEUX-LÀ SONT PLUS EXPOSÉS QUE LES QUATRE AUTRES : ce sont des personnes
+   identifiables présentées comme le personnel de la salle. La licence Pexels
+   l'interdit explicitement en ligne (voir media/CREDITS.md). Maquette
+   uniquement, à remplacer par le shooting.
 
    ┌─ POUR TOUT RETIRER D'UN COUP ───────────────────────────────────┐
-   │  décommenter la ligne ci-dessous : les quatre cadres            │
-   │  redeviennent des emplacements portant leur brief de shooting.  │
+   │  décommenter les deux lignes ci-dessous : les sept cadres        │
+   │  redeviennent des emplacements portant leur brief de shooting,   │
+   │  et les vignettes de l'équipe reprennent leurs initiales.        │
    └─────────────────────────────────────────────────────────────────┘
-   .wip-photo[data-provisoire] img { display: none !important; }
+   [data-provisoire] img { display: none !important; }
+   .wip-equipe-vignettes button i { display: block !important; }
 */
 .wip-photo[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
 .wip-photo[data-provisoire]::after {
@@ -778,14 +809,152 @@ html, body { margin: 0; padding: 0; }
 .wip-bande > .wip-photo:nth-child(even) { min-height: 340px; align-self: start; }
 @media (max-width: 700px) { .wip-bande { grid-auto-columns: minmax(190px, 1fr); } }
 
-/* ———————————————————————————————— équipe ———————————————————————————————— */
-.wip-equipe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-.wip-equipe > div:nth-child(2) { transform: translateY(38px); }
-.wip-equipe h3 {
-  font-family: var(--display); font-size: 24px; font-weight: 800; font-stretch: 108%;
-  letter-spacing: -.03em; margin-top: 18px;
+/* ———————————————————————————————— équipe ————————————————————————————————
+   UN COACH À LA FOIS, EN GRAND (26/08/2026)
+
+   La grille de trois vignettes traitait les coachs comme des produits. Le
+   titre de la section dit « vous choisissez une salle pour ses coachs » :
+   un portrait de 320 px de haut partagé en trois ne défend pas cette
+   phrase. Le portrait passe donc en grand format et défile verticalement,
+   la fiche prend le relais latéralement — mais les trois vignettes restent
+   visibles en permanence, pour que « ils sont trois, dont une en pole » se
+   lise sans avoir à cliquer. C'est le seul reproche sérieux qu'on peut
+   faire à un carrousel, et il se règle là.
+
+   Adaptation à la grammaire §5 plutôt que reprise du modèle : pas de coins
+   arrondis partout, mais la coupe 4:3 sur le cadre, le chanfrein 45° sur
+   les vignettes et les boutons, le talon en bas à gauche. Aucun défilement
+   automatique : rien ne bouge sans que quelqu'un l'ait demandé.
+
+   Sans JavaScript, le bloc redevient la grille de trois fiches (<noscript>). */
+.wip-equipe {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+  gap: 30px 62px;
 }
-@media (max-width: 800px) { .wip-equipe { grid-template-columns: 1fr; gap: 40px; } .wip-equipe > div:nth-child(2) { transform: none; } }
+
+.wip-equipe-scene { display: grid; gap: 14px; }
+
+/* Le cadre porte la coupe ; les vues qui défilent dedans sont des rectangles
+   pleins — deux diagonales superposées pendant le passage se verraient. */
+.wip-equipe-cadre {
+  position: relative; overflow: hidden; aspect-ratio: 3 / 4;
+  background: var(--papier);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
+}
+.wip-equipe-cadre .wip-photo {
+  position: absolute; inset: 0; min-height: 0; clip-path: none;
+  transform: translateY(100%);
+  transition: transform .78s cubic-bezier(.16,1,.3,1);
+}
+.wip-equipe-cadre .wip-photo.on { transform: none; z-index: 2; }
+
+/* ——— les trois vignettes : la preuve qu'il y a trois personnes ——— */
+.wip-equipe-vignettes { display: flex; gap: 9px; }
+.wip-equipe-vignettes button {
+  position: relative; width: 72px; aspect-ratio: 3 / 4; padding: 0; overflow: hidden;
+  background: var(--papier); box-shadow: inset 0 0 0 1px var(--trait);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 16px) 100%, 0 100%);
+  border-bottom-left-radius: 4px;
+  display: grid; place-items: center;
+  opacity: .5; transition: opacity .3s ease, box-shadow .3s ease;
+}
+.wip-equipe-vignettes button::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(126.87deg, transparent 0 9px, rgba(94,98,92,.09) 9px 10px);
+}
+.wip-equipe-vignettes button:hover { opacity: .8; }
+.wip-equipe-vignettes button[aria-current="true"] {
+  opacity: 1; box-shadow: inset 0 0 0 2px var(--bleu);
+}
+/* L'initiale tient lieu de portrait tant que la photo n'est pas faite. Comme
+   Sébastien et Simon partagent la leur, le numéro lève l'ambiguïté — il
+   disparaîtra de lui-même le jour où les vignettes porteront les visages. */
+.wip-equipe-vignettes i {
+  position: relative; font-style: normal;
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  font-size: 26px; letter-spacing: -.04em; color: var(--beton-f);
+}
+.wip-equipe-vignettes button[aria-current="true"] i { color: var(--fonte); }
+.wip-equipe-vignettes em {
+  position: absolute; left: 7px; bottom: 6px; font-style: normal;
+  font-family: var(--mono); font-size: 8px; font-weight: 500;
+  letter-spacing: .08em; color: var(--beton-f);
+}
+.wip-equipe-vignettes button[aria-current="true"] em { color: var(--bleu); }
+.wip-equipe-vignettes img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  object-position: 50% 32%;   /* les visages sont au tiers haut du cadrage */
+  filter: grayscale(.28) contrast(1.06);
+}
+/* dès qu'il y a un portrait, la trame et l'initiale n'ont plus lieu d'être ;
+   le numéro, lui, reste — il lui faut son propre fond pour tenir sur l'image */
+.wip-equipe-vignettes button:has(img)::before { content: none; }
+.wip-equipe-vignettes button:has(img) i { display: none; }
+.wip-equipe-vignettes button:has(img) em {
+  left: 0; bottom: 0; padding: 3px 6px; color: var(--magnesie);
+  background: rgba(11,13,12,.78);
+}
+.wip-equipe-vignettes button[aria-current="true"]:has(img) em { background: var(--bleu); color: #fff; }
+
+/* ——— la colonne de droite ———
+   centrée sur la hauteur du portrait : une fiche calée en haut laissait un
+   vide de 200 px sous les flèches, et la fiche du coach pole (plus courte,
+   sans repères tant qu'elle n'est pas renseignée) l'aggravait */
+.wip-equipe-fiches { display: flex; flex-direction: column; justify-content: center; }
+
+.wip-equipe-compteur { display: flex; align-items: center; gap: 12px; }
+.wip-equipe-compteur b { color: var(--fonte); font-weight: 500; }
+.wip-equipe-compteur span[aria-hidden] {
+  width: 1px; height: 11px; background: var(--trait);
+  transform: skewX(-36.87deg); /* la diagonale du logo */
+}
+
+.wip-equipe-piste { display: grid; margin-top: 16px; }
+.wip-coach {
+  grid-area: 1 / 1;
+  transition: opacity .5s ease, transform .55s cubic-bezier(.16,1,.3,1), visibility .5s;
+}
+.wip-coach:not(.on) {
+  opacity: 0; visibility: hidden; transform: translateX(22px); pointer-events: none;
+}
+.wip-coach h3 {
+  font-family: var(--display); font-weight: 900; font-stretch: 118%;
+  font-size: clamp(34px, 4.6vw, 52px); letter-spacing: -.04em; line-height: .94;
+  margin-top: 12px;
+}
+.wip-coach h3 .wip-arenseigner { font-size: 11px; vertical-align: middle; margin-left: 10px; }
+.wip-coach > p { margin-top: 18px; font-size: 16px; line-height: 1.62; color: var(--encre); max-width: 46ch; }
+.wip-coach .wip-mono { display: block; margin-top: 10px; }
+
+.wip-coach-reperes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.wip-coach-reperes li {
+  font-family: var(--mono); font-size: 9px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--beton-f);
+  padding: 7px 11px; box-shadow: inset 0 0 0 1px var(--trait);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+}
+
+.wip-equipe-nav { display: flex; align-items: center; gap: 10px; margin-top: 34px; }
+.wip-equipe-nav button {
+  width: 48px; height: 48px; display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px var(--fonte); color: var(--fonte);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%);
+  border-bottom-left-radius: 7px;
+  transition: background .22s ease, color .22s ease;
+}
+.wip-equipe-nav button:hover { background: var(--fonte); color: var(--magnesie); }
+.wip-equipe-nav svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+
+@media (max-width: 900px) {
+  .wip-equipe { grid-template-columns: 1fr; gap: 26px; }
+  .wip-equipe-cadre { aspect-ratio: 4 / 5; }
+  .wip-equipe-nav { margin-top: 26px; }
+}
+@media (max-width: 620px) {
+  .wip-equipe-vignettes button { width: 60px; }
+  .wip-coach > p { font-size: 15.5px; }
+}
 
 /* ———————————————————————————— formules & appel ———————————————————————————— */
 .wip-formules { border-top: 2px solid var(--fonte); margin-bottom: 48px; }
@@ -805,6 +974,7 @@ html, body { margin: 0; padding: 0; }
 .wip-appel {
   background: var(--fonte); color: var(--magnesie); padding: 48px;
   display: grid; grid-template-columns: 1.2fr auto; gap: 36px; align-items: center;
+  position: relative; overflow: hidden;
 }
 .wip-appel .wip-mono { color: var(--beton-c); }
 .wip-appel h3 {
@@ -882,8 +1052,94 @@ html, body { margin: 0; padding: 0; }
 }
 .wip-final p { margin: 22px auto 32px; max-width: 470px; color: var(--encre); font-size: 17px; }
 
+/* ———————————————— formulaire de pré-inscription ————————————————
+   Le seul endroit de la page où l'on demande quelque chose au visiteur.
+   Trois champs saisis, pas cinq : chaque champ ajouté coûte des contacts,
+   et la mesure qui compte d'ici le 31 octobre est le nombre de contacts
+   collectés (§5 quater du brand book). Le téléphone est requis parce que
+   le texte juste au-dessus promet un rappel — promettre un rappel sans
+   relever de numéro, c'est perdre le contact.
+
+   Back-end : Google Forms en POST direct, sans iframe (constante
+   FORM_GOOGLE dans le script en bas de page). La page garde donc
+   intégralement sa mise en page, sa typographie et sa grammaire d'angles. */
+.wip-inscription { max-width: 470px; margin: 0 auto; text-align: left; }
+.wip-inscription .wip-rangee { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+@media (max-width: 520px) { .wip-inscription .wip-rangee { grid-template-columns: 1fr; } }
+
+.wip-champ { display: block; margin-bottom: 15px; }
+.wip-champ > span {
+  display: block; font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--beton-f);
+  margin-bottom: 7px;
+}
+.wip-champ > span em { font-style: normal; color: var(--bleu); }
+
+.wip-inscription input[type="text"],
+.wip-inscription input[type="tel"],
+.wip-inscription input[type="email"] {
+  --chanfrein: 10px; --talon: 7px;
+  width: 100%; padding: 13px 14px; min-height: 48px;
+  font-family: var(--display); font-size: 15.5px; font-stretch: 100%; font-weight: 400;
+  color: var(--fonte); background: var(--magnesie);
+  border: none; box-shadow: inset 0 0 0 1px var(--trait);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)), calc(100% - var(--chanfrein)) 100%, 0 100%);
+  border-bottom-left-radius: var(--talon);
+  transition: box-shadow .18s ease;
+}
+.wip-inscription input::placeholder { color: #A6A9A2; }
+/* le clip-path rognerait l'outline du navigateur : anneau intérieur, comme les CTA */
+.wip-inscription input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--bleu); }
+.wip-champ.wip-err input { box-shadow: inset 0 0 0 1.5px var(--d25); }
+.wip-champ.wip-err input:focus { box-shadow: inset 0 0 0 2px var(--d25); }
+.wip-champ b {
+  display: none; font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--d25); margin-top: 6px;
+}
+.wip-champ.wip-err b { display: block; }
+
+/* Discipline : des étiquettes chanfreinées plutôt qu'un menu déroulant.
+   Un clic au lieu de trois, et le menu natif est le seul élément de la page
+   que l'on ne peut pas dessiner. Facultatif — il qualifie, il ne filtre pas. */
+.wip-puces { display: flex; flex-wrap: wrap; gap: 8px; }
+.wip-puces label { position: relative; }
+.wip-puces input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.wip-puces span {
+  --chanfrein: 8px; --talon: 6px;
+  display: block; padding: 9px 13px; min-height: 38px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
+  color: var(--beton-f); background: var(--magnesie);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)), calc(100% - var(--chanfrein)) 100%, 0 100%);
+  border-bottom-left-radius: var(--talon);
+  transition: color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.wip-puces input:checked + span { color: #fff; background: var(--bleu); box-shadow: none; }
+.wip-puces input:focus-visible + span { box-shadow: inset 0 0 0 2px var(--bleu); }
+.wip-puces label:hover span { color: var(--fonte); }
+.wip-puces input:checked + span:hover { color: #fff; }
+
+/* accent-color : la case native reste accessible et prend la couleur de marque */
+.wip-accord { display: flex; gap: 11px; align-items: flex-start; margin: 20px 0 22px; }
+.wip-accord input { accent-color: var(--bleu); width: 18px; height: 18px; margin: 2px 0 0; flex: none; cursor: pointer; }
+.wip-accord span { font-size: 13.5px; line-height: 1.5; color: var(--encre); }
+.wip-accord.wip-err span { color: var(--d25); }
+
+.wip-inscription button.wip-cta { background: var(--bleu); color: #fff; width: 100%; justify-content: center; padding: 17px 30px; font-size: 15px; }
+.wip-inscription button.wip-cta[disabled] { opacity: .55; cursor: progress; }
+
+.wip-mentions { margin: 18px 0 0; font-size: 12px; line-height: 1.7; color: var(--beton-f); max-width: none; text-align: left; }
+
+/* Confirmation : elle remplace le formulaire, elle ne s'ajoute pas dessous —
+   le visiteur doit voir que quelque chose a changé sans avoir à chercher. */
+.wip-merci { display: none; padding: 26px 24px; background: var(--magnesie); border-left: 3px solid var(--bleu); text-align: left; }
+.wip-merci.vu-envoye { display: block; }
+.wip-merci h3 { font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 22px; letter-spacing: -.02em; }
+.wip-merci p { margin: 10px 0 0; font-size: 15px; text-align: left; max-width: none; }
+.wip-inscription.wip-envoye form { display: none; }
+
 /* ———————————————————————————————— pied ———————————————————————————————— */
-.wip-pied { background: var(--fonte); color: var(--beton-c); padding: 62px 0 34px; overflow: hidden; }
+.wip-pied { background: var(--fonte); color: var(--beton-c); padding: 62px 0 34px; overflow: hidden; position: relative; }
 .wip-pied-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-bottom: 52px; }
 /* #5E625C ne tient pas sur le noir de fonte (3,1:1) : béton clair, 5,9:1 */
 .wip-pied-grid h4 {
@@ -1098,6 +1354,34 @@ html, body { margin: 0; padding: 0; }
   .wip-tsec h2 .m > i { transform: none; }
   .wip-espace-corps { grid-template-rows: 1fr; }
   .wip-croix { display: none; }
+
+  /* Équipe : le carrousel a besoin de JavaScript pour désigner qui est à
+     l'écran. Sans lui, les conteneurs s'effacent (display: contents) et les
+     trois portraits reprennent leur place au-dessus des trois fiches — le
+     visiteur a l'information entière, sans commande à actionner. */
+  .wip-equipe { grid-template-columns: repeat(3, 1fr); gap: 14px 30px; }
+  .wip-equipe-scene, .wip-equipe-cadre, .wip-equipe-fiches, .wip-equipe-piste { display: contents; }
+  /* `relative` et non `static` : l'image et le badge « visuel provisoire » sont
+     positionnés en absolu là-dedans. En static ils se calent sur un ancêtre
+     lointain — l'image part en plein écran puis se fait clipper, ce qui la
+     rend floue, et le badge quitte le cadre. */
+  .wip-equipe-cadre .wip-photo {
+    position: relative; transform: none; grid-row: 1; aspect-ratio: 3 / 4;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
+  }
+  /* `:not(.on)` de la feuille pèse plus lourd qu'un `.wip-coach` seul :
+     il faut repasser devant en spécificité, l'ordre source n'y suffit pas */
+  .wip-equipe .wip-coach, .wip-equipe .wip-coach:not(.on) {
+    grid-area: auto;   /* sans quoi le `grid-area: 1 / 1` du mode carrousel
+                          empile les trois fiches dans la même cellule */
+    grid-row: 2; opacity: 1; visibility: visible; transform: none;
+  }
+  .wip-coach h3 { font-size: 26px; }
+  .wip-equipe-vignettes, .wip-equipe-nav, .wip-equipe-compteur { display: none; }
+  @media (max-width: 800px) {
+    .wip-equipe { grid-template-columns: 1fr; }
+    .wip-equipe-cadre .wip-photo, .wip-coach { grid-row: auto; }
+  }
 </style></noscript>
 </head>
 
@@ -1123,6 +1407,24 @@ html, body { margin: 0; padding: 0; }
       <path fill="currentColor" d="M 0,0 L 455,0 L 455,632 A 48,48 0 0 0 503,680 L 707,680 A 48,48 0 0 0 755,632 L 755,0 L 1210,0 L 1210,632 A 48,48 0 0 0 1258,680 L 1462,680 A 48,48 0 0 0 1510,632 L 1510,0 L 1965,0 L 1965,661.36 A 45,45 0 0 1 1951.82,693.18 L 1658.18,986.82 A 45,45 0 0 1 1626.36,1000 L 1027.5,1000 A 45,45 0 0 1 982.5,955 L 982.5,750 L 661.17,991 A 45,45 0 0 1 634.17,1000 L 224,1000 A 224,224 0 0 1 0,776 Z M 2029,0 L 2484,0 L 2484,1000 L 2029,1000 Z M 2548,0 L 3003,0 L 3003,120.86 A 10,10 0 0 0 3020.07,127.93 L 3144.49,3.51 A 12,12 0 0 1 3152.97,0 L 3564,0 A 436,436 0 0 1 4000,436 A 436,436 0 0 1 3564,872 L 3078.97,872 A 12,12 0 0 1 3070.49,868.49 L 3020.07,818.07 A 10,10 0 0 0 3003,825.14 L 3003,1090 L 2548,1090 Z M 3003,298 L 3003,574 L 3563.4,574 A 96.6,96.6 0 0 0 3660,477.4 L 3660,394.6 A 96.6,96.6 0 0 0 3563.4,298 Z"/>
       <path fill="currentColor" d="M2649 1285 2704.31 1145H2729.82L2785.33 1285H2764.31L2750.63 1250.31H2682.47L2669 1285ZM2688.8 1233.78H2744.1L2727.16 1189.9Q2726.35 1187.45 2724.51 1182.55Q2722.67 1177.65 2720.73 1172.04Q2718.8 1166.43 2717.16 1161.73H2715.94Q2714.51 1165.82 2712.67 1171.12Q2710.84 1176.43 2709 1181.43Q2707.16 1186.43 2705.94 1189.9Z M2867.19 1285V1161.94H2819.23V1145H2934.94V1161.94H2886.57V1285Z M2985.17 1285V1145H3004.56V1205H3080.68V1145H3100.27V1285H3080.68V1221.94H3004.56V1285Z M3163.97 1285V1145H3183.35V1268.06H3252.95V1285Z M3301.95 1285V1145H3409.7V1161.73H3321.34V1205H3400.72V1221.73H3321.34V1268.27H3410.93V1285Z M3502.99 1285V1161.94H3455.03V1145H3570.75V1161.94H3522.38V1285Z M3620.97 1285V1145H3640.36V1285Z M3763.85 1287.45Q3731.61 1287.45 3714.26 1269.69Q3696.92 1251.94 3696.92 1215Q3696.92 1178.67 3714.57 1160.61Q3732.22 1142.55 3764.06 1142.55Q3782.02 1142.55 3795.9 1148.37Q3809.77 1154.18 3817.63 1165.92Q3825.49 1177.65 3825.49 1195.41H3805.9Q3805.9 1177.24 3794.47 1168.27Q3783.04 1159.29 3764.06 1159.29Q3741.81 1159.29 3729.47 1172.24Q3717.12 1185.2 3717.12 1213.37V1217.65Q3717.12 1245.61 3729.36 1258.16Q3741.61 1270.71 3764.06 1270.71Q3783.45 1270.71 3794.98 1261.84Q3806.51 1252.96 3806.51 1234.59H3825.49Q3825.49 1252.76 3817.53 1264.39Q3809.57 1276.02 3795.59 1281.73Q3781.61 1287.45 3763.85 1287.45Z M3932.65 1287.45Q3917.35 1287.45 3904.08 1283.37Q3890.82 1279.29 3882.55 1270Q3874.29 1260.71 3874.29 1245.41Q3874.29 1244.39 3874.39 1243.37Q3874.49 1242.35 3874.49 1241.33H3894.08Q3894.08 1242.14 3893.98 1243.37Q3893.88 1244.59 3893.88 1245.61Q3893.88 1258.06 3904.69 1264.39Q3915.51 1270.71 3932.04 1270.71Q3938.37 1270.71 3945 1269.8Q3951.63 1268.88 3957.35 1266.33Q3963.06 1263.78 3966.73 1259.39Q3970.41 1255 3970.41 1248.27Q3970.41 1240.51 3965.41 1235.51Q3960.41 1230.51 3952.14 1227.35Q3943.88 1224.18 3933.98 1221.73Q3924.08 1219.29 3914.18 1216.43Q3904.29 1213.57 3896.02 1209.18Q3887.76 1204.8 3882.76 1197.76Q3877.76 1190.71 3877.76 1179.9Q3877.76 1162.35 3892.04 1152.45Q3906.33 1142.55 3933.27 1142.55Q3947.96 1142.55 3959.9 1146.63Q3971.84 1150.71 3978.88 1159.49Q3985.92 1168.27 3985.92 1181.94V1184.39H3966.73V1181.33Q3966.73 1171.12 3957.45 1165.2Q3948.16 1159.29 3933.88 1159.29Q3915.31 1159.29 3906.33 1164.59Q3897.35 1169.9 3897.35 1178.27Q3897.35 1185.61 3902.45 1190.1Q3907.55 1194.59 3915.82 1197.55Q3924.08 1200.51 3933.88 1202.96Q3943.67 1205.41 3953.57 1208.37Q3963.47 1211.33 3971.73 1215.82Q3980 1220.31 3985 1227.45Q3990 1234.59 3990 1245.41Q3990 1260.31 3982.65 1269.59Q3975.31 1278.88 3962.35 1283.16Q3949.39 1287.45 3932.65 1287.45Z"/>
     </symbol>
+
+    <!-- ————— trame de fond des surfaces noires —————
+         Le wordmark master répété en quinconce, pas un signe unique posé dans
+         un coin : c'est la répétition qui rend le motif lisible à très faible
+         opacité. Un signe isolé au même dosage ne se lit pas — il salit.
+
+         Aucune inclinaison. La marque est industrielle (chanfreins à 45°,
+         Archivo, mono) : un motif droit se lit comme un marquage au pochoir
+         sur une caisse, là où une inclinaison virerait au tampon décoratif.
+
+         Le troisième `use`, à x négatif, complète la moitié de motif que la
+         tuile coupe à droite — sans lui, le quinconce se lirait comme une
+         rangée de wordmarks tronqués.                                      -->
+    <pattern id="sig-trame" width="320" height="190" patternUnits="userSpaceOnUse">
+      <use href="#sig-wordmark" x="0"    y="28"  width="190" height="51.8"/>
+      <use href="#sig-wordmark" x="160"  y="123" width="190" height="51.8"/>
+      <use href="#sig-wordmark" x="-160" y="123" width="190" height="51.8"/>
+    </pattern>
   </defs>
 </svg>
 
@@ -1370,6 +1672,7 @@ html, body { margin: 0; padding: 0; }
 
   <!-- ————— pourquoi ce nom ————— -->
   <section class="wip-nom">
+    <svg class="wip-trame" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#sig-trame)"/></svg>
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--magnesie)" aria-hidden="true"></span>
@@ -1507,24 +1810,82 @@ html, body { margin: 0; padding: 0; }
       <p class="wip-tsec-intro">Trois personnes, trois spécialités, la même façon de corriger : à voix basse, à côté de vous, jamais devant le groupe.</p>
     </div>
 
-    <div class="wip-equipe wip-rev">
-      <div>
-        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — plein pied dans le rig, lumière naturelle, 12-100 à 35 mm</span></div>
-        <h3>Sébastien</h3>
-        <p class="wip-mono" style="margin-top: 7px">Coach cross-training &amp; Hyrox — cofondateur</p>
-        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">Huit ans de pratique de l'entraînement fonctionnel en box affiliée, dont quatre à coacher des cours collectifs. Titulaire du CQP Instructeur Fitness. Spécialisé dans l'accueil des débutants et l'adaptation des mouvements.</p>
+    <!-- Un coach à la fois, en grand. Les trois vignettes restent visibles :
+         le visiteur voit qu'ils sont trois sans avoir à faire défiler.
+         Quand les portraits seront faits, glisser un <img> dans chaque
+         .wip-photo (et dans sa vignette) — le reste ne bouge pas. -->
+    <div class="wip-equipe wip-rev" data-coachs>
+
+      <div class="wip-equipe-scene">
+        <div class="wip-equipe-cadre">
+          <div class="wip-photo on" data-provisoire>
+            <img src="media/provisoire-coach-seb.jpg" width="900" height="1200" alt="" decoding="async">
+            <span><b>À photographier</b>Portrait — plein pied dans le rig, lumière naturelle, 12-100 à 35 mm</span>
+          </div>
+          <div class="wip-photo" data-provisoire>
+            <img src="media/provisoire-coach-simon.jpg" width="900" height="1200" alt="" loading="lazy" decoding="async">
+            <span><b>À photographier</b>Portrait — plateforme d'haltérophilie, contre-jour, 12-100 à 50 mm</span>
+          </div>
+          <div class="wip-photo" data-provisoire>
+            <img src="media/provisoire-coach-pole.jpg" width="900" height="1200" alt="" loading="lazy" decoding="async">
+            <span><b>À photographier</b>Portrait — studio pole ou tapis, lumière rasante du matin</span>
+          </div>
+        </div>
+
+        <div class="wip-equipe-vignettes">
+          <button type="button" data-provisoire aria-current="true" aria-label="Voir Sébastien, coach cross-training et Hyrox"><img src="media/provisoire-coach-seb.jpg" alt="" loading="lazy" decoding="async"><i aria-hidden="true">S</i><em aria-hidden="true">01</em></button>
+          <button type="button" data-provisoire aria-label="Voir Simon, coach cross-training et haltérophilie"><img src="media/provisoire-coach-simon.jpg" alt="" loading="lazy" decoding="async"><i aria-hidden="true">S</i><em aria-hidden="true">02</em></button>
+          <!-- plan large : le sujet est au milieu du cadre, pas au tiers haut -->
+          <button type="button" data-provisoire aria-label="Voir la coach pole dance et disciplines aériennes"><img src="media/provisoire-coach-pole.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 46%"><i aria-hidden="true">?</i><em aria-hidden="true">03</em></button>
+        </div>
       </div>
-      <div>
-        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — plateforme d'haltérophilie, contre-jour, 12-100 à 50 mm</span></div>
-        <h3>Simon</h3>
-        <p class="wip-mono" style="margin-top: 7px">Coach cross-training &amp; haltérophilie — cofondateur</p>
-        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">Dix ans d'entraînement fonctionnel, cinq ans de coaching en box, compétiteur régional. Suit la progression technique en haltérophilie et la préparation aux courses Hyrox.</p>
-      </div>
-      <div>
-        <div class="wip-photo" style="min-height: 320px"><span><b>À photographier</b>Portrait — studio pole ou tapis, lumière rasante du matin</span></div>
-        <h3>Prénom</h3>
-        <p class="wip-mono" style="margin-top: 7px">Coach pole dance &amp; disciplines aériennes</p>
-        <p style="margin-top: 13px; font-size: 15px; line-height: 1.62; color: var(--encre)">À compléter — certifications, années de pratique, spécialités. Mentionnez les formations reconnues, c'est ce que les futurs adhérents vérifient en premier.</p>
+
+      <div class="wip-equipe-fiches">
+        <p class="wip-mono wip-equipe-compteur">
+          <b data-compteur>01</b><span aria-hidden="true"></span>03 coachs
+        </p>
+
+        <div class="wip-equipe-piste" aria-live="polite">
+          <article class="wip-coach on">
+            <span class="wip-mono">Cofondateur</span>
+            <h3>Sébastien</h3>
+            <p class="wip-mono">Coach cross-training &amp; Hyrox</p>
+            <p>Huit ans de pratique de l'entraînement fonctionnel en box affiliée, dont quatre à coacher des cours collectifs. Titulaire du CQP Instructeur Fitness. Spécialisé dans l'accueil des débutants et l'adaptation des mouvements.</p>
+            <ul class="wip-coach-reperes">
+              <li>CQP Instructeur Fitness</li>
+              <li>8 ans de pratique</li>
+              <li>Accueil des débutants</li>
+            </ul>
+          </article>
+
+          <article class="wip-coach">
+            <span class="wip-mono">Cofondateur</span>
+            <h3>Simon</h3>
+            <p class="wip-mono">Coach cross-training &amp; haltérophilie</p>
+            <p>Dix ans d'entraînement fonctionnel, cinq ans de coaching en box, compétiteur régional. Suit la progression technique en haltérophilie et la préparation aux courses Hyrox.</p>
+            <ul class="wip-coach-reperes">
+              <li>10 ans de pratique</li>
+              <li>Compétiteur régional</li>
+              <li>Haltérophilie &amp; Hyrox</li>
+            </ul>
+          </article>
+
+          <article class="wip-coach">
+            <span class="wip-mono">Équipe</span>
+            <h3>Prénom <span class="wip-arenseigner">à renseigner</span></h3>
+            <p class="wip-mono">Coach pole dance &amp; disciplines aériennes</p>
+            <p>À compléter — certifications, années de pratique, spécialités. Mentionnez les formations reconnues, c'est ce que les futurs adhérents vérifient en premier.</p>
+          </article>
+        </div>
+
+        <div class="wip-equipe-nav">
+          <button type="button" data-sens="-1" aria-label="Coach précédent">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12 4.5 6.5 10 12 15.5M6.5 10H16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" data-sens="1" aria-label="Coach suivant">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M8 4.5 13.5 10 8 15.5M13.5 10H4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1701,6 +2062,7 @@ html, body { margin: 0; padding: 0; }
       </div>
 
       <div class="wip-appel wip-rev wip-coupe wip-coupe-l">
+        <svg class="wip-trame" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#sig-trame)"/></svg>
         <div>
           <span class="wip-mono">Réserver</span>
           <h3>Appelez-nous, on vous réserve une séance d'essai pour l'ouverture.</h3>
@@ -1724,13 +2086,61 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap wip-rev">
       <h2>Venez voir.<br>C'est tout ce qu'on demande.</h2>
       <p>La salle ouvre le samedi 31 octobre 2026, et votre séance d'essai se réserve dès maintenant — rien à payer, on vous rappelle avant. 45 minutes, offertes, sans engagement. Le pire qui puisse arriver, c'est que vous repartiez en ayant visité une belle salle.</p>
-      <a href="#reserver" class="wip-cta" style="padding: 17px 30px; font-size: 15px">Réserver ma séance d'essai<i aria-hidden="true">→</i></a>
-      <p class="wip-mono" style="margin-top: 24px">Ou écrivez-nous — on répond nous-mêmes</p>
+      <div class="wip-inscription" id="wip-inscription">
+        <form id="wip-form" novalidate>
+          <div class="wip-rangee">
+            <label class="wip-champ" for="wip-prenom">
+              <span>Prénom <em>*</em></span>
+              <input type="text" id="wip-prenom" name="prenom" autocomplete="given-name" required>
+              <b>Indiquez votre prénom.</b>
+            </label>
+            <label class="wip-champ" for="wip-tel">
+              <span>Téléphone <em>*</em></span>
+              <input type="tel" id="wip-tel" name="tel" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" required>
+              <b>Un numéro à 10 chiffres.</b>
+            </label>
+          </div>
+
+          <label class="wip-champ" for="wip-email">
+            <span>E-mail <em>*</em></span>
+            <input type="email" id="wip-email" name="email" autocomplete="email" inputmode="email" placeholder="prenom@exemple.fr" required>
+            <b>Cette adresse ne semble pas valide.</b>
+          </label>
+
+          <!-- Facultatif : sert à orienter le rappel, pas à filtrer les gens.
+               Un visiteur qui ne coche rien reste un contact complet. -->
+          <div class="wip-champ" role="group" aria-labelledby="wip-lbl-interet">
+            <span id="wip-lbl-interet">Ce qui vous attire <em>(facultatif)</em></span>
+            <div class="wip-puces">
+              <label><input type="radio" name="interet" value="Cross-training"><span>Cross-training</span></label>
+              <label><input type="radio" name="interet" value="Hyrox"><span>Hyrox</span></label>
+              <label><input type="radio" name="interet" value="Pole dance"><span>Pole dance</span></label>
+              <label><input type="radio" name="interet" value="Open gym"><span>Open gym</span></label>
+              <label><input type="radio" name="interet" value="Je ne sais pas encore"><span>Je ne sais pas encore</span></label>
+            </div>
+          </div>
+
+          <label class="wip-accord" id="wip-accord" for="wip-accord-case">
+            <input type="checkbox" id="wip-accord-case" name="accord" required>
+            <span>J'accepte d'être recontacté par WIP Athletics au sujet de ma séance d'essai et de l'ouverture.</span>
+          </label>
+
+          <button type="submit" class="wip-cta">Réserver ma séance d'essai<i aria-hidden="true">→</i></button>
+
+          <p class="wip-mentions" id="wip-etat" aria-live="polite">Vos coordonnées servent uniquement à vous rappeler pour cette séance et à vous prévenir de l'ouverture. Elles ne sont ni vendues ni transmises. Pour les faire supprimer, écrivez à <a href="mailto:bonjour@wipathletics.fr" style="text-decoration: underline">bonjour@wipathletics.fr</a>.</p>
+        </form>
+
+        <div class="wip-merci" id="wip-merci" role="status">
+          <h3>C'est noté.</h3>
+          <p>On vous rappelle sous 48 h pour caler votre créneau. Si vous êtes pressé, écrivez-nous directement à <a href="mailto:bonjour@wipathletics.fr" style="text-decoration: underline">bonjour@wipathletics.fr</a> — on répond nous-mêmes.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ————— pied ————— -->
   <footer class="wip-pied">
+    <svg class="wip-trame" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#sig-trame)"/></svg>
     <div class="wip-wrap">
       <div class="wip-pied-grid">
         <div>
@@ -1895,13 +2305,225 @@ html, body { margin: 0; padding: 0; }
     Array.prototype.forEach.call(aReveler, function (el) { el.classList.add('vu'); });
   }
 
+  /* ————— équipe : un coach à la fois —————
+     Le portrait défile verticalement (le sortant monte, l'entrant arrive par
+     le bas), la fiche prend le relais latéralement. Les transformations sont
+     posées en ligne et non par classe : la vue entrante doit d'abord être
+     replacée hors champ SANS transition, sinon on la voit traverser le cadre
+     avant de commencer son mouvement. Pas de défilement automatique.
+     En « mouvement réduit », les transitions sont coupées par le média-query
+     de la feuille : la bascule reste correcte, simplement instantanée. */
+  var equipe = document.querySelector('[data-coachs]');
+  if (equipe) {
+    var vues      = equipe.querySelectorAll('.wip-equipe-cadre .wip-photo');
+    var fiches    = equipe.querySelectorAll('.wip-coach');
+    var vignettes = equipe.querySelectorAll('.wip-equipe-vignettes button');
+    var compteur  = equipe.querySelector('[data-compteur]');
+    var courant   = 0;
+
+    /* replace l'élément hors champ sans transition, puis rend la main */
+    function armer(el, depart) {
+      el.style.transition = 'none';
+      el.style.transform  = depart;
+      void el.offsetHeight;          /* force le recalcul : sans lui, les deux
+                                        écritures sont fusionnées en une seule */
+      el.style.transition = '';
+    }
+
+    function montrer(cible, sens) {
+      if (cible === courant || cible < 0 || cible >= vues.length) return;
+
+      var sortante = vues[courant], entrante = vues[cible];
+      armer(entrante, 'translateY(' + (sens > 0 ? '100%' : '-100%') + ')');
+      entrante.style.zIndex = '2';
+      entrante.style.transform = 'translateY(0)';
+      sortante.style.zIndex = '1';
+      sortante.style.transform = 'translateY(' + (sens > 0 ? '-100%' : '100%') + ')';
+      sortante.classList.remove('on');
+      entrante.classList.add('on');
+
+      var fSort = fiches[courant], fEnt = fiches[cible];
+      armer(fEnt, 'translateX(' + (sens > 0 ? '26px' : '-26px') + ')');
+      fEnt.classList.add('on');
+      fEnt.style.transform = 'none';
+      fSort.classList.remove('on');
+      fSort.style.transform = 'translateX(' + (sens > 0 ? '-18px' : '18px') + ')';
+
+      Array.prototype.forEach.call(vignettes, function (v, i) {
+        if (i === cible) { v.setAttribute('aria-current', 'true'); }
+        else { v.removeAttribute('aria-current'); }
+      });
+      if (compteur) compteur.textContent = ('0' + (cible + 1)).slice(-2);
+
+      courant = cible;
+    }
+
+    function decaler(sens) {
+      montrer((courant + sens + vues.length) % vues.length, sens);
+    }
+
+    Array.prototype.forEach.call(equipe.querySelectorAll('[data-sens]'), function (b) {
+      b.addEventListener('click', function () { decaler(Number(b.getAttribute('data-sens'))); });
+    });
+
+    Array.prototype.forEach.call(vignettes, function (v, i) {
+      v.addEventListener('click', function () { montrer(i, i > courant ? 1 : -1); });
+    });
+
+    equipe.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { decaler(1); }
+      else if (e.key === 'ArrowLeft') { decaler(-1); }
+      else { return; }
+      e.preventDefault();
+    });
+
+    /* Glissé tactile, horizontal seulement : intercepter le geste vertical
+       reviendrait à confisquer le défilement de la page. */
+    var cadre = equipe.querySelector('.wip-equipe-cadre');
+    if (cadre && window.PointerEvent) {
+      var x0 = null, y0 = null;
+      cadre.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse') return;
+        x0 = e.clientX; y0 = e.clientY;
+      });
+      cadre.addEventListener('pointerup', function (e) {
+        if (x0 === null) return;
+        var dx = e.clientX - x0, dy = e.clientY - y0;
+        x0 = null;
+        if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) decaler(dx < 0 ? 1 : -1);
+      });
+      cadre.addEventListener('pointercancel', function () { x0 = null; });
+    }
+  }
+
+  /* —————————————————————————————————————————————————————————————
+     PRÉ-INSCRIPTION — envoi vers un formulaire Google, sans iframe
+
+     À BRANCHER EN 5 MINUTES (une seule fois) :
+     1. Créer un formulaire sur forms.google.com avec quatre questions
+        « réponse courte » dans cet ordre : Prénom, Téléphone, E-mail,
+        Ce qui vous attire. Aucune n'a besoin d'être obligatoire côté
+        Google : la validation se fait ici.
+     2. Ouvrir l'aperçu du formulaire (l'œil), faire clic droit →
+        « Inspecter » sur chaque champ et relever son name="entry.XXXXXXX".
+        (Variante sans inspecteur : menu ⋮ → « Obtenir le lien de
+        pré-remplissage », remplir n'importe quoi, copier le lien obtenu :
+        les entry.XXXXXXX y sont tous listés.)
+     3. Reporter ci-dessous l'URL d'envoi et les quatre identifiants.
+        L'URL est celle du formulaire avec /viewform remplacé par
+        /formResponse.
+     4. Dans l'onglet « Réponses », cliquer sur l'icône Sheets : les
+        contacts tombent dans un tableur, exportable en CSV.
+
+     Tant que FORM_GOOGLE est vide, le formulaire refuse d'envoyer et
+     renvoie le visiteur vers l'e-mail : on ne lui affiche jamais une
+     confirmation pour un message qui n'est parti nulle part. */
+  var FORM_GOOGLE = '';
+  var CHAMPS = {
+    prenom:  'entry.0000000',
+    tel:     'entry.0000000',
+    email:   'entry.0000000',
+    interet: 'entry.0000000'
+  };
+
+  var formulaire = document.getElementById('wip-form');
+  if (formulaire) {
+    var bloc    = document.getElementById('wip-inscription');
+    var merci   = document.getElementById('wip-merci');
+    var etat    = document.getElementById('wip-etat');
+    var accord  = document.getElementById('wip-accord');
+    var etatInitial = etat.innerHTML;
+
+    function champDe(id) { return document.getElementById(id).closest('.wip-champ'); }
+    function marquer(el, faux) { el.classList.toggle('wip-err', faux); return !faux; }
+
+    /* Les espaces, points et tirets sont légitimes quand on tape un numéro :
+       on les retire avant de vérifier plutôt que de refuser la saisie. */
+    function telValide(v) { return /^(?:\+33|0)\d{9}$/.test(v.replace(/[\s.\-()]/g, '')); }
+    function mailValide(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
+    /* l'erreur disparaît dès que la personne corrige, pas au prochain envoi */
+    Array.prototype.forEach.call(formulaire.querySelectorAll('input'), function (i) {
+      i.addEventListener('input', function () {
+        var parent = i.closest('.wip-champ') || i.closest('.wip-accord');
+        if (parent) parent.classList.remove('wip-err');
+      });
+    });
+
+    formulaire.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var prenom = document.getElementById('wip-prenom');
+      var tel    = document.getElementById('wip-tel');
+      var email  = document.getElementById('wip-email');
+      var case_  = document.getElementById('wip-accord-case');
+      var interet = formulaire.querySelector('input[name="interet"]:checked');
+
+      var ok = marquer(champDe('wip-prenom'), prenom.value.trim().length < 2);
+      ok = marquer(champDe('wip-tel'), !telValide(tel.value)) && ok;
+      ok = marquer(champDe('wip-email'), !mailValide(email.value.trim())) && ok;
+      ok = marquer(accord, !case_.checked) && ok;
+
+      if (!ok) {
+        var premier = formulaire.querySelector('.wip-err input');
+        if (premier) premier.focus();
+        return;
+      }
+
+      if (!FORM_GOOGLE) {
+        etat.innerHTML = 'Le formulaire n\'est pas encore raccordé. Écrivez-nous à <a href="mailto:bonjour@wipathletics.fr" style="text-decoration: underline">bonjour@wipathletics.fr</a>, on vous rappelle.';
+        etat.style.color = 'var(--d25)';
+        return;
+      }
+
+      var bouton = formulaire.querySelector('button[type="submit"]');
+      bouton.disabled = true;
+      bouton.firstChild.nodeValue = 'Envoi…';
+
+      var donnees = new URLSearchParams();
+      donnees.append(CHAMPS.prenom, prenom.value.trim());
+      donnees.append(CHAMPS.tel, tel.value.trim());
+      donnees.append(CHAMPS.email, email.value.trim());
+      donnees.append(CHAMPS.interet, interet ? interet.value : 'Non précisé');
+
+      /* Google ne renvoie pas d'en-tête CORS : la réponse est opaque et
+         illisible, mais la requête part bien. Seule une exception réseau
+         signale un vrai échec — c'est elle qu'on rattrape. */
+      fetch(FORM_GOOGLE, { method: 'POST', mode: 'no-cors', body: donnees })
+        .then(function () {
+          bloc.classList.add('wip-envoye');
+          merci.classList.add('vu-envoye');
+          merci.setAttribute('tabindex', '-1');
+          merci.focus();
+        })
+        .catch(function () {
+          bouton.disabled = false;
+          bouton.firstChild.nodeValue = 'Réserver ma séance d\'essai';
+          etat.innerHTML = 'L\'envoi a échoué. Réessayez, ou écrivez-nous à <a href="mailto:bonjour@wipathletics.fr" style="text-decoration: underline">bonjour@wipathletics.fr</a>.';
+          etat.style.color = 'var(--d25)';
+        });
+    });
+
+    /* si la personne repart d'un envoi échoué, on rend les mentions d'origine */
+    formulaire.addEventListener('input', function () {
+      if (etat.style.color) { etat.innerHTML = etatInitial; etat.style.color = ''; }
+    });
+  }
+
   /* —————————————————————————————————————————————————————————————
      Fond vidéo du hero.
 
-     Le `src` n'est posé qu'ici, et seulement si l'écran est large ET que
-     l'utilisateur n'a pas demandé des animations réduites : sur mobile le
-     fichier n'est jamais téléchargé, ce qui évite de brûler le forfait data
-     d'un visiteur pour une texture décorative.
+     Le `src` n'est posé qu'ici, jamais dans le HTML : tant que la décision
+     n'est pas prise, le fichier n'est pas téléchargé.
+
+     CRITÈRE : la connexion, pas la largeur d'écran. La version précédente
+     coupait la vidéo sous 861 px, ce qui privait de fond tous les visiteurs
+     mobiles — y compris ceux en Wi-Fi, qui avalent les 14 Mo sans sourciller.
+     La largeur d'écran était un mauvais indicateur : ce qui coûte cher au
+     visiteur, ce n'est pas la taille de son écran, c'est son forfait. On
+     interroge donc la connexion elle-même. Quand le navigateur ne l'expose
+     pas (Safari, Firefox), on laisse passer : refuser par défaut priverait
+     de vidéo la moitié des visiteurs sans aucune raison.
 
      Le bouton de pause n'apparaît que si la vidéo tourne vraiment (WCAG
      2.2.2). Si la lecture automatique est refusée par le navigateur, on
@@ -1911,12 +2533,19 @@ html, body { margin: 0; padding: 0; }
   var boutonPause = document.querySelector('.wip-hero-pause');
 
   if (video && boutonPause) {
-    var assezLarge = window.matchMedia('(min-width: 861px)').matches;
     var animCalme = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Économiseur de données activé, ou connexion 3G et en dessous : on
+       s'abstient. 14 Mo sur une 3G de campagne, c'est plus d'une minute
+       d'attente pour une texture décorative — et l'Amboisie n'est pas
+       couverte en fibre partout. */
+    var co = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var reseauMenage = !!(co && (co.saveData === true ||
+        /^(slow-2g|2g|3g)$/.test(co.effectiveType || '')));
 
     var arretVoulu = false; /* l'utilisateur a explicitement demandé la pause */
 
-    if (assezLarge && !animCalme) {
+    if (!animCalme && !reseauMenage) {
       video.src = video.getAttribute('data-src');
       var lecture = video.play();
       if (lecture && lecture.then) {
@@ -1924,7 +2553,7 @@ html, body { margin: 0; padding: 0; }
           boutonPause.removeAttribute('hidden');
           boutonPause.classList.add('actif');
 
-          /* Arrêter le travail hors écran. Décoder 66 s de vidéo pour un hero
+          /* Arrêter le travail hors écran. Décoder la vidéo pour un hero
              qu'on ne regarde plus, c'est du processeur et de la batterie
              brûlés pour rien — et sur un portable, ça s'entend. On ne relance
              que si la pause ne vient pas d'une décision de l'utilisateur. */
