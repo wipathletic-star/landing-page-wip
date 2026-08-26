@@ -557,8 +557,37 @@ html, body { margin: 0; padding: 0; }
 
 /* ———————————————————————————————— espaces ———————————————————————————————— */
 .wip-espaces { border-top: 2px solid var(--fonte); }
-.wip-espace { border-bottom: 1px solid var(--trait); }
+.wip-espace { border-bottom: 1px solid var(--trait); position: relative; overflow: hidden; }
 .wip-espace.on { background: var(--papier); }
+
+/* ——— la pratique en filigrane derrière l'espace ouvert — 26/08/2026 ———
+   Demande du user : la photo en fond plutôt qu'en cadre. Bénéfice qui
+   tombe bien : à 17 % d'opacité, une image n'affirme plus « voici notre
+   salle ». Avec des visuels encore provisoires, c'est exactement le
+   niveau de promesse qu'on peut tenir avant le shooting.
+
+   Un seul espace est ouvert à la fois : une seule photo se montre, et
+   elle arrive en fondu avec le dépliage. Le masque en dégradé laisse la
+   colonne de texte quasi nette — le contraste du corps de texte ne doit
+   jamais dépendre de l'image qui passe derrière. */
+.wip-espace-tete, .wip-espace-corps { position: relative; z-index: 1; }
+.wip-espace-fond {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+  opacity: 0; transition: opacity .6s ease;
+  filter: grayscale(.72) contrast(1.06);
+  /* L'image vit dans la bande centrale — celle qui était vide — et s'éteint
+     sous les deux colonnes de texte. Ce n'est pas qu'une précaution de goût :
+     les libellés de la fiche technique sont en mono 10 px sur béton foncé, et
+     ils tombaient à 2,6:1 quand un disque noir passait dessous. Un filigrane
+     ne doit jamais décider du contraste d'un texte. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.10) 18%, #000 44%, #000 66%, rgba(0,0,0,.06) 84%, transparent 93%);
+          mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.10) 18%, #000 44%, #000 66%, rgba(0,0,0,.06) 84%, transparent 93%);
+}
+/* 0,17 ne laissait lire qu'une texture grise : le fond ne racontait plus rien.
+   0,30 avec la désaturation poussée à 72 % rend la pratique reconnaissable
+   tout en restant très en dessous du corps de texte. */
+.wip-espace.on .wip-espace-fond { opacity: .3; }
 .wip-espace-tete {
   width: 100%; display: grid; grid-template-columns: 52px 1fr auto 34px;
   gap: 20px; align-items: center; padding: 24px 0; text-align: left;
@@ -601,12 +630,29 @@ html, body { margin: 0; padding: 0; }
 }
 .wip-espace-corps.on { grid-template-rows: 1fr; }
 .wip-espace-corps > div { overflow: hidden; min-height: 0; }
+/* La colonne de droite portait le cadre photo ; elle accueille désormais la
+   fiche technique, qui y respire mieux qu'empilée sous le texte. */
 .wip-espace-in {
-  display: grid; grid-template-columns: 52px 1fr .92fr; gap: 28px;
+  display: grid; grid-template-columns: 52px 1fr minmax(190px, .5fr); gap: 28px 34px;
   padding: 4px 14px 36px; align-items: start;
 }
 .wip-espace-texte { display: flex; flex-direction: column; gap: 26px; }
 .wip-espace-in p { color: var(--encre); font-size: 16px; line-height: 1.62; max-width: 430px; }
+
+/* Le brief de prise de vue survit à la disparition du cadre : c'est un outil
+   de production, et c'est le seul endroit où le visuel provisoire se signale
+   encore. Le badge bleu s'efface avec les images (voir bloc PROVISOIRES). */
+.wip-espace-in .wip-espace-note {
+  font-family: var(--mono); font-size: 9px; font-weight: 400;
+  letter-spacing: .07em; text-transform: uppercase; line-height: 1.8;
+  color: var(--beton-f); max-width: 52ch;
+  border-top: 1px solid var(--trait); padding-top: 15px;
+}
+.wip-espace-note b {
+  display: inline-block; background: var(--bleu); color: #fff;
+  font-size: 8px; font-weight: 500; letter-spacing: .11em;
+  padding: 4px 8px; margin-right: 9px; vertical-align: .12em;
+}
 .wip-fiche { display: flex; flex-direction: column; gap: 10px; align-self: start; }
 .wip-fiche div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--trait); padding-bottom: 8px; }
 .wip-fiche span:last-child { font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--fonte); }
@@ -616,6 +662,14 @@ html, body { margin: 0; padding: 0; }
   .wip-disque { width: 38px; height: 38px; border-width: 3px; font-size: 8px; }
   .wip-espace-in { grid-template-columns: 1fr; gap: 24px; padding: 4px 0 28px; }
   .wip-espace-in > span:first-child { display: none; }
+  /* En une seule colonne, un masque horizontal ne protège plus rien : le texte
+     occupe toute la largeur. Le filigrane bascule donc à la verticale — présent
+     derrière le titre, qui est assez gros pour l'encaisser, éteint dès que le
+     corps de texte commence. */
+  .wip-espace-fond {
+    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 26%, rgba(0,0,0,.07) 58%, transparent 76%);
+            mask-image: linear-gradient(180deg, #000 0, #000 26%, rgba(0,0,0,.07) 58%, transparent 76%);
+  }
 }
 
 /* ———————————————————— section sombre : pourquoi ce nom ———————————————————— */
@@ -748,13 +802,15 @@ html, body { margin: 0; padding: 0; }
 }
 .wip-photo:not(:has(img)) span b { color: var(--fonte); }
 
-/* ═══ VISUELS PROVISOIRES — sections 03 et 05 ═══
+/* ═══ VISUELS PROVISOIRES — sections 01 et 05 ═══
    Décision du 25/08/2026 : dérogation assumée aux §5ter et §6 du brand book
    (« interdit : photo de banque d'images ») pour la seule phase de maquette.
-   Les quatre images de la section 03 montrent la salle de quelqu'un d'autre
+   Les quatre images de la section 01 montrent la salle de quelqu'un d'autre
    sous VOS chiffres (420 m², 6 barres, 4,20 m). Elles DOIVENT partir avant la
    mise en ligne — d'où le marquage visible, le préfixe « provisoire- » sur les
    fichiers et le relevé de sources dans media/CREDITS.md.
+   (Ces quatre-là sont passées en filigrane de fond le 26/08/2026 ; elles
+   affirment donc beaucoup moins qu'en cadre, mais elles restent fausses.)
 
    26/08/2026 — trois portraits provisoires ajoutés aux fiches coachs (05).
    ⚠ CEUX-LÀ SONT PLUS EXPOSÉS QUE LES QUATRE AUTRES : ce sont des personnes
@@ -763,12 +819,14 @@ html, body { margin: 0; padding: 0; }
    uniquement, à remplacer par le shooting.
 
    ┌─ POUR TOUT RETIRER D'UN COUP ───────────────────────────────────┐
-   │  décommenter les deux lignes ci-dessous : les sept cadres        │
-   │  redeviennent des emplacements portant leur brief de shooting,   │
-   │  et les vignettes de l'équipe reprennent leurs initiales.        │
+   │  décommenter les trois lignes ci-dessous : les fonds et les      │
+   │  portraits disparaissent, les briefs de shooting restent, les    │
+   │  vignettes de l'équipe reprennent leurs initiales et le badge    │
+   │  bleu « visuel provisoire » s'efface avec ce qu'il signalait.    │
    └─────────────────────────────────────────────────────────────────┘
    [data-provisoire] img { display: none !important; }
    .wip-equipe-vignettes button i { display: block !important; }
+   .wip-espace-note b { display: none !important; }
 */
 .wip-photo[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
 .wip-photo[data-provisoire]::after {
@@ -1353,6 +1411,9 @@ html, body { margin: 0; padding: 0; }
   .wip-rev, .wip-tsec-oeil, .wip-tsec-intro { opacity: 1; transform: none; }
   .wip-tsec h2 .m > i { transform: none; }
   .wip-espace-corps { grid-template-rows: 1fr; }
+  /* les quatre espaces sont dépliés d'office : leurs quatre fonds doivent
+     l'être aussi, sinon seul le premier est illustré */
+  .wip-espace-fond { opacity: .3; }
   .wip-croix { display: none; }
 
   /* Équipe : le carrousel a besoin de JavaScript pour désigner qui est à
@@ -1549,7 +1610,12 @@ html, body { margin: 0; padding: 0; }
 
     <div class="wip-espaces wip-rev">
 
-      <div class="wip-espace on" data-espace>
+      <div class="wip-espace on" data-espace data-provisoire>
+        <!-- Le bandeau est très panoramique : `cover` n'en garde qu'une bande.
+             Chaque fond est donc calé sur ce qui identifie la pratique — ici
+             les barres au sol, dans le tiers bas d'une image en portrait, et
+             non le mur qui occupe tout le haut. -->
+        <img class="wip-espace-fond" src="media/provisoire-cf.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 82%">
         <button class="wip-espace-tete" aria-expanded="true" aria-controls="espace-cf">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d25); color: var(--d25)">25</span>
           <span class="wip-espace-nom">Cross-training &amp; Hyrox</span>
@@ -1562,23 +1628,21 @@ html, body { margin: 0; padding: 0; }
               <span></span>
               <div class="wip-espace-texte">
                 <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence.</p>
-                <div class="wip-fiche">
-                  <div><span class="wip-mono">Surface</span><span>420 m²</span></div>
-                  <div><span class="wip-mono">Groupe</span><span>12 max</span></div>
-                  <div><span class="wip-mono">Durée</span><span>60 min</span></div>
-                  <div><span class="wip-mono">Créneaux</span><span>6h30 → 21h</span></div>
-                </div>
+                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</p>
               </div>
-              <div class="wip-photo" data-provisoire style="min-height: 290px">
-                <img src="media/provisoire-cf.jpg" width="1200" height="1800" alt="" loading="lazy" decoding="async">
-                <span><b>À photographier</b>Le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</span>
+              <div class="wip-fiche">
+                <div><span class="wip-mono">Surface</span><span>420 m²</span></div>
+                <div><span class="wip-mono">Groupe</span><span>12 max</span></div>
+                <div><span class="wip-mono">Durée</span><span>60 min</span></div>
+                <div><span class="wip-mono">Créneaux</span><span>6h30 → 21h</span></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="wip-espace" data-espace>
+      <div class="wip-espace" data-espace data-provisoire>
+        <img class="wip-espace-fond" src="media/provisoire-pole.jpg" alt="" loading="lazy" decoding="async">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-pole">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d15); color: var(--d15)">15</span>
           <span class="wip-espace-nom">Studio Pole Dance </span>
@@ -1591,23 +1655,21 @@ html, body { margin: 0; padding: 0; }
               <span></span>
               <div class="wip-espace-texte">
                 <p>Un studio dédié, pas un coin de salle. Six barres, 4,20 m sous plafond, sol amortissant et rideaux occultants — parce que la première séance, on n'a pas envie d'être vue depuis le parking.</p>
-                <div class="wip-fiche">
-                  <div><span class="wip-mono">Surface</span><span>80 m²</span></div>
-                  <div><span class="wip-mono">Barres</span><span>6</span></div>
-                  <div><span class="wip-mono">Hauteur</span><span>4,20 m</span></div>
-                  <div><span class="wip-mono">Durée</span><span>75 min</span></div>
-                </div>
+                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : studio pole, rideaux tirés, contre-jour. Le chrome de la barre, pas le visage. Ni rose, ni sourire posé face caméra</p>
               </div>
-              <div class="wip-photo" data-provisoire style="min-height: 290px">
-                <img src="media/provisoire-pole.jpg" width="1200" height="800" alt="" loading="lazy" decoding="async">
-                <span><b>À photographier</b>Studio pole, rideaux tirés, contre-jour. Le chrome de la barre, pas le visage. Ni rose, ni sourire posé face caméra</span>
+              <div class="wip-fiche">
+                <div><span class="wip-mono">Surface</span><span>80 m²</span></div>
+                <div><span class="wip-mono">Barres</span><span>6</span></div>
+                <div><span class="wip-mono">Hauteur</span><span>4,20 m</span></div>
+                <div><span class="wip-mono">Durée</span><span>75 min</span></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="wip-espace" data-espace>
+      <div class="wip-espace" data-espace data-provisoire>
+        <img class="wip-espace-fond" src="media/provisoire-open.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 72%">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-open">
           <span class="wip-disque" style="background: var(--magnesie); border-color: var(--d2); color: var(--fonte)">2.5</span>
           <span class="wip-espace-nom">Open Gym</span>
@@ -1620,23 +1682,21 @@ html, body { margin: 0; padding: 0; }
               <span></span>
               <div class="wip-espace-texte">
                 <p>Rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, vous faites ce que vous voulez. Un coach est toujours dans la salle si vous avez une question — il ne viendra pas vous corriger sans qu'on lui demande.</p>
-                <div class="wip-fiche">
-                  <div><span class="wip-mono">Surface</span><span>70 m²</span></div>
-                  <div><span class="wip-mono">Accès</span><span>Horaire d'ouverture</span></div>
-                  <div><span class="wip-mono">Racks</span><span>6</span></div>
-                  <div><span class="wip-mono">Plateforme</span><span>1</span></div>
-                </div>
+                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : plateforme d'haltérophilie, cadrage serré sur les mains et la magnésie. La troisième tentative, pas le record</p>
               </div>
-              <div class="wip-photo" data-provisoire style="min-height: 290px">
-                <img src="media/provisoire-open.jpg" width="1200" height="797" alt="" loading="lazy" decoding="async">
-                <span><b>À photographier</b>Plateforme d'haltérophilie, cadrage serré sur les mains et la magnésie. La troisième tentative, pas le record</span>
+              <div class="wip-fiche">
+                <div><span class="wip-mono">Surface</span><span>70 m²</span></div>
+                <div><span class="wip-mono">Accès</span><span>Horaire d'ouverture</span></div>
+                <div><span class="wip-mono">Racks</span><span>6</span></div>
+                <div><span class="wip-mono">Plateforme</span><span>1</span></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="wip-espace" data-espace>
+      <div class="wip-espace" data-espace data-provisoire>
+        <img class="wip-espace-fond" src="media/provisoire-chill.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 66%">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-chill">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d5); color: var(--d5)">5</span>
           <span class="wip-espace-nom">Zone Chill</span>
@@ -1649,16 +1709,13 @@ html, body { margin: 0; padding: 0; }
               <span></span>
               <div class="wip-espace-texte">
                 <p>Canapés, café, grande table. C'est ici que les gens restent vingt minutes après la séance et que la salle devient autre chose qu'une salle. On l'a dessiné en premier, avant les racks.</p>
-                <div class="wip-fiche">
-                  <div><span class="wip-mono">Surface</span><span>60 m²</span></div>
-                  <div><span class="wip-mono">Places assises</span><span>24</span></div>
-                  <div><span class="wip-mono">Café</span><span>torréfié à Tours</span></div>
-                  <div><span class="wip-mono">Wifi</span><span>oui</span></div>
-                </div>
+                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : la Zone Chill vingt minutes après la séance. Plusieurs personnes, lumière du jour, personne ne pose</p>
               </div>
-              <div class="wip-photo" data-provisoire style="min-height: 290px">
-                <img src="media/provisoire-chill.jpg" width="1200" height="800" alt="" loading="lazy" decoding="async">
-                <span><b>À photographier</b>La Zone Chill vingt minutes après la séance. Plusieurs personnes, lumière du jour, personne ne pose</span>
+              <div class="wip-fiche">
+                <div><span class="wip-mono">Surface</span><span>60 m²</span></div>
+                <div><span class="wip-mono">Places assises</span><span>24</span></div>
+                <div><span class="wip-mono">Café</span><span>torréfié à Tours</span></div>
+                <div><span class="wip-mono">Wifi</span><span>oui</span></div>
               </div>
             </div>
           </div>
