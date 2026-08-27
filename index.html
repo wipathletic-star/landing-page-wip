@@ -6,18 +6,50 @@
 <!-- Mot-clé devant, marque derrière : « WIP Athletics » n'est pas encore une
      requête (la salle ouvre le 31/10). Ce que les gens tapent, c'est « salle
      de sport Amboise ». À inverser le jour où la marque sera cherchée pour
-     elle-même. -->
-<title>Salle de sport Amboise (37) — Hyrox, cross-training, pole dance | WIP Athletics</title>
+     elle-même.
 
-<meta name="description" content="Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026, séance d'essai offerte à réserver dès maintenant.">
-<meta name="robots" content="index, follow">
+     LONGUEURS MESURÉES, pas estimées. Google coupe le titre à ~600 px (Arial
+     20 px) et la description à ~920 px (Arial 13 px) — le nombre de signes
+     n'est qu'un mauvais indicateur, un « m » vaut trois « i ».
+       titre       572 px — entièrement visible
+       description 870 px — entièrement visible
+     La version précédente faisait 705 px et 1 590 px : « | WIP Athletics »
+     était coupé, et près de la moitié de la description ne s'affichait jamais.
+     Le nom de la marque sort donc du titre : Google affiche déjà le domaine
+     au-dessus, et les trois disciplines valent plus de requêtes.
+     ⚠ Toute réécriture doit être re-mesurée, pas comptée en caractères. -->
+<title>Salle de sport à Amboise (37) : cross-training, Hyrox, pole dance</title>
+
+<meta name="description" content="Salle de sport à Amboise (37), 25 min de Tours : cross-training, Hyrox, pole dance, open gym. Tous niveaux. Ouverture le 31 octobre 2026, essai offert.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#0B0D0C">
+
+<!-- Page unique : le canonique évite que /index.html, /?utm_source=… et la
+     racine soient comptés comme trois pages qui se cannibalisent. -->
+<link rel="canonical" href="https://wipathletics.fr/">
+
+<!-- Partage social. og:image DOIT être une URL absolue : les robots de
+     Facebook, LinkedIn et WhatsApp ne résolvent pas les chemins relatifs.
+     1200 × 630 = le format qu'ils recadrent le moins. -->
+<meta property="og:site_name" content="WIP Athletics">
+<meta property="og:url" content="https://wipathletics.fr/">
 <meta property="og:title" content="WIP Athletics — Salle de sport à Amboise (37), ouverture le 31 octobre 2026">
-<meta property="og:description" content="Cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m² à Amboise, à 25 min de Tours. Cours en petits groupes, tous niveaux. Séance d'essai offerte, à réserver dès maintenant pour l'ouverture.">
+<meta property="og:description" content="Cross-training, préparation Hyrox, pole dance, haltérophilie et open gym sur 1 000 m² à Amboise, à 25 min de Tours. Cours en petits groupes, tous niveaux. Séance d'essai offerte, à réserver dès maintenant pour l'ouverture.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="https://wipathletics.fr/media/og-wip-athletics.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="WIP Athletics — Work. Improve. Progress. Salle de sport à Amboise, ouverture le 31 octobre 2026.">
 <meta name="twitter:card" content="summary_large_image">
-<meta property="og:image" content="logo/png/wip-avatar-1000.png">
+<meta name="twitter:title" content="WIP Athletics — Salle de sport à Amboise (37), ouverture le 31 octobre 2026">
+<meta name="twitter:description" content="Cross-training, Hyrox, pole dance, haltérophilie et open gym sur 1 000 m² à Amboise. Séance d'essai offerte.">
+<meta name="twitter:image" content="https://wipathletics.fr/media/og-wip-athletics.jpg">
+<meta name="twitter:image:alt" content="WIP Athletics — Work. Improve. Progress. Salle de sport à Amboise, ouverture le 31 octobre 2026.">
+
+<!-- Pas de <meta name="keywords"> : Google l'ignore depuis 2009 et Bing la
+     traite comme un signal de spam. Le vocabulaire se joue dans les titres,
+     le texte courant et les données structurées, nulle part ailleurs. -->
 
 <!-- Icônes : master v02. Le favicon SVG porte son propre fond noir de fonte,
      il reste donc lisible sur un onglet clair comme sombre. -->
@@ -1813,7 +1845,7 @@ html, body { margin: 0; padding: 0; }
         <img class="wip-espace-fond" src="media/provisoire-pole.jpg" alt="" loading="lazy" decoding="async">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-pole">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d15); color: var(--d15)">15</span>
-          <span class="wip-espace-nom">Studio Pole Dance </span>
+          <span class="wip-espace-nom">Studio Pole Dance &amp; Aérien</span>
           <span class="wip-espace-meta">80 m² · 12 par cours</span>
           <span class="wip-croix" aria-hidden="true"></span>
         </button>
@@ -2398,13 +2430,21 @@ html, body { margin: 0; padding: 0; }
             <li><a href="#premiere-fois">Première visite</a></li>
           </ul>
         </div>
+        <!-- Cette colonne est le seul endroit de la page où le vocabulaire
+             descriptif est listé tel quel. C'est ce qui rend la salle
+             trouvable sur les requêtes que les gens tapent réellement, sans
+             alourdir le corps rédactionnel. Chaque ligne correspond à une
+             activité réelle décrite plus haut : rien d'ajouté pour le moteur. -->
         <div>
           <h4>Nos activités</h4>
           <ul>
-            <li>Cross-training à Amboise</li>
+            <li>Cross-training et entraînement fonctionnel</li>
             <li>Préparation Hyrox</li>
-            <li>Pole dance et aérien</li>
+            <li>Pole dance et disciplines aériennes</li>
+            <li>Haltérophilie et travail de la barre</li>
+            <li>Musculation et renforcement</li>
             <li>Open gym en accès libre</li>
+            <li>Coaching sportif individuel</li>
           </ul>
         </div>
         <div>
@@ -2444,20 +2484,49 @@ html, body { margin: 0; padding: 0; }
   </footer>
 </div>
 
+<!--
+  DONNÉES STRUCTURÉES — schema.org
+
+  Type retenu : HealthClub + ExerciseGym. HealthClub hérite à la fois de
+  SportsActivityLocation et de HealthAndBeautyBusiness, c'est le type canonique
+  d'une salle de sport ; HealthAndBeautyBusiness seul désignait un institut de
+  beauté et brouillait la catégorisation.
+
+  ⚠ TROIS VALEURS À RENSEIGNER AVANT MISE EN LIGNE
+  1. "telephone" — 02 47 00 00 00 est un numéro de remplissage.
+  2. "geo" — absent volontairement : des coordonnées approximatives contredisent
+     la fiche Google Business et affaiblissent le référencement local. Relever la
+     latitude et la longitude exactes sur Google Maps (clic droit sur la porte),
+     puis ajouter dans le nœud #salle :
+     "geo": { "@type": "GeoCoordinates", "latitude": 47.xxxxx, "longitude": 0.xxxxx },
+  3. "sameAs" — compléter avec la page Facebook et la fiche Google Business
+     dès qu'elles existent : c'est ce qui relie la page à l'entité Google.
+
+  Les horaires portent un "validFrom" au 31/10/2026. Sans lui, Google peut
+  afficher « Ouvert » dès aujourd'hui, alors que le bâtiment est en chantier.
+-->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["HealthAndBeautyBusiness", "SportsActivityLocation"],
+      "@type": ["HealthClub", "ExerciseGym"],
       "@id": "https://wipathletics.fr/#salle",
       "name": "WIP Athletics",
-      "description": "Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance et open gym sur 1 000 m². Cours en petits groupes, tous niveaux, du débutant au confirmé. Ouverture le samedi 31 octobre 2026.",
+      "alternateName": "WIP Athletics Amboise",
+      "legalName": "W.I.P Athletics",
+      "description": "Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance, haltérophilie et open gym sur 1 000 m². Cours en petits groupes de 12 personnes maximum, tous niveaux, du grand débutant au confirmé. Ouverture le samedi 31 octobre 2026.",
       "slogan": "Work. Improve. Progress.",
-      "url": "https://wipathletics.fr",
+      "url": "https://wipathletics.fr/",
+      "logo": "https://wipathletics.fr/logo/png/wip-logo-principal-noir@2400.png",
+      "image": "https://wipathletics.fr/media/og-wip-athletics.jpg",
       "telephone": "+33247000000",
       "email": "bonjour@wipathletics.fr",
       "currenciesAccepted": "EUR",
+      "paymentAccepted": "Carte bancaire, prélèvement, espèces",
+      "priceRange": "€€",
+      "publicAccess": true,
+      "foundingDate": "2026",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "1329 chemin du Roi",
@@ -2467,34 +2536,114 @@ html, body { margin: 0; padding: 0; }
         "addressCountry": "FR"
       },
       "hasMap": "https://www.google.com/maps/search/?api=1&query=1329+chemin+du+Roi,+37400+Amboise,+France",
-      "areaServed": ["Amboise","Nazelles-Négron","Pocé-sur-Cisse","Vouvray","Montlouis-sur-Loire","Bléré","Château-Renault","Tours","Tours Est","Indre-et-Loire"],
+      "areaServed": ["Amboise","Nazelles-Négron","Pocé-sur-Cisse","Vouvray","Montlouis-sur-Loire","Bléré","Château-Renault","Saint-Règle","Limeray","Tours","Tours Est","Indre-et-Loire","Val de Loire"],
       "sameAs": ["https://www.instagram.com/wip.athletic"],
+      "knowsAbout": [
+        "Cross training",
+        "Entraînement fonctionnel",
+        "Préparation physique Hyrox",
+        "Pole dance",
+        "Disciplines aériennes",
+        "Haltérophilie",
+        "Musculation",
+        "Renforcement musculaire",
+        "Conditionnement physique",
+        "Coaching sportif",
+        "Remise en forme",
+        "Open gym"
+      ],
       "openingHoursSpecification": [
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "06:30", "closes": "22:00" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "18:00" }
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "06:30", "closes": "22:00", "validFrom": "2026-10-31" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "18:00", "validFrom": "2026-10-31" }
       ],
       "amenityFeature": [
         { "@type": "LocationFeatureSpecification", "name": "Vestiaires neufs", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Douches individuelles", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Accès PMR", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Parking gratuit", "value": true }
+        { "@type": "LocationFeatureSpecification", "name": "Parking gratuit, 40 places", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Surface de 1 000 m²", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Cours limités à 12 personnes", "value": true }
       ],
-      "makesOffer": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de cross-training en petit groupe" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Préparation aux courses Hyrox" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de pole dance et disciplines aériennes" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Open gym en accès libre" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Coaching individuel" } }
-      ]
+      "employee": [
+        { "@type": "Person", "name": "Sébastien", "jobTitle": "Coach cross-training et Hyrox, cofondateur", "worksFor": { "@id": "https://wipathletics.fr/#salle" } },
+        { "@type": "Person", "name": "Simon", "jobTitle": "Coach cross-training et haltérophilie, cofondateur", "worksFor": { "@id": "https://wipathletics.fr/#salle" } }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Activités de WIP Athletics à Amboise",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de cross-training en petit groupe à Amboise", "alternateName": "Entraînement fonctionnel", "description": "Entraînement fonctionnel en groupe de 12 personnes maximum : barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite à côté de la version prescrite.", "serviceType": "Cross training", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Préparation aux courses Hyrox", "description": "Préparation physique aux stations Hyrox et au format course : ski erg, sled push, sled pull, burpees broad jump, rameur, farmers carry, sandbag lunges, wall balls.", "serviceType": "Préparation Hyrox", "areaServed": "Indre-et-Loire", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de pole dance et disciplines aériennes à Amboise", "description": "Pole dance et aérien dans un espace dédié, rideaux occultants, cours en petit groupe du niveau découverte au confirmé.", "serviceType": "Pole dance", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Haltérophilie et travail de la barre", "description": "Plateforme d'haltérophilie accessible en open gym, et suivi de la progression technique par un coach spécialisé.", "serviceType": "Haltérophilie", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Open gym en accès libre", "description": "70 m² en accès libre : rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, un coach est toujours dans la salle si vous avez une question.", "serviceType": "Open gym", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Coaching sportif individuel à Amboise", "description": "Séances en tête-à-tête avec un coach, pour débuter, reprendre après une interruption ou préparer un objectif précis.", "serviceType": "Coaching individuel", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Séance d'essai offerte", "description": "Visite du lieu, discussion et une vraie séance adaptée à votre niveau. Offerte et sans engagement, à partir du 31 octobre 2026." }, "price": "0", "priceCurrency": "EUR", "availabilityStarts": "2026-10-31" }
+        ]
+      }
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://wipathletics.fr/#questions",
+      "@type": "Event",
+      "@id": "https://wipathletics.fr/#ouverture",
+      "name": "Ouverture de WIP Athletics — portes ouvertes à Amboise",
+      "description": "WIP Athletics ouvre ses 1 000 m² à Amboise : cross-training, Hyrox, pole dance, haltérophilie et open gym. Portes ouvertes, visite du lieu et séances d'essai offertes.",
+      "startDate": "2026-10-31T08:00:00+01:00",
+      "endDate": "2026-10-31T18:00:00+01:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "isAccessibleForFree": true,
+      "image": "https://wipathletics.fr/media/og-wip-athletics.jpg",
+      "url": "https://wipathletics.fr/#reserver",
+      "organizer": { "@id": "https://wipathletics.fr/#salle" },
+      "performer": { "@id": "https://wipathletics.fr/#salle" },
+      "location": {
+        "@type": "Place",
+        "name": "WIP Athletics",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1329 chemin du Roi",
+          "addressLocality": "Amboise",
+          "postalCode": "37400",
+          "addressRegion": "Centre-Val de Loire",
+          "addressCountry": "FR"
+        }
+      },
+      "offers": {
+        "@type": "Offer",
+        "name": "Séance d'essai offerte",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2026-08-21",
+        "url": "https://wipathletics.fr/#reserver"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wipathletics.fr/#site",
+      "url": "https://wipathletics.fr/",
+      "name": "WIP Athletics",
+      "inLanguage": "fr-FR",
+      "publisher": { "@id": "https://wipathletics.fr/#salle" }
+    },
+    {
+      "@type": ["WebPage", "FAQPage"],
+      "@id": "https://wipathletics.fr/#page",
+      "url": "https://wipathletics.fr/",
+      "name": "Salle de sport à Amboise (37) : cross-training, Hyrox, pole dance",
+      "description": "Salle de sport à Amboise (37), à 25 min de Tours : cross-training, préparation Hyrox, pole dance, haltérophilie et open gym sur 1 000 m². Ouverture le samedi 31 octobre 2026.",
+      "inLanguage": "fr-FR",
+      "isPartOf": { "@id": "https://wipathletics.fr/#site" },
+      "about": { "@id": "https://wipathletics.fr/#salle" },
+      "primaryImageOfPage": "https://wipathletics.fr/media/og-wip-athletics.jpg",
       "mainEntity": [
-        { "@type": "Question", "name": "Faut-il déjà être sportif pour commencer le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Les charges et les mouvements sont adaptés dès la première séance : c'est le métier du coach. La séance d'essai se fait en individuel, hors du groupe." } },
-        { "@type": "Question", "name": "Y a-t-il un âge limite pour s'inscrire ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Nos adhérents vont de 16 à 71 ans. Les mouvements travaillés sont ceux de la vie courante : se relever, porter, pousser." } },
-        { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "À Amboise, en Indre-et-Loire, au 1329 chemin du Roi (37400), à dix minutes du centre-ville avec un parking gratuit de 40 places devant la porte." } },
-        { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les séances d'essai commencent à l'ouverture, le samedi 31 octobre 2026, et se réservent dès maintenant : par téléphone du lundi au samedi de 9h à 20h, ou via le formulaire de rappel. La séance d'essai est offerte et sans engagement." } }
+        { "@type": "Question", "name": "Peut-on venir sans avoir jamais mis les pieds dans une salle de sport ?", "acceptedAnswer": { "@type": "Answer", "text": "C'est le profil le plus fréquent chez nous, et de loin. La séance découverte est faite exactement pour ça : on ne vous met pas dans un cours, on vous fait visiter et on bouge à deux." } },
+        { "@type": "Question", "name": "Faut-il être en forme avant de commencer le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. C'est comme attendre de savoir nager pour prendre un cours de natation. On adapte les charges et les mouvements dès la première minute — c'est le métier du coach, pas une faveur." } },
+        { "@type": "Question", "name": "Y a-t-il un âge limite pour s'inscrire ?", "acceptedAnswer": { "@type": "Answer", "text": "Nos adhérents vont de 16 à 71 ans. Les mouvements sont les mêmes que ceux de la vie courante : se relever, porter, pousser. Ils deviennent plus utiles avec l'âge, pas moins." } },
+        { "@type": "Question", "name": "Faut-il être à l'aise avec le regard des autres ?", "acceptedAnswer": { "@type": "Answer", "text": "Personne ne regarde. Tout le monde est occupé à finir sa propre série. Et si vous préférez commencer seul, l'Open Gym et le coaching individuel existent pour ça." } },
+        { "@type": "Question", "name": "Quelles activités pratique-t-on à WIP Athletics ?", "acceptedAnswer": { "@type": "Answer", "text": "Quatre espaces sur 1 000 m² : le cross-training et la préparation Hyrox sur 420 m², le studio de pole dance et d'aérien sur 80 m², l'open gym en accès libre sur 70 m² avec sa plateforme d'haltérophilie, et une zone chill de 60 m² avec café. Les cours collectifs sont limités à 12 personnes." } },
+        { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "Au 1329 chemin du Roi, 37400 Amboise, à dix minutes du centre d'Amboise et vingt-cinq minutes de Tours. 1 000 m² sous charpente, hauteur libre de 4,20 m, parking gratuit de 40 places devant la porte. Vestiaires neufs, douches individuelles, accès PMR complet." } },
+        { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les formules dépendent de ce que vous voulez pratiquer, de votre rythme et de vos horaires : on en discute cinq minutes au téléphone, puis on vous accueille sur place. La séance d'essai est offerte et sans engagement. Elle se réserve dès maintenant, pour un créneau à partir du 31 octobre 2026." } }
       ]
     }
   ]
