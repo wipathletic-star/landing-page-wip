@@ -1134,29 +1134,36 @@ html, body { margin: 0; padding: 0; }
   .wip-equipe { gap: 0; }
   .wip-equipe-scene { display: contents; }
 
+  /* La carte est montée de 68 à 76 vh. C'est le bon levier pour rendre du
+     visage : le bloc de texte ne bouge pas, le voile non plus — c'est la
+     photo au-dessus qui gagne la place. Le budget le permettait, il restait
+     111 px sous la barre. */
   .wip-equipe-cadre {
     grid-row: 1; grid-column: 1;
-    aspect-ratio: auto; height: 68vh; min-height: 400px; max-height: 600px;
+    aspect-ratio: auto; height: 76vh; min-height: 420px; max-height: 660px;
   }
   /* le nom est répété trois lignes plus bas : la légende n'a plus d'objet */
   .wip-equipe-cadre .wip-photo > span { display: none; }
 
-  /* Le voile monte vite — 80 % avant le premier quart — parce que le portrait
-     de la coach pole est un studio blanc : un dégradé doux y laissait le
-     texte à 3:1. Le retrait en haut sert à ça : il place la première ligne là
-     où le voile porte déjà.
-     27/08/2026 — retrait porté de 76 à 108 px et voile durci d'un cran : le
-     dégradé démarre plus haut sur l'image, le portrait se lit un peu plus en
-     silhouette et un peu moins en visage. Ce sont les deux seuls réglages à
-     toucher pour doser ; la hauteur de la carte, elle, ne bouge pas. */
+  /* Le voile monte vite parce que le portrait de la coach pole est un studio
+     blanc : un dégradé doux y laissait le texte à 3:1. Le retrait en haut
+     place la première ligne là où le voile porte déjà.
+
+     27/08/2026 — le voile part le plus bas qu'on puisse : retrait à 40 px et
+     dégradé durci en compensation (46 % dès 4 %, 88 % à 16 %), la course
+     restante suffisant tout juste à porter la première ligne. Ne pas
+     descendre plus bas : sous ~35 px la montée se fait sur moins de 15 px et
+     le haut du voile se voit comme une barre nette en travers de la photo.
+     Pour en montrer davantage, c'est la hauteur de la carte ci-dessus qu'il
+     faut pousser, pas ce retrait. */
   .wip-equipe-fiches {
     grid-row: 1; grid-column: 1; align-self: end; z-index: 2;
     justify-content: flex-end;
-    padding: 50px 18px 16px;
+    padding: 40px 18px 16px;
     color: var(--magnesie);
     background: linear-gradient(180deg,
-      transparent 0, rgba(11,13,12,.34) 5%, rgba(11,13,12,.82) 18%,
-      rgba(11,13,12,.94) 44%, rgba(11,13,12,.97) 100%);
+      transparent 0, rgba(11,13,12,.46) 4%, rgba(11,13,12,.88) 16%,
+      rgba(11,13,12,.95) 40%, rgba(11,13,12,.97) 100%);
   }
   .wip-equipe-vignettes { grid-row: 2; grid-column: 1; margin-top: 14px; }
 
