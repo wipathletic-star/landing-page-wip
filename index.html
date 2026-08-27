@@ -603,9 +603,49 @@ html, body { margin: 0; padding: 0; }
 }
 
 @media (max-width: 900px) { .wip-planning { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ————————— le planning en onglets sur téléphone — 27/08/2026 —————————
+   Empilée, la semaine faisait 1 161 px — 2,1 écrans rien que pour la grille.
+   Sous 700 px, les six jours deviennent une barre d'onglets et un seul
+   planning s'affiche : ~300 px au lieu de 1 161.
+
+   Les six jours restent visibles en permanence dans la barre, ce qui garde
+   le seul avantage du tableau — voir qu'il y a cours du lundi au samedi — et
+   met le changement de jour à un geste. Le script ouvre sur le jour de la
+   semaine en cours, parce que « et aujourd'hui, il y a quoi ? » est la
+   question qu'on se pose devant un planning.
+
+   Les rôles ARIA sont posés par le script et retirés au-dessus de 700 px :
+   une liste d'onglets n'a de sens que si les panneaux sont bien cachés. */
+.wip-jours-onglets { display: none; }
+.wip-jours-onglets[hidden] { display: none; }
+
+@media (max-width: 700px) {
+  .wip-jours-onglets:not([hidden]) {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+    margin-bottom: 14px;
+  }
+  .wip-jours-onglets button {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 11px 2px; min-height: 40px; color: var(--beton-f);
+    box-shadow: inset 0 0 0 1px var(--trait);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .wip-jours-onglets button[aria-selected="true"] {
+    background: var(--fonte); color: var(--magnesie); box-shadow: none;
+  }
+
+  .wip-planning { grid-template-columns: 1fr; }
+  .wip-planning .wip-jour[hidden] { display: none; }
+  .wip-creneau { padding: 12px 14px; }
+  /* le nom du jour est déjà dans l'onglet actif, en gras et sur fond plein */
+  .wip-planning .wip-jour-tete { display: none; }
+}
+
 @media (max-width: 560px) {
-  .wip-planning { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wip-creneau { padding: 11px 12px; }
+  .wip-jours-onglets button { font-size: 9px; letter-spacing: .04em; }
 }
 
 /* ———————————————————————————————— étapes ———————————————————————————————— */
@@ -1470,6 +1510,15 @@ html, body { margin: 0; padding: 0; }
     .wip-liens a { font-size: 13.5px; padding: 7px 0; min-height: 28px; border-bottom: 0; }
   }
 
+  /* Planning : les onglets ne commutent rien sans script — le HTML les livre
+     `hidden`, ils le restent, et les six jours s'affichent tous. Il faut alors
+     leur rendre leur en-tête, sinon on ne sait plus quel jour on lit, et deux
+     colonnes plutôt que six jours déroulés à la file. */
+  @media (max-width: 700px) {
+    .wip-planning { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wip-planning .wip-jour-tete { display: block; }
+  }
+
   .wip-espace-corps { grid-template-rows: 1fr; }
   /* les quatre espaces sont dépliés d'office : leurs quatre fonds doivent
      l'être aussi, sinon seul le premier est illustré */
@@ -2078,8 +2127,21 @@ html, body { margin: 0; padding: 0; }
         <span><span class="wip-pastille" style="background: var(--d2)"></span><span class="wip-mono" style="color: var(--fonte)">Open Gym</span></span>
       </div>
 
+
+      <!-- Onglets de jour : n'existent que sous 700 px (voir la feuille). Les
+           rôles ARIA sont posés par le script, pas ici : au-dessus de ce
+           seuil les six jours sont affichés ensemble, et une liste
+           d'onglets sans panneau caché n'aurait aucun sens à annoncer. -->
+      <div class="wip-jours-onglets" data-onglets-jour hidden>
+        <button type="button" id="onglet-lundi" data-jour="lundi" aria-controls="jour-lundi"><span aria-hidden="true">Lun</span><span class="wip-sr">Lundi</span></button>
+        <button type="button" id="onglet-mardi" data-jour="mardi" aria-controls="jour-mardi"><span aria-hidden="true">Mar</span><span class="wip-sr">Mardi</span></button>
+        <button type="button" id="onglet-mercredi" data-jour="mercredi" aria-controls="jour-mercredi"><span aria-hidden="true">Mer</span><span class="wip-sr">Mercredi</span></button>
+        <button type="button" id="onglet-jeudi" data-jour="jeudi" aria-controls="jour-jeudi"><span aria-hidden="true">Jeu</span><span class="wip-sr">Jeudi</span></button>
+        <button type="button" id="onglet-vendredi" data-jour="vendredi" aria-controls="jour-vendredi"><span aria-hidden="true">Ven</span><span class="wip-sr">Vendredi</span></button>
+        <button type="button" id="onglet-samedi" data-jour="samedi" aria-controls="jour-samedi"><span aria-hidden="true">Sam</span><span class="wip-sr">Samedi</span></button>
+      </div>
       <div class="wip-planning wip-rev">
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-lundi" aria-labelledby="onglet-lundi">
           <div class="wip-jour-tete"><strong>Lundi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
@@ -2087,7 +2149,7 @@ html, body { margin: 0; padding: 0; }
           <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d15)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
         </div>
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-mardi" aria-labelledby="onglet-mardi">
           <div class="wip-jour-tete"><strong>Mardi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>07:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
@@ -2095,7 +2157,7 @@ html, body { margin: 0; padding: 0; }
           <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d2)"><b>20:45</b><span><span class="wip-pastille" style="background: var(--d2)"></span>Open Gym</span></div>
         </div>
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-mercredi" aria-labelledby="onglet-mercredi">
           <div class="wip-jour-tete"><strong>Mercredi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
@@ -2103,7 +2165,7 @@ html, body { margin: 0; padding: 0; }
           <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></span>Hyrox</span></div>
         </div>
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-jeudi" aria-labelledby="onglet-jeudi">
           <div class="wip-jour-tete"><strong>Jeudi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>06:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
@@ -2111,7 +2173,7 @@ html, body { margin: 0; padding: 0; }
           <div class="wip-creneau" style="--c: var(--d25)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d2)"><b>20:45</b><span><span class="wip-pastille" style="background: var(--d2)"></span>Open Gym</span></div>
         </div>
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-vendredi" aria-labelledby="onglet-vendredi">
           <div class="wip-jour-tete"><strong>Vendredi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>07:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>12:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
@@ -2119,7 +2181,7 @@ html, body { margin: 0; padding: 0; }
           <div class="wip-creneau" style="--c: var(--d25)"><b>18:30</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d15)"><b>19:45</b><span><span class="wip-pastille" style="background: var(--d15)"></span>Pole Dance</span></div>
         </div>
-        <div class="wip-jour">
+        <div class="wip-jour" id="jour-samedi" aria-labelledby="onglet-samedi">
           <div class="wip-jour-tete"><strong>Samedi</strong></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>09:00</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
           <div class="wip-creneau" style="--c: var(--d25)"><b>10:15</b><span><span class="wip-pastille" style="background: var(--d25)"></span>Cross-training</span></div>
@@ -2461,6 +2523,75 @@ html, body { margin: 0; padding: 0; }
     var siLarge = function (e) { if (e.matches) poserMenu(false); };
     if (large.addEventListener) large.addEventListener('change', siLarge);
     else if (large.addListener) large.addListener(siLarge);
+  }
+
+  /* ————— planning : un jour à la fois sur téléphone —————
+     Le dispositif n'existe que sous 700 px. Au-dessus, les six jours sont
+     affichés côte à côte : les rôles ARIA sont alors retirés, sinon on
+     annoncerait une liste d'onglets dont tous les panneaux sont ouverts. */
+  var barreJours = document.querySelector('[data-onglets-jour]');
+  var planning = document.querySelector('.wip-planning');
+  if (barreJours && planning) {
+    var onglets = barreJours.querySelectorAll('button');
+    var joursPl = planning.querySelectorAll('.wip-jour');
+    var etroit = window.matchMedia('(max-width: 700px)');
+
+    var choisirJour = function (i) {
+      Array.prototype.forEach.call(onglets, function (o, n) {
+        o.setAttribute('aria-selected', n === i ? 'true' : 'false');
+        o.setAttribute('tabindex', n === i ? '0' : '-1');
+      });
+      Array.prototype.forEach.call(joursPl, function (j, n) {
+        if (n === i) { j.removeAttribute('hidden'); } else { j.setAttribute('hidden', ''); }
+      });
+    };
+
+    /* lundi = 0 … samedi = 5 ; le dimanche renvoie au lundi, la salle est fermée */
+    var aujourdhui = function () {
+      var d = new Date().getDay();          // 0 = dimanche
+      return d === 0 ? 0 : Math.min(d - 1, joursPl.length - 1);
+    };
+
+    var poserOnglets = function (actif) {
+      if (actif) {
+        barreJours.removeAttribute('hidden');
+        barreJours.setAttribute('role', 'tablist');
+        barreJours.setAttribute('aria-label', 'Jour de la semaine');
+        Array.prototype.forEach.call(onglets, function (o) { o.setAttribute('role', 'tab'); });
+        Array.prototype.forEach.call(joursPl, function (j) { j.setAttribute('role', 'tabpanel'); });
+        choisirJour(aujourdhui());
+      } else {
+        barreJours.setAttribute('hidden', '');
+        barreJours.removeAttribute('role');
+        barreJours.removeAttribute('aria-label');
+        Array.prototype.forEach.call(onglets, function (o) {
+          o.removeAttribute('role'); o.removeAttribute('aria-selected'); o.removeAttribute('tabindex');
+        });
+        Array.prototype.forEach.call(joursPl, function (j) {
+          j.removeAttribute('role'); j.removeAttribute('hidden');
+        });
+      }
+    };
+
+    Array.prototype.forEach.call(onglets, function (o, i) {
+      o.addEventListener('click', function () { choisirJour(i); });
+    });
+
+    /* flèches gauche/droite, comme l'attend une liste d'onglets */
+    barreJours.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var courant = Array.prototype.findIndex ?
+        Array.prototype.findIndex.call(onglets, function (o) { return o.getAttribute('aria-selected') === 'true'; }) : 0;
+      var cible = (courant + (e.key === 'ArrowRight' ? 1 : -1) + onglets.length) % onglets.length;
+      choisirJour(cible);
+      onglets[cible].focus();
+      e.preventDefault();
+    });
+
+    poserOnglets(etroit.matches);
+    var surBascule = function (e) { poserOnglets(e.matches); };
+    if (etroit.addEventListener) etroit.addEventListener('change', surBascule);
+    else if (etroit.addListener) etroit.addListener(surBascule);
   }
 
   /* ————— apparitions à l'entrée dans l'écran ————— */
