@@ -1112,7 +1112,74 @@ html, body { margin: 0; padding: 0; }
 }
 @media (max-width: 620px) {
   .wip-equipe-vignettes button { width: 60px; }
-  .wip-coach > p { font-size: 15.5px; }
+}
+
+/* ———— téléphone : la fiche se pose SUR le portrait — 27/08/2026 ————
+   Empilés, le cadre, les vignettes et la fiche demandaient 1 137 px pour
+   779 disponibles sous la barre : il fallait deux écrans pour lire un coach,
+   et on ne voyait jamais le visage et le parcours en même temps.
+
+   La fiche passe donc en surimpression, calée en bas de l'image sur un
+   dégradé qui la porte — c'est le seul endroit où l'on peut prendre de la
+   place sans en enlever à personne. Le portrait garde son tiers haut, celui
+   du visage ; le bas d'une photo de portrait ne dit rien qu'on regrette.
+
+   Trois économies l'accompagnent, toutes réversibles :
+   — le cartouche de légende disparaît, son nom est juste en dessous ;
+   — les repères passent de pastilles à une ligne à points médians ;
+   — le brief de prise de vue s'efface : c'est un outil de production, il se
+     consulte sur grand écran, et le badge bleu de l'image porte déjà le
+     marquage « provisoire ». */
+@media (max-width: 700px) {
+  .wip-equipe { gap: 0; }
+  .wip-equipe-scene { display: contents; }
+
+  .wip-equipe-cadre {
+    grid-row: 1; grid-column: 1;
+    aspect-ratio: auto; height: 68vh; min-height: 400px; max-height: 600px;
+  }
+  /* le nom est répété trois lignes plus bas : la légende n'a plus d'objet */
+  .wip-equipe-cadre .wip-photo > span { display: none; }
+
+  /* Le voile monte vite — 80 % dès le premier quart — parce que le portrait
+     de la coach pole est un studio blanc : un dégradé doux y laissait le
+     texte à 3:1. Les 76 px de retrait en haut servent à ça : ils placent la
+     première ligne là où le voile porte déjà. */
+  .wip-equipe-fiches {
+    grid-row: 1; grid-column: 1; align-self: end; z-index: 2;
+    justify-content: flex-end;
+    padding: 76px 18px 16px;
+    color: var(--magnesie);
+    background: linear-gradient(180deg,
+      transparent 0, rgba(11,13,12,.30) 6%, rgba(11,13,12,.80) 22%,
+      rgba(11,13,12,.93) 48%, rgba(11,13,12,.97) 100%);
+  }
+  .wip-equipe-vignettes { grid-row: 2; grid-column: 1; margin-top: 14px; }
+
+  /* Le compteur disparaît : les vignettes juste dessous sont numérotées et
+     marquent l'active en bleu. C'était la ligne la plus haute, donc la moins
+     couverte par le voile — et la plus redondante. */
+  .wip-equipe-compteur { display: none; }
+  .wip-equipe-piste { margin-top: 0; }
+  /* sur une image, le béton clair ne tient pas : le secondaire se distingue
+     par la taille et la graisse, pas par la valeur */
+  .wip-coach .wip-mono { color: var(--magnesie); margin-top: 6px; }
+  .wip-coach h3 { font-size: 30px; margin-top: 6px; }
+  .wip-coach > p { font-size: 14.5px; line-height: 1.55; color: var(--magnesie); margin-top: 12px; }
+  .wip-coach > .wip-coach-note { display: none; }
+
+  .wip-coach-reperes {
+    display: block; margin-top: 12px;
+    font-family: var(--mono); font-size: 8.5px; font-weight: 500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--beton-c);
+    line-height: 1.7;
+  }
+  .wip-coach-reperes li { display: inline; padding: 0; box-shadow: none; clip-path: none; }
+  .wip-coach-reperes li + li::before { content: ' · '; }
+
+  .wip-equipe-nav { margin-top: 16px; }
+  .wip-equipe-nav button { width: 42px; height: 42px; box-shadow: inset 0 0 0 1px #4A4F48; color: var(--magnesie); }
+  .wip-equipe-nav button:hover { background: var(--magnesie); color: var(--fonte); }
 }
 
 /* ———————————————————————————— formules & appel ———————————————————————————— */
@@ -1389,14 +1456,26 @@ html, body { margin: 0; padding: 0; }
      l'écran. Sans lui, les conteneurs s'effacent (display: contents) et les
      trois portraits reprennent leur place au-dessus des trois fiches — le
      visiteur a l'information entière, sans commande à actionner. */
-  .wip-equipe { grid-template-columns: repeat(3, 1fr); gap: 14px 30px; }
+  /* Le téléphone est le cas de base, les trois colonnes l'exception : écrit
+     dans l'autre sens, la règle large et la règle étroite avaient la même
+     spécificité et se départageaient à l'ordre source, ce qui ne tenait pas.
+     `order` entrelace les portraits et les fiches, que le DOM sépare en deux
+     groupes pour les besoins du carrousel. */
+  .wip-equipe { grid-template-columns: 1fr; gap: 14px 30px; }
   .wip-equipe-scene, .wip-equipe-cadre, .wip-equipe-fiches, .wip-equipe-piste { display: contents; }
+  .wip-equipe-cadre .wip-photo:nth-child(1) { order: 1; }
+  .wip-equipe .wip-coach:nth-child(1) { order: 2; }
+  .wip-equipe-cadre .wip-photo:nth-child(2) { order: 3; }
+  .wip-equipe .wip-coach:nth-child(2) { order: 4; }
+  .wip-equipe-cadre .wip-photo:nth-child(3) { order: 5; }
+  .wip-equipe .wip-coach:nth-child(3) { order: 6; }
   /* `relative` et non `static` : l'image et le badge « visuel provisoire » sont
      positionnés en absolu là-dedans. En static ils se calent sur un ancêtre
      lointain — l'image part en plein écran puis se fait clipper, ce qui la
      rend floue, et le badge quitte le cadre. */
   .wip-equipe-cadre .wip-photo {
-    position: relative; transform: none; grid-row: 1; aspect-ratio: 3 / 4;
+    position: relative; transform: none; aspect-ratio: 3 / 4;
+    height: auto; max-height: none; min-height: 0;
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
   }
   /* `:not(.on)` de la feuille pèse plus lourd qu'un `.wip-coach` seul :
@@ -1404,13 +1483,22 @@ html, body { margin: 0; padding: 0; }
   .wip-equipe .wip-coach, .wip-equipe .wip-coach:not(.on) {
     grid-area: auto;   /* sans quoi le `grid-area: 1 / 1` du mode carrousel
                           empile les trois fiches dans la même cellule */
-    grid-row: 2; opacity: 1; visibility: visible; transform: none;
+    opacity: 1; visibility: visible; transform: none;
   }
   .wip-coach h3 { font-size: 26px; }
   .wip-equipe-vignettes, .wip-equipe-nav, .wip-equipe-compteur { display: none; }
-  @media (max-width: 800px) {
-    .wip-equipe { grid-template-columns: 1fr; }
-    .wip-equipe-cadre .wip-photo, .wip-coach { grid-row: auto; }
+  /* Sur téléphone, la fiche est normalement posée sur le portrait, en clair
+     sur un voile sombre. Ici les conteneurs s'effacent (display: contents),
+     le voile avec eux : les textes doivent retrouver leurs couleurs sur fond
+     magnésie, faute de quoi ils y seraient blancs sur blanc. */
+  .wip-coach h3 { color: var(--fonte); }
+  .wip-coach .wip-mono, .wip-coach-reperes { color: var(--beton-f); }
+  .wip-coach > p { color: var(--encre); }
+  .wip-equipe-cadre .wip-photo > span { display: block; }
+  @media (min-width: 801px) {
+    .wip-equipe { grid-template-columns: repeat(3, 1fr); }
+    .wip-equipe-cadre .wip-photo { grid-row: 1; }
+    .wip-equipe .wip-coach, .wip-equipe .wip-coach:not(.on) { grid-row: 2; }
   }
 </style></noscript>
 </head>
