@@ -442,6 +442,25 @@ html, body { margin: 0; padding: 0; }
 .wip-rail-seg i { position: absolute; inset: 0; transform-origin: top; display: block; transform: scaleY(0); }
 
 .wip-titre { font-size: clamp(48px, 9.6vw, 132px); text-transform: uppercase; font-stretch: 125%; }
+/* Sous ~500 px, 9,6vw passe sous le plancher de 48 px : la police se bloquait
+   là et « PROGRESS. » — le mot le plus long — était coupé à droite. La page
+   ne défilait pas pour autant, `overflow-x: clip` la retenait : d'où un
+   symptôme purement visuel, invisible aux mesures de débordement.
+
+   Une taille en vw seule ne suffit pas ici. Le titre ne commence pas au bord :
+   le rail de la jauge et sa gouttière lui prennent 42 px, plus 20 px de marge
+   de page — 62 px fixes qui pèsent d'autant plus lourd que l'écran est étroit.
+   La taille maximale qui tient tombe donc de 10,7vw à 430 px à 9,8vw à 320 px.
+   D'où une formule à soustraction plutôt qu'un simple pourcentage : le mot
+   mesure 7,55 fois la taille de police, la place vaut (100vw − 82px), et on
+   garde 5 % de marge. Vérifié par essais successifs à 320, 360, 375, 390
+   et 430 px.
+
+   La chasse reste à 125 % : c'est le réglage de titrage du brand book, on
+   réduit la taille, pas la largeur des lettres. */
+@media (max-width: 520px) {
+  .wip-titre { font-size: clamp(26px, calc(12.7vw - 10.4px), 48px); }
+}
 .wip-titre .l { display: block; }
 .wip-titre .mot {
   position: relative; display: inline-block; padding-bottom: .1em;
