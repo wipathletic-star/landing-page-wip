@@ -225,6 +225,74 @@ html, body { margin: 0; padding: 0; }
   .wip-liens a { white-space: nowrap; font-size: 13.5px; padding: 7px 0; min-height: 28px; }
 }
 
+/* ————————————— le menu déroulant du téléphone — 27/08/2026 —————————————
+   La bande horizontale tenait à cinq entrées ; à six elle demande 497 px
+   pour 350 disponibles sur un iPhone 15, et n'en montrait plus que quatre —
+   sans rien qui signale les deux autres. Un dégradé de bord ou des libellés
+   raccourcis ne suffisaient pas : même abrégés, les six réclament 377 px.
+
+   Le seuil est posé à 620 px parce que le débordement réel commence vers
+   537 px : au-dessus, la bande affiche déjà les six entrées, le bouton n'a
+   donc aucune raison d'exister. En dessous, la barre retombe de 128 à 64 px
+   — 64 px de lecture rendus sur toute la hauteur du site, puisqu'elle est
+   collante — et les six entrées s'ouvrent d'un coup.
+
+   Le panneau se positionne sur .wip-nav (le `sticky` fait contexte), pas sur
+   .wip-nav-in, pour couvrir toute la largeur sous la barre.                */
+.wip-burger {
+  display: none; width: 40px; height: 40px; place-items: center; flex: none;
+  color: var(--magnesie); box-shadow: inset 0 0 0 1px #3A3E38;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  border-bottom-left-radius: 5px;
+  transition: background .22s ease;
+}
+.wip-burger:hover { background: #22261F; }
+.wip-burger i {
+  position: relative; display: block; width: 17px; height: 2px; background: currentColor;
+  transition: background .2s ease;
+}
+.wip-burger i::before, .wip-burger i::after {
+  content: ''; position: absolute; left: 0; width: 17px; height: 2px; background: currentColor;
+  transition: transform .32s cubic-bezier(.16,1,.3,1);
+}
+.wip-burger i::before { top: -6px; }
+.wip-burger i::after  { top: 6px; }
+/* ouvert : les deux barres extrêmes forment la croix, celle du milieu s'efface */
+.wip-burger[aria-expanded="true"] i { background: transparent; }
+.wip-burger[aria-expanded="true"] i::before { transform: translateY(6px) rotate(45deg); }
+.wip-burger[aria-expanded="true"] i::after  { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 620px) {
+  .wip { --nav-h: 64px; }
+  .wip-nav-in { flex-wrap: nowrap; height: var(--nav-h); gap: 12px; }
+  .wip-logo, .wip-nav-in > .wip-cta { height: auto; }
+  .wip-burger { display: grid; order: 3; }
+
+  .wip-liens {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
+    width: auto; order: 0; overflow: visible;
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: 2px 20px 14px;
+    /* Opaque, contrairement à la barre elle-même (.93 + flou, pour qu'on
+       sente la page défiler dessous). Testé à .97 : les titres du hero, en
+       magnésie sur noir, transparaissaient encore derrière les liens — 3 %
+       d'un texte à 16:1 se voit. Un panneau de navigation doit couvrir. */
+    background: var(--fonte);
+    border-bottom: 1px solid var(--trait-n);
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    transition: opacity .26s ease, transform .34s cubic-bezier(.16,1,.3,1), visibility .26s;
+  }
+  .wip-liens.on { opacity: 1; visibility: visible; transform: none; }
+  .wip-liens a {
+    font-size: 15px; padding: 14px 0; min-height: 0;
+    border-bottom: 1px solid var(--trait-n);
+  }
+  .wip-liens a:last-child { border-bottom: 0; }
+  /* le filet de survol suppose une ligne de liens côte à côte : sans objet ici */
+  .wip-liens a::after { display: none; }
+}
+
 /* ———————————————————————————————— boutons ———————————————————————————————— */
 .wip-cta, .wip-cta-fant {
   position: relative; overflow: hidden; isolation: isolate;
@@ -1422,6 +1490,20 @@ html, body { margin: 0; padding: 0; }
   .wip-titre .mot em, .wip-rail-seg i, .wip-tsec-regle { transform: none !important; }
   .wip-rev, .wip-tsec-oeil, .wip-tsec-intro { opacity: 1; transform: none; }
   .wip-tsec h2 .m > i { transform: none; }
+  /* Le bouton du menu n'ouvre rien sans JavaScript : on le retire et la barre
+     reprend la bande horizontale, qui défile mais donne accès à tout. */
+  .wip-burger { display: none !important; }
+  @media (max-width: 620px) {
+    .wip { --nav-h: 108px; }
+    .wip-nav-in { flex-wrap: wrap; height: auto; }
+    .wip-liens {
+      position: static; order: 3; width: 100%; flex-direction: row; gap: 20px;
+      padding: 0 0 8px; background: none; box-shadow: none; border-bottom: 0;
+      overflow-x: auto; opacity: 1; visibility: visible; transform: none;
+    }
+    .wip-liens a { font-size: 13.5px; padding: 7px 0; min-height: 28px; border-bottom: 0; }
+  }
+
   .wip-espace-corps { grid-template-rows: 1fr; }
   /* les quatre espaces sont dépliés d'office : leurs quatre fonds doivent
      l'être aussi, sinon seul le premier est illustré */
@@ -1551,8 +1633,14 @@ html, body { margin: 0; padding: 0; }
       <a href="#top" class="wip-logo" aria-label="WIP Athletics — retour en haut">
         <svg class="wip-logo-sig" viewBox="0 0 4000 1090" fill="currentColor" aria-hidden="true" focusable="false"><use href="#sig-wordmark"/></svg>
       </a>
+      <!-- Placé juste après le logo pour que la tabulation aille bouton → menu
+           → bouton d'appel, et repoussé visuellement à droite par `order`.
+           Invisible au-dessus de 620 px : la barre y montre déjà tout. -->
+      <button type="button" class="wip-burger" aria-expanded="false" aria-controls="wip-menu" aria-label="Ouvrir le menu">
+        <i aria-hidden="true"></i>
+      </button>
       <!-- la nav suit l'ordre de lecture de la page -->
-      <div class="wip-liens">
+      <div class="wip-liens" id="wip-menu">
         <a href="#espaces">Les espaces</a>
         <a href="#premiere-fois">Première fois</a>
         <a href="#equipe">L'équipe</a>
@@ -2379,6 +2467,45 @@ html, body { margin: 0; padding: 0; }
         poserRegistre(b.getAttribute('data-registre'));
       });
     });
+  }
+
+  /* ————— menu déroulant du téléphone —————
+     Le panneau n'existe que sous 620 px (voir la feuille). Fermé, il est en
+     `visibility: hidden` : ses liens sortent donc du parcours de tabulation
+     sans qu'on ait à les désactiver un par un. */
+  var burger = document.querySelector('.wip-burger');
+  var menu = document.getElementById('wip-menu');
+  if (burger && menu) {
+    var poserMenu = function (ouvert) {
+      burger.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+      burger.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
+      menu.classList.toggle('on', ouvert);
+    };
+    var menuOuvert = function () { return burger.getAttribute('aria-expanded') === 'true'; };
+
+    burger.addEventListener('click', function () { poserMenu(!menuOuvert()); });
+
+    /* on referme dès qu'un lien est suivi : sans ça le panneau resterait
+       posé sur la section vers laquelle on vient de sauter */
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) poserMenu(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menuOuvert()) { poserMenu(false); burger.focus(); }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!menuOuvert()) return;
+      if (!menu.contains(e.target) && !burger.contains(e.target)) poserMenu(false);
+    });
+
+    /* au retour en grand écran la bande redevient horizontale : un panneau
+       resté « ouvert » y afficherait une colonne de liens en travers */
+    var large = window.matchMedia('(min-width: 621px)');
+    var siLarge = function (e) { if (e.matches) poserMenu(false); };
+    if (large.addEventListener) large.addEventListener('change', siLarge);
+    else if (large.addListener) large.addListener(siLarge);
   }
 
   /* ————— apparitions à l'entrée dans l'écran ————— */
