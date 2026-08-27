@@ -1141,18 +1141,22 @@ html, body { margin: 0; padding: 0; }
   /* le nom est répété trois lignes plus bas : la légende n'a plus d'objet */
   .wip-equipe-cadre .wip-photo > span { display: none; }
 
-  /* Le voile monte vite — 80 % dès le premier quart — parce que le portrait
+  /* Le voile monte vite — 80 % avant le premier quart — parce que le portrait
      de la coach pole est un studio blanc : un dégradé doux y laissait le
-     texte à 3:1. Les 76 px de retrait en haut servent à ça : ils placent la
-     première ligne là où le voile porte déjà. */
+     texte à 3:1. Le retrait en haut sert à ça : il place la première ligne là
+     où le voile porte déjà.
+     27/08/2026 — retrait porté de 76 à 108 px et voile durci d'un cran : le
+     dégradé démarre plus haut sur l'image, le portrait se lit un peu plus en
+     silhouette et un peu moins en visage. Ce sont les deux seuls réglages à
+     toucher pour doser ; la hauteur de la carte, elle, ne bouge pas. */
   .wip-equipe-fiches {
     grid-row: 1; grid-column: 1; align-self: end; z-index: 2;
     justify-content: flex-end;
-    padding: 76px 18px 16px;
+    padding: 108px 18px 16px;
     color: var(--magnesie);
     background: linear-gradient(180deg,
-      transparent 0, rgba(11,13,12,.30) 6%, rgba(11,13,12,.80) 22%,
-      rgba(11,13,12,.93) 48%, rgba(11,13,12,.97) 100%);
+      transparent 0, rgba(11,13,12,.34) 5%, rgba(11,13,12,.82) 18%,
+      rgba(11,13,12,.94) 44%, rgba(11,13,12,.97) 100%);
   }
   .wip-equipe-vignettes { grid-row: 2; grid-column: 1; margin-top: 14px; }
 
