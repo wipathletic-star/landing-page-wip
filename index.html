@@ -1145,25 +1145,38 @@ html, body { margin: 0; padding: 0; }
   /* le nom est répété trois lignes plus bas : la légende n'a plus d'objet */
   .wip-equipe-cadre .wip-photo > span { display: none; }
 
-  /* Le voile monte vite parce que le portrait de la coach pole est un studio
-     blanc : un dégradé doux y laissait le texte à 3:1. Le retrait en haut
-     place la première ligne là où le voile porte déjà.
+  /* ——— le voile, porté par le cadre et non par la fiche ———
+     Mesuré au pixel sur le rendu précédent : la luminance tombait de 236 à
+     134 en 50 px puis restait plate. Toute la transition était comprimée
+     dans le retrait au-dessus du texte — c'est ce ressaut qu'on lisait comme
+     une ligne en travers du portrait.
 
-     27/08/2026 — le voile part le plus bas qu'on puisse : retrait à 40 px et
-     dégradé durci en compensation (46 % dès 4 %, 88 % à 16 %), la course
-     restante suffisant tout juste à porter la première ligne. Ne pas
-     descendre plus bas : sous ~35 px la montée se fait sur moins de 15 px et
-     le haut du voile se voit comme une barre nette en travers de la photo.
-     Pour en montrer davantage, c'est la hauteur de la carte ci-dessus qu'il
-     faut pousser, pas ce retrait. */
-  .wip-equipe-fiches {
-    grid-row: 1; grid-column: 1; align-self: end; z-index: 2;
-    justify-content: flex-end;
-    padding: 60px 18px 16px;
-    color: var(--magnesie);
+     Le dégradé passe donc sur le cadre entier : 641 px de course au lieu de
+     40, et treize arrêts dont aucun ne monte de plus de 0,55 % par pixel.
+     Le tiers haut reste sous 10 % — invisible sur la photo — et le voile
+     porte 68 % au premier mot, 88 % au paragraphe.
+
+     Il ne peut pas commencer plus bas que ça : sous le paragraphe, il
+     faudrait remonter de 0 à 90 % en quelques dizaines de pixels, et le
+     ressaut reviendrait. C'est l'un ou l'autre. */
+  .wip-equipe-cadre::after {
+    content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
     background: linear-gradient(180deg,
-      transparent 0, rgba(11,13,12,.46) 4%, rgba(11,13,12,.88) 16%,
-      rgba(11,13,12,.95) 40%, rgba(11,13,12,.97) 100%);
+      rgba(11,13,12,0)    0%,   rgba(11,13,12,.04) 20%, rgba(11,13,12,.10) 30%,
+      rgba(11,13,12,.18) 36%,   rgba(11,13,12,.30) 41%, rgba(11,13,12,.44) 45%,
+      rgba(11,13,12,.58) 49%,   rgba(11,13,12,.70) 53%, rgba(11,13,12,.80) 58%,
+      rgba(11,13,12,.88) 64%,   rgba(11,13,12,.93) 72%, rgba(11,13,12,.96) 84%,
+      rgba(11,13,12,.97) 100%);
+  }
+
+  /* La fiche ne porte plus de fond : il est passé sur le cadre, ci-dessus,
+     pour disposer de toute la hauteur comme course. Elle se contente de se
+     poser par-dessus le voile (z-index 4 contre 3). */
+  .wip-equipe-fiches {
+    grid-row: 1; grid-column: 1; align-self: end; z-index: 4;
+    justify-content: flex-end;
+    padding: 0 18px 16px;
+    color: var(--magnesie);
   }
   .wip-equipe-vignettes { grid-row: 2; grid-column: 1; margin-top: 14px; }
 
