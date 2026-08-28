@@ -992,11 +992,18 @@ html, body { margin: 0; padding: 0; }
    (Ces quatre-là sont passées en filigrane de fond le 26/08/2026 ; elles
    affirment donc beaucoup moins qu'en cadre, mais elles restent fausses.)
 
-   26/08/2026 — trois portraits provisoires ajoutés aux fiches coachs (05).
+   26/08/2026 — trois portraits provisoires ajoutés aux fiches coachs (06).
    ⚠ CEUX-LÀ SONT PLUS EXPOSÉS QUE LES QUATRE AUTRES : ce sont des personnes
    identifiables présentées comme le personnel de la salle. La licence Pexels
    l'interdit explicitement en ligne (voir media/CREDITS.md). Maquette
    uniquement, à remplacer par le shooting.
+
+   28/08/2026 — six visuels provisoires de plus, carrousel « En images » (05).
+   ⚠ MÊME PROBLÈME QUE LES PORTRAITS, ET À PLUS GRANDE ÉCHELLE : quatre des six
+   montrent des personnes identifiables, sous des légendes qui les désignent
+   comme les adhérents et les coachs de la salle. Les deux autres montrent le
+   plateau et le matériel de quelqu'un d'autre sous les chiffres de WIP
+   (420 m², 4,20 m). C'est le lot le plus exposé de la page.
 
    ┌─ POUR TOUT RETIRER D'UN COUP ───────────────────────────────────┐
    │  décommenter les trois lignes ci-dessous : les fonds et les      │
@@ -1009,11 +1016,19 @@ html, body { margin: 0; padding: 0; }
    .wip-espace-note b, .wip-coach-note b { display: none !important; }
 */
 .wip-photo[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
-.wip-photo[data-provisoire]::after {
+.wip-photo[data-provisoire]::after,
+.wip-vie-cadre[data-provisoire]::after {
   content: 'Visuel provisoire'; position: absolute; top: 0; left: 0; z-index: 3;
   background: var(--bleu); color: #fff;
   font-family: var(--mono); font-size: 8px; font-weight: 500;
   letter-spacing: .11em; text-transform: uppercase; padding: 6px 9px;
+}
+/* le cadre du carrousel n'est pas une .wip-photo : le liseré se pose ici,
+   par-dessus les vues, sinon la première image le recouvre */
+.wip-vie-cadre[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
+.wip-vie-cadre[data-provisoire]::before {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--bleu);
 }
 
 /* Même logique pour le texte : une valeur que seul le user peut fournir
@@ -1297,6 +1312,112 @@ html, body { margin: 0; padding: 0; }
   .wip-equipe-nav button:hover { background: var(--magnesie); color: var(--fonte); }
 }
 
+/* ———————————————————————————————— en images ————————————————————————————————
+   Carrousel paysage. Volontairement différent de celui de l'équipe : celui-ci
+   est en 3:2 pleine largeur avec une bande de vignettes sous l'image, là où
+   l'équipe est en 3:4 avec les vignettes à gauche. Deux carrousels identiques
+   à deux sections d'écart auraient donné l'impression d'un gabarit répété.
+
+   La coupe d'image du §5 est portée par le cadre ; les vues qui défilent
+   dedans sont des rectangles pleins, sinon deux diagonales se superposent
+   pendant la transition.
+
+   Sans JavaScript, les six vues reprennent leur place en grille (<noscript>). */
+.wip-vie { display: grid; gap: 16px; }
+
+.wip-vie-cadre {
+  position: relative; overflow: hidden; aspect-ratio: 3 / 2;
+  background: var(--fonte);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
+}
+.wip-vie-vue {
+  position: absolute; inset: 0; margin: 0;
+  opacity: 0; visibility: hidden;
+  transition: opacity .62s ease, visibility .62s;
+}
+.wip-vie-vue.on { opacity: 1; visibility: visible; z-index: 2; }
+.wip-vie-vue img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transform: scale(1.05);
+  transition: transform 6.5s linear;
+}
+/* le lent recadrage ne part que sur la vue affichée : une image immobile
+   derrière une image immobile ne raconte rien */
+.wip-vie-vue.on img { transform: scale(1); }
+
+/* Légende posée dans le coin bas-gauche, hors de la diagonale qui mange le
+   coin bas-droit. Fond plein : sur six photos aux luminosités différentes,
+   un simple dégradé ne garantissait pas le contraste. */
+.wip-vie-legende {
+  position: absolute; left: 0; bottom: 0; z-index: 4;
+  max-width: min(48ch, 76%);
+  background: rgba(11,13,12,.86);
+  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+  padding: 13px 17px 14px;
+  border-bottom-left-radius: var(--talon);
+}
+.wip-vie-legende .wip-mono {
+  display: block; font-size: 8.5px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--bleu-c);
+  margin-bottom: 5px;
+}
+.wip-vie-legende p {
+  font-size: 14.5px; line-height: 1.45; color: var(--magnesie);
+  font-stretch: 105%;
+}
+
+/* la barre : compteur, vignettes, flèches */
+.wip-vie-barre {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; gap: 18px;
+}
+.wip-vie-compteur {
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; color: var(--beton-f);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.wip-vie-compteur b { color: var(--fonte); font-weight: 500; }
+
+.wip-vie-vignettes { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.wip-vie-vignettes::-webkit-scrollbar { display: none; }
+.wip-vie-vignettes button {
+  position: relative; flex: 0 0 auto; width: 92px; aspect-ratio: 3 / 2;
+  padding: 0; overflow: hidden; background: var(--papier);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 12px) 100%, 0 100%);
+  border-bottom-left-radius: 3px;
+  opacity: .52; transition: opacity .3s ease;
+}
+.wip-vie-vignettes button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wip-vie-vignettes button:hover { opacity: .82; }
+.wip-vie-vignettes button[aria-current="true"] { opacity: 1; box-shadow: inset 0 0 0 2px var(--fonte); }
+.wip-vie-vignettes button:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; opacity: 1; }
+
+.wip-vie-nav { display: flex; gap: 8px; }
+.wip-vie-nav button {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px var(--trait); color: var(--fonte);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+  transition: background .25s ease, color .25s ease;
+}
+.wip-vie-nav button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.wip-vie-nav button:hover { background: var(--fonte); color: var(--magnesie); }
+.wip-vie-nav button:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
+
+@media (max-width: 700px) {
+  .wip-vie-cadre { aspect-ratio: 4 / 3; }
+  .wip-vie-legende { max-width: 100%; padding: 11px 14px 12px; }
+  .wip-vie-legende p { font-size: 13px; }
+  .wip-vie-barre { grid-template-columns: auto minmax(0, 1fr); gap: 12px; }
+  /* les flèches passent sous la bande : à trois colonnes, les vignettes
+     n'avaient plus qu'une soixantaine de pixels utiles */
+  .wip-vie-nav { grid-column: 1 / -1; justify-content: flex-end; margin-top: -4px; }
+  .wip-vie-vignettes button { width: 74px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wip-vie-vue img, .wip-vie-vue.on img { transform: none; transition: none; }
+}
+
 /* ———————————————————————————— formules & appel ———————————————————————————— */
 .wip-formules { border-top: 2px solid var(--fonte); margin-bottom: 48px; }
 .wip-formule {
@@ -1575,6 +1696,28 @@ html, body { margin: 0; padding: 0; }
      l'être aussi, sinon seul le premier est illustré */
   .wip-espace-fond { opacity: .3; }
   .wip-croix { display: none; }
+
+  /* En images : sans script, les six vues se déplient en planche. Le visiteur
+     voit tout, ce qui est mieux qu'un carrousel bloqué sur sa première photo.
+     `position: relative` et non `static` — même piège que sur l'équipe : en
+     `static`, les images se calent sur un ancêtre lointain et partent en
+     plein écran avant d'être clippées. */
+  .wip-vie-cadre {
+    aspect-ratio: auto; clip-path: none; background: none;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+  }
+  .wip-vie-vue {
+    position: relative; opacity: 1; visibility: visible; aspect-ratio: 3 / 2;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 40px) 100%, 0 100%);
+  }
+  .wip-vie-vue img, .wip-vie-vue.on img { transform: none; transition: none; }
+  /* la légende ne décrit que la première vue, et les commandes ne commutent
+     rien : les afficher tromperait plus qu'elles n'aideraient */
+  .wip-vie-legende, .wip-vie-barre { display: none; }
+  .wip-vie-cadre[data-provisoire]::before { z-index: 5; }
+  @media (max-width: 620px) {
+    .wip-vie-cadre { grid-template-columns: 1fr; }
+  }
 
   /* Équipe : le carrousel a besoin de JavaScript pour désigner qui est à
      l'écran. Sans lui, les conteneurs s'effacent (display: contents) et les
@@ -2050,11 +2193,92 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
   </section>
 
+  <!-- ————— en images —————
+       Placée après « Première visite » et avant « L'équipe » : les objections
+       viennent d'être levées et le déroulé expliqué, le visiteur est rassuré
+       mais n'a encore rien vu. La preuve visuelle tombe ici, puis l'équipe met
+       des visages dessus. -->
+  <section class="wip-wrap wip-sec sans-trait" id="galerie">
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>En images</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Des</i></span>
+        <span class="m"><i style="--i:1">gens</i></span>
+        <span class="m"><i style="--i:2">qui</i></span>
+        <span class="m"><i style="--i:3">s'entraînent,</i></span>
+        <span class="m"><i style="--i:4">pas</i></span>
+        <span class="m"><i style="--i:5">des</i></span>
+        <span class="m"><i style="--i:6">athlètes</i></span>
+        <span class="m"><i style="--i:7">qui</i></span>
+        <span class="m"><i style="--i:8">posent</i></span>
+      </h2>
+      <p class="wip-tsec-intro">La salle, les cours, et des adhérents en plein effort. On photographie la troisième tentative plutôt que le record, et tous les gabarits plutôt qu'un seul.</p>
+    </div>
+
+    <div class="wip-vie wip-rev" data-vie>
+      <div class="wip-vie-cadre" data-provisoire>
+
+        <figure class="wip-vie-vue on">
+          <img src="media/provisoire-vie-01.jpg" width="1400" height="933" alt="Le plateau d'entraînement, vu de l'entrée : anneaux au plafond, wall balls et kettlebells rangées le long du mur." decoding="async">
+        </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-02.jpg" width="1400" height="933" alt="Un mur de matériel : wall balls alignées sur une étagère au-dessus d'un râtelier d'haltères." loading="lazy" decoding="async">
+        </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-03.jpg" width="1400" height="933" alt="Un cours collectif : cinq personnes en tirage haltères, le coach passe corriger les positions." loading="lazy" decoding="async">
+        </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-04.jpg" width="1400" height="933" alt="Un adhérent sur le rameur, en contre-jour devant les verrières de l'atelier." loading="lazy" decoding="async">
+        </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-05.jpg" width="1400" height="933" alt="Fin de séance : le groupe en récupération, guidé par le coach." loading="lazy" decoding="async">
+        </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-06.jpg" width="1400" height="933" alt="Travail du gainage au medicine ball, au sol, contre le mur de brique." loading="lazy" decoding="async">
+        </figure>
+
+        <!-- La légende est réécrite par le script ; ce contenu est celui de la
+             première vue, pour que le sens tienne aussi sans JavaScript. -->
+        <div class="wip-vie-legende" aria-live="polite">
+          <span class="wip-mono" data-vie-oeil>Le plateau</span>
+          <p data-vie-texte>420 m² d'un seul tenant, sous 4,20 m de charpente. Rien n'est cloisonné : on voit d'un bout à l'autre.</p>
+        </div>
+      </div>
+
+      <div class="wip-vie-barre">
+        <p class="wip-mono wip-vie-compteur"><b data-vie-compteur>01</b> / 06</p>
+
+        <div class="wip-vie-vignettes" role="tablist" aria-label="Choisir une photo">
+          <button type="button" aria-current="true" aria-label="Photo 1 : le plateau d'entraînement"><img src="media/provisoire-vie-01.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 2 : le mur de matériel"><img src="media/provisoire-vie-02.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 3 : un cours collectif"><img src="media/provisoire-vie-03.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 4 : un adhérent au rameur"><img src="media/provisoire-vie-04.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 5 : la récupération en groupe"><img src="media/provisoire-vie-05.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 6 : gainage au medicine ball"><img src="media/provisoire-vie-06.jpg" alt="" loading="lazy" decoding="async"></button>
+        </div>
+
+        <div class="wip-vie-nav">
+          <button type="button" data-vie-sens="-1" aria-label="Photo précédente">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12 4.5 6.5 10 12 15.5M6.5 10H16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" data-vie-sens="1" aria-label="Photo suivante">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M8 4.5 13.5 10 8 15.5M13.5 10H4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="wip-espace-note"><b>Visuels provisoires</b>À photographier : six vues de la salle en séance — le plateau, le matériel, un cours en cours, l'effort, la récupération. Lumière latérale dure, tous les gabarits, jamais un sourire posé face caméra</p>
+    </div>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
   <!-- ————— équipe ————— -->
   <section class="wip-wrap wip-sec" id="equipe">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--fonte)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>L'équipe</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>L'équipe</b></span>
       <h2>
         <span class="m"><i style="--i:0">Vous</i></span>
         <span class="m"><i style="--i:1">choisissez</i></span>
@@ -2161,7 +2385,7 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>Planning</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>Planning</b></span>
         <h2>
           <span class="m"><i style="--i:0">Les</i></span>
           <span class="m"><i style="--i:1">horaires,</i></span>
@@ -2256,7 +2480,7 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-wrap wip-sec sans-trait" id="lieu">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>Le lieu</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Le lieu</b></span>
       <h2>
         <span class="m"><i style="--i:0">Un</i></span>
         <span class="m"><i style="--i:1">ancien</i></span>
@@ -2307,7 +2531,7 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Formules</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">09</span><b>Formules</b></span>
         <h2>
           <span class="m"><i style="--i:0">On</i></span>
           <span class="m"><i style="--i:2">en</i></span>
@@ -2866,6 +3090,100 @@ html, body { margin: 0; padding: 0; }
         if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) decaler(dx < 0 ? 1 : -1);
       });
       cadre.addEventListener('pointercancel', function () { x0 = null; });
+    }
+  }
+
+  /* ————— en images : une vue à la fois —————
+     Même logique que l'équipe, mais en fondu plutôt qu'en glissement : sur du
+     paysage plein format, un volet vertical donnait l'impression que la page
+     sautait. Les légendes vivent ici et non dans le HTML : six blocs de texte
+     invisibles alourdissaient le document sans servir le référencement (le
+     texte des `alt` porte déjà le contenu). */
+  var vie = document.querySelector('[data-vie]');
+  if (vie) {
+    var vVues      = vie.querySelectorAll('.wip-vie-vue');
+    var vVignettes = vie.querySelectorAll('.wip-vie-vignettes button');
+    var vCompteur  = vie.querySelector('[data-vie-compteur]');
+    var vOeil      = vie.querySelector('[data-vie-oeil]');
+    var vTexte     = vie.querySelector('[data-vie-texte]');
+    var vBande     = vie.querySelector('.wip-vie-vignettes');
+    var vCourant   = 0;
+
+    /* Ramène la vignette active dans la bande sans jamais toucher au
+       défilement de la page. `scrollIntoView` ferait le même travail, mais il
+       peut aussi déplacer la fenêtre : c'est visible quand on atteint une
+       vignette hors champ au clavier, ou quand la bande est sous le pli.
+       Écrire `scrollLeft` ne peut rien déplacer d'autre que la bande.
+       (Vérifié : au clic, la page ne bouge pas d'un pixel, sur téléphone
+       comme sur grand écran.) */
+    function vCadrerVignette(el) {
+      if (!vBande) return;
+      var g = el.offsetLeft, d = g + el.offsetWidth;
+      if (g < vBande.scrollLeft) { vBande.scrollLeft = g - 8; }
+      else if (d > vBande.scrollLeft + vBande.clientWidth) {
+        vBande.scrollLeft = d - vBande.clientWidth + 8;
+      }
+    }
+
+    var LEGENDES = [
+      ['Le plateau',    "420 m² d'un seul tenant, sous 4,20 m de charpente. Rien n'est cloisonné : on voit d'un bout à l'autre."],
+      ['Le matériel',   "Wall balls, kettlebells, haltères de 2 à 40 kg. Tout est à hauteur d'homme, rien n'est réservé aux habitués."],
+      ['Le cours',      "Douze personnes au maximum, un coach qui passe corriger chacun. Personne ne termine une séance sans avoir été vu."],
+      ["L'effort",      "Le rameur, le ski erg, le sled. C'est là qu'on progresse, et c'est là que tout le monde se ressemble."],
+      ['La récup',      "Cinq minutes ensemble à la fin. C'est souvent là que les gens décident de revenir."],
+      ['Le gainage',    "Medicine ball, tapis, mur. Les mouvements de base, ceux qui servent encore à soixante-dix ans."]
+    ];
+
+    function vMontrer(cible) {
+      if (cible === vCourant || cible < 0 || cible >= vVues.length) return;
+      vVues[vCourant].classList.remove('on');
+      vVues[cible].classList.add('on');
+
+      Array.prototype.forEach.call(vVignettes, function (v, i) {
+        if (i === cible) { v.setAttribute('aria-current', 'true'); }
+        else { v.removeAttribute('aria-current'); }
+      });
+      if (vCompteur) vCompteur.textContent = ('0' + (cible + 1)).slice(-2);
+      if (vOeil && LEGENDES[cible])  vOeil.textContent  = LEGENDES[cible][0];
+      if (vTexte && LEGENDES[cible]) vTexte.textContent = LEGENDES[cible][1];
+
+      vCadrerVignette(vVignettes[cible]);
+      vCourant = cible;
+    }
+
+    function vDecaler(sens) {
+      vMontrer((vCourant + sens + vVues.length) % vVues.length);
+    }
+
+    Array.prototype.forEach.call(vie.querySelectorAll('[data-vie-sens]'), function (b) {
+      b.addEventListener('click', function () { vDecaler(Number(b.getAttribute('data-vie-sens'))); });
+    });
+
+    Array.prototype.forEach.call(vVignettes, function (v, i) {
+      v.addEventListener('click', function () { vMontrer(i); });
+    });
+
+    vie.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { vDecaler(1); }
+      else if (e.key === 'ArrowLeft') { vDecaler(-1); }
+      else { return; }
+      e.preventDefault();
+    });
+
+    var vCadre = vie.querySelector('.wip-vie-cadre');
+    if (vCadre && window.PointerEvent) {
+      var vx = null, vy = null;
+      vCadre.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse') return;
+        vx = e.clientX; vy = e.clientY;
+      });
+      vCadre.addEventListener('pointerup', function (e) {
+        if (vx === null) return;
+        var dx = e.clientX - vx, dy = e.clientY - vy;
+        vx = null;
+        if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) vDecaler(dx < 0 ? 1 : -1);
+      });
+      vCadre.addEventListener('pointercancel', function () { vx = null; });
     }
   }
 
