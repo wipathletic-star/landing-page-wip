@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Une seule page, donc un sitemap d'une seule URL. Son intérêt n'est pas la
+     découverte (la page est la racine du domaine) mais la Search Console :
+     c'est ce qui donne une date de dernière modification fiable et un rapport
+     d'indexation lisible. À redéployer avec un <lastmod> à jour à chaque
+     modification de contenu. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://wipathletics.fr/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
