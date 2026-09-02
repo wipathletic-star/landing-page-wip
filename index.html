@@ -480,9 +480,18 @@ html, body { margin: 0; padding: 0; }
 .wip-filtres { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 .wip-filtres button { --chanfrein: 8px; --talon: 6px; padding: 9px 16px; font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--beton-c); box-shadow: inset 0 0 0 1px var(--trait-n2); transition: all var(--dur-2) var(--ease-drive); }
 .wip-filtres button[aria-pressed="true"] { background: var(--f, var(--magnesie)); color: var(--ft, var(--fonte)); box-shadow: none; }
+/* Chaque jour et son en-tête forment un bloc. Ce n'est pas une préférence de
+   balisage : en sept colonnes, une grille plate donnait bien « sept en-têtes
+   puis sept colonnes », mais une fois repliée sur une seule colonne elle
+   empilait les sept en-têtes d'affilée, puis tous les créneaux de la semaine à
+   la suite — plus aucun lien entre un jour et ses horaires. Constaté sur
+   téléphone le 02/09. Le regroupement rend le repli correct par construction,
+   à n'importe quel nombre de colonnes. */
 .wip-planning { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--trait-n); box-shadow: inset 0 0 0 1px var(--trait-n); }
-.wip-jour-tete { background: var(--fonte-1); padding: var(--sp-3); font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--beton-c); }
-.wip-jour { background: var(--fonte); padding: var(--sp-2); display: flex; flex-direction: column; gap: var(--sp-2); min-height: 200px; }
+.wip-jour-bloc { display: flex; flex-direction: column; background: var(--fonte); }
+.wip-jour-bloc[hidden] { display: none; }
+.wip-jour-tete { background: var(--fonte-1); border-bottom: 1px solid var(--trait-n); padding: var(--sp-3); font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--beton-c); }
+.wip-jour { background: var(--fonte); padding: var(--sp-2); display: flex; flex-direction: column; gap: var(--sp-2); min-height: 200px; flex: 1 1 auto; }
 .wip-creneau { padding: var(--sp-3); background: var(--fonte-2); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 2px; }
 .wip-creneau.anneau { border-left-color: transparent; box-shadow: inset 4px 0 0 var(--fonte-2), inset 6px 0 0 var(--c); }
 .wip-creneau b { font-family: var(--mono); font-size: var(--fs-label); font-weight: 500; color: var(--magnesie); font-variant-numeric: tabular-nums; }
@@ -667,7 +676,9 @@ html, body { margin: 0; padding: 0; }
   .wip-cartes, .wip-coachs { grid-template-columns: 1fr; }
   .wip-carte { min-height: 420px; }
   .wip-planning { grid-template-columns: 1fr; }
+  /* en pile, chaque jour se réduit à ce qu'il contient et l'en-tête colle à ses créneaux */
   .wip-jour { min-height: 0; }
+  .wip-jour-tete { position: sticky; top: var(--nav-h); z-index: 1; }
   .wip-tuile:nth-child(n+3) { grid-column: span 6 !important; }
   .wip-hero-in { padding-top: var(--sp-9); }
   .wip-pied-grid { gap: var(--sp-6); }
@@ -934,51 +945,71 @@ html, body { margin: 0; padding: 0; }
         <button type="button" class="wip-coupe" data-filtre="og" aria-pressed="false" style="--f: var(--magnesie); --ft: var(--fonte)">Open gym</button>
       </div>
       <div class="wip-planning wip-rev" data-delai="1">
-        <div class="wip-jour-tete">Lun</div><div class="wip-jour-tete">Mar</div><div class="wip-jour-tete">Mer</div><div class="wip-jour-tete">Jeu</div><div class="wip-jour-tete">Ven</div><div class="wip-jour-tete">Sam</div><div class="wip-jour-tete">Dim</div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>17:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>19:45</b><span>Pole dance</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Lun</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>17:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>19:45</b><span>Pole dance</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>07:00</b><span>Cross-training</span></div>
-          <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>12:15</b><span>Hyrox</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>19:45</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>20:45</b><span>Open gym</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Mar</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>07:00</b><span>Cross-training</span></div>
+            <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>12:15</b><span>Hyrox</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>19:45</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>20:45</b><span>Open gym</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>17:30</b><span>Pole dance</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>19:45</b><span>Hyrox</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Mer</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>17:30</b><span>Pole dance</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>19:45</b><span>Hyrox</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>18:30</b><span>Pole dance</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>19:45</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>20:45</b><span>Open gym</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Jeu</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>06:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>18:30</b><span>Pole dance</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>19:45</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>20:45</b><span>Open gym</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>07:00</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
-          <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>17:30</b><span>Hyrox</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>19:45</b><span>Pole dance</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Ven</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>07:00</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>12:15</b><span>Cross-training</span></div>
+            <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>17:30</b><span>Hyrox</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>18:30</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>19:45</b><span>Pole dance</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>09:00</b><span>Cross-training</span></div>
-          <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>10:15</b><span>Cross-training</span></div>
-          <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>11:30</b><span>Hyrox</span></div>
-          <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>14:00</b><span>Pole dance</span></div>
-          <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>15:30</b><span>Open gym</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Sam</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>09:00</b><span>Cross-training</span></div>
+            <div class="wip-creneau" data-d="ct" style="--c: var(--d25)"><b>10:15</b><span>Cross-training</span></div>
+            <div class="wip-creneau anneau" data-d="hyrox" style="--c: var(--d25)"><b>11:30</b><span>Hyrox</span></div>
+            <div class="wip-creneau" data-d="pole" style="--c: var(--chrome)"><b>14:00</b><span>Pole dance</span></div>
+            <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>15:30</b><span>Open gym</span></div>
+          </div>
         </div>
-        <div class="wip-jour">
-          <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>09:00 – 13:00</b><span>Open gym</span></div>
+        <div class="wip-jour-bloc">
+          <div class="wip-jour-tete">Dim</div>
+          <div class="wip-jour">
+            <div class="wip-creneau" data-d="og" style="--c: var(--magnesie)"><b>09:00 – 13:00</b><span>Open gym</span></div>
+          </div>
         </div>
       </div>
       <div class="wip-planning-note wip-rev"><span>12 personnes maximum par créneau</span><span>Chaque cours accueille plusieurs niveaux</span><span>Planning définitif à l'ouverture</span></div>
@@ -1301,6 +1332,13 @@ html, body { margin: 0; padding: 0; }
         Array.prototype.forEach.call(filtres, function (o) { o.setAttribute('aria-pressed', String(o === b)); });
         Array.prototype.forEach.call(creneaux, function (c) {
           c.hidden = !(k === 'tout' || c.getAttribute('data-d') === k);
+        });
+        /* Un jour sans aucun créneau visible s'efface entièrement. Sans ça, le
+           filtre laissait des en-têtes de jour suivis d'un vide — surtout
+           visible en pile sur téléphone. */
+        Array.prototype.forEach.call(document.querySelectorAll('.wip-jour-bloc'), function (bloc) {
+          var reste = bloc.querySelectorAll('.wip-creneau:not([hidden])').length;
+          bloc.hidden = reste === 0;
         });
       });
     });
