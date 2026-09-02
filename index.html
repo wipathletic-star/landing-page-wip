@@ -611,6 +611,37 @@ html, body { margin: 0; padding: 0; }
 .wip-sec { padding: 100px 0; border-top: 1px solid var(--trait); }
 .wip-sec.sans-trait { border-top: 0; }
 .wip-sec.pose { background: var(--papier); border-top: 0; }
+
+/* ————————————————————— les disques en fond de section —————————————————————
+   Le code des disques calibrés est déjà revendiqué par le texte de la page et
+   porté par trois objets : les pastilles des espaces, celles du planning, et
+   le filet coloré en tête de chaque section. Ces anneaux en sont le quatrième
+   registre — le plus grand et le plus silencieux.
+
+   RÈGLE : chaque anneau reprend la couleur du filet de SA section. Ce n'est
+   donc pas un décor posé au hasard mais le même repère chromatique répété en
+   grand — qui associe le jaune aux espaces le retrouve en fond de section.
+
+   `z-index: -1` plutôt que de remonter tout le contenu : l'anneau se peint
+   derrière les enfants de la section et devant son fond, sans qu'aucun autre
+   élément ait à être touché. Vérifié au préalable : aucun élément absolu de
+   la page ne remonte jusqu'à une section pour se positionner.
+
+   Un trait fin à 12 % plutôt qu'un aplat à 7 % : en très grand format, une
+   ligne se lit comme un tracé de plan, un aplat comme une tache.        */
+/* ⚠ `z-index: 0` n'est pas décoratif ici, il est indispensable : `position:
+   relative` seul ne crée AUCUN contexte d'empilement. Sans lui, l'anneau en
+   z-index négatif remonterait jusqu'au contexte racine et se peindrait
+   derrière le fond papier des sections `pose` — invisible sur le planning et
+   les formules, visible partout ailleurs. Le z-index le confine à la section. */
+.wip-a-galet { position: relative; z-index: 0; }
+.wip-galet {
+  position: absolute; z-index: -1; height: auto;
+  opacity: .12; pointer-events: none; user-select: none;
+}
+/* Sous 900 px le contenu prend toute la largeur : il n'y a plus de vide à
+   remplir, l'anneau ne ferait que passer sous le texte. */
+@media (max-width: 900px) { .wip-galet { display: none; } }
 @media (max-width: 900px) { .wip-sec { padding: 72px 0; } }
 @media (max-width: 700px) { .wip-sec { padding: 52px 0; } }
 
@@ -675,17 +706,49 @@ html, body { margin: 0; padding: 0; }
   .wip-jours-onglets:not([hidden]) {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
     margin-bottom: 14px;
+    position: relative;   /* repère du curseur ci-dessous */
   }
+
+  /* ——— le curseur qui glisse — 28/08/2026 ———
+     Le fond noir sautait d'un onglet à l'autre. Un seul bloc se déplace
+     désormais : le mouvement dit dans quel sens on avance dans la semaine,
+     ce qu'un changement instantané ne dit pas.
+
+     Aucune mesure JavaScript n'est nécessaire : la grille est en
+     `repeat(6, 1fr)`, donc le pas vaut toujours « une colonne + la
+     gouttière ». Le script se contente d'écrire l'index dans `--onglet`.
+     `position: absolute` sort le pseudo-élément du flux : il ne devient
+     pas une septième cellule de la grille.
+
+     Testé au prototype avant d'être repris ici (prototype-motion.html) :
+     c'est le seul des six dispositifs comparés qui apportait un gain net,
+     et il ne demande aucune bibliothèque. */
+  .wip-jours-onglets:not([hidden])::before {
+    content: ''; position: absolute; top: 0; left: 0; z-index: 0;
+    width: calc((100% - 5 * 4px) / 6); height: 100%;
+    background: var(--fonte);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+    transform: translateX(calc(var(--onglet, 0) * (100% + 4px)));
+  }
+  /* La transition n'est armée qu'après le premier positionnement : sans ça,
+     ouvrir la page un vendredi faisait glisser le curseur de lundi à
+     vendredi tout seul, un mouvement que personne n'a demandé. */
+  .wip-jours-onglets.pret::before {
+    transition: transform .42s cubic-bezier(.22, 1, .28, 1);
+  }
+
   .wip-jours-onglets button {
+    position: relative; z-index: 1;   /* au-dessus du curseur */
     font-family: var(--mono); font-size: 10px; font-weight: 500;
     letter-spacing: .06em; text-transform: uppercase;
     padding: 11px 2px; min-height: 40px; color: var(--beton-f);
     box-shadow: inset 0 0 0 1px var(--trait);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
-    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+    transition: color .2s ease, box-shadow .2s ease;
   }
+  /* le fond est porté par le curseur, plus par le bouton */
   .wip-jours-onglets button[aria-selected="true"] {
-    background: var(--fonte); color: var(--magnesie); box-shadow: none;
+    color: var(--magnesie); box-shadow: none;
   }
 
   .wip-planning { grid-template-columns: 1fr; }
@@ -725,6 +788,65 @@ html, body { margin: 0; padding: 0; }
   .wip-etape:last-child { border-bottom: 0; }
 }
 
+/* ———————————————————————————————— lexique ————————————————————————————————
+   Le vocabulaire du plateau, écrit noir sur blanc. Deux fonctions, pas une :
+
+   1. UX — c'est la première barrière du débutant. Ne pas comprendre les mots
+      d'un milieu suffit à ne pas en pousser la porte, et c'est exactement la
+      cible retenue (§ brand book). Le lexique lève l'objection avant qu'elle
+      soit formulée.
+   2. RÉFÉRENCEMENT — la §5 bis-A interdit d'écrire le nom de la marque déposée
+      du milieu. Ce champ lexical-là (WOD, AMRAP, EMOM, scaler, benchmark,
+      rig, box) n'appartient à personne et se lit comme la même catégorie :
+      c'est ce qui range la salle au bon endroit sans louer un mot à autrui.
+      Détail vérifié sur les concurrents : le mot de marque ne fait pas le
+      classement, la catégorie d'entité le fait.
+
+   Forme : liste de définitions à deux colonnes, terme en mono. Le lexique
+   d'une salle est un objet technique, pas un encart pédagogique. */
+.wip-lex {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  column-gap: 46px; margin-top: 36px; border-top: 2px solid var(--fonte);
+}
+.wip-lex > div {
+  display: grid; grid-template-columns: 104px 1fr; gap: 18px; align-items: baseline;
+  padding: 15px 0; border-bottom: 1px solid var(--trait);
+}
+.wip-lex dt {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .04em; color: var(--bleu); text-transform: uppercase;
+}
+.wip-lex dd { margin: 0; color: var(--encre); font-size: 15px; line-height: 1.55; }
+@media (max-width: 820px) {
+  .wip-lex { grid-template-columns: 1fr; }
+  .wip-lex > div { grid-template-columns: 1fr; gap: 5px; padding: 13px 0; }
+}
+
+/* Le seul actif que la concurrence locale ne peut pas copier : l'affiliation.
+   Traitée en ligne de mention, pas en bandeau — §5 bis « HYROX = une
+   certification, pas un territoire » : position fixe, surface plafonnée. */
+.wip-affil {
+  max-width: 620px;   /* mesure plafonnée : une mention, pas un bandeau */
+  margin-top: 34px; padding: 18px 22px 20px; background: var(--papier);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)),
+                     calc(100% - var(--chanfrein)) 100%, 0 100%);
+}
+/* Le statut est une donnée, donc en mono (§4). L'explication est du texte
+   courant, donc en Archivo : une phrase entière en mono ne se lit pas. */
+.wip-affil b {
+  display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--fonte);
+}
+.wip-affil b::before {
+  content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 11px;
+  background: var(--bleu); vertical-align: 1px;
+  clip-path: polygon(0 0, 100% 0, 100% 55%, 55% 100%, 0 100%);  /* la coupe du §5, en pastille */
+}
+.wip-affil i {
+  display: block; margin-top: 10px; font-style: normal; font-family: var(--display);
+  font-size: 14.5px; line-height: 1.55; color: var(--beton-f);
+}
+
 /* ———————————————————————————————— espaces ———————————————————————————————— */
 .wip-espaces { border-top: 2px solid var(--fonte); }
 .wip-espace { border-bottom: 1px solid var(--trait); position: relative; overflow: hidden; }
@@ -741,23 +863,45 @@ html, body { margin: 0; padding: 0; }
    colonne de texte quasi nette — le contraste du corps de texte ne doit
    jamais dépendre de l'image qui passe derrière. */
 .wip-espace-tete, .wip-espace-corps { position: relative; z-index: 1; }
-.wip-espace-fond {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
-  opacity: 0; transition: opacity .6s ease;
-  filter: grayscale(.72) contrast(1.06);
-  /* L'image vit dans la bande centrale — celle qui était vide — et s'éteint
-     sous les deux colonnes de texte. Ce n'est pas qu'une précaution de goût :
-     les libellés de la fiche technique sont en mono 10 px sur béton foncé, et
-     ils tombaient à 2,6:1 quand un disque noir passait dessous. Un filigrane
-     ne doit jamais décider du contraste d'un texte. */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.10) 18%, #000 44%, #000 66%, rgba(0,0,0,.06) 84%, transparent 93%);
-          mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.10) 18%, #000 44%, #000 66%, rgba(0,0,0,.06) 84%, transparent 93%);
+/* ——— la pratique EN CADRE, plus en filigrane — 01/09/2026 ———————————————
+   Retour en arrière assumé sur la décision du 26/08. Le filigrane à 30 %
+   avec grayscale(.72) donnait une texture, pas une information : on
+   devinait une salle sans reconnaître l'activité. Or c'est précisément
+   ce que cette section doit faire voir.
+
+   La photo redevient donc un objet de contenu, dans le vocabulaire exact
+   de la galerie « En images » : cadre 3:2, chanfrein du §5, image nette.
+   Le visiteur voit la pratique au lieu de l'imaginer.
+
+   Conséquence utile : plus aucun texte ne passe sur une image, donc plus
+   aucun contraste à surveiller. C'était la contrainte qui avait imposé le
+   masque en dégradé et bridé l'opacité. Elle disparaît avec le fond.
+
+   SECONDE PASSE — le cadre ne ressemble plus à celui de la galerie, il EST
+   le même : mêmes variables de coupe (--coupe-x / --coupe-y, la diagonale
+   4:3 à 36,87° du §5), même fond, même rapport, et le cartouche de légende
+   est mutualisé plus bas avec `.wip-vie-legende` — groupé dans un seul
+   sélecteur, pour que les deux ne puissent plus diverger.               */
+.wip-espace-vue {
+  position: relative; margin: 0; overflow: hidden;
+  aspect-ratio: 3 / 2; background: var(--fonte);
+  /* Le 3:2 de la galerie donne 787 px de haut sur un cadre de 1 180 px : le
+     panneau ouvert dépassait l'écran à lui seul. Le rapport est conservé tant
+     que la place le permet, puis plafonné — au-delà, `cover` recadre l'image
+     au lieu de pousser le contenu hors de vue. */
+  max-height: 58vh;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
 }
-/* 0,17 ne laissait lire qu'une texture grise : le fond ne racontait plus rien.
-   0,30 avec la désaturation poussée à 72 % rend la pratique reconnaissable
-   tout en restant très en dessous du corps de texte. */
-.wip-espace.on .wip-espace-fond { opacity: .3; }
+.wip-espace-vue img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transform: scale(1.04); transition: transform 7s linear;
+}
+/* le recadrage lent ne part que sur l'espace ouvert : une image immobile
+   dans un panneau replié ne raconte rien et coûte du calcul */
+.wip-espace.on .wip-espace-vue img { transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .wip-espace-vue img, .wip-espace.on .wip-espace-vue img { transform: none; transition: none; }
+}
 .wip-espace-tete {
   width: 100%; display: grid; grid-template-columns: 52px 1fr auto 34px;
   gap: 20px; align-items: center; padding: 24px 0; text-align: left;
@@ -802,11 +946,19 @@ html, body { margin: 0; padding: 0; }
 .wip-espace-corps > div { overflow: hidden; min-height: 0; }
 /* La colonne de droite portait le cadre photo ; elle accueille désormais la
    fiche technique, qui y respire mieux qu'empilée sous le texte. */
+/* COMPACTAGE — 01/09/2026, seconde demande.
+   Le panneau empilait quatre blocs : image 3:2 pleine largeur, paragraphe,
+   fiche technique en quatre lignes, brief de shooting. Sur 1 180 px de large
+   l'image fait déjà 787 px de haut ; le reste ajoutait près de 300 px.
+
+   Le descriptif remonte donc DANS le cartouche, sur l'image, et la fiche
+   technique s'aplatit en une seule ligne de repères sous le cadre. Deux blocs
+   au lieu de quatre, et la gouttière de 52 px n'a plus lieu d'être puisque
+   plus rien n'est en colonnes. */
 .wip-espace-in {
-  display: grid; grid-template-columns: 52px 1fr minmax(190px, .5fr); gap: 28px 34px;
-  padding: 4px 14px 36px; align-items: start;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 0 14px 30px;
 }
-.wip-espace-texte { display: flex; flex-direction: column; gap: 26px; }
 .wip-espace-in p { color: var(--encre); font-size: 16px; line-height: 1.62; max-width: 430px; }
 
 /* Le brief de prise de vue survit à la disparition du cadre : c'est un outil
@@ -823,23 +975,29 @@ html, body { margin: 0; padding: 0; }
   font-size: 8px; font-weight: 500; letter-spacing: .11em;
   padding: 4px 8px; margin-right: 9px; vertical-align: .12em;
 }
-.wip-fiche { display: flex; flex-direction: column; gap: 10px; align-self: start; }
-.wip-fiche div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--trait); padding-bottom: 8px; }
-.wip-fiche span:last-child { font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--fonte); }
+/* La fiche technique à plat : quatre repères sur une ligne, séparés par le
+   filet oblique du §5 — le même objet que la note du planning. Quatre lignes
+   empilées devenaient une colonne inutile sous une image pleine largeur. */
+.wip-espace-bande {
+  display: flex; flex-wrap: wrap; align-items: center;
+  font-family: var(--mono); font-size: 11px; color: var(--beton-f);
+}
+.wip-espace-bande b { color: var(--fonte); font-weight: 500; }
+.wip-espace-bande > span + span::before {
+  content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 14px;
+  background: var(--trait); transform: skewX(-36.87deg); vertical-align: -1px;
+}
 @media (max-width: 760px) {
   .wip-espace-tete { grid-template-columns: 40px 1fr 24px; gap: 16px; }
   .wip-espace-tete .wip-espace-meta { display: none; }
   .wip-disque { width: 38px; height: 38px; border-width: 3px; font-size: 8px; }
   .wip-espace-in { grid-template-columns: 1fr; gap: 24px; padding: 4px 0 28px; }
-  .wip-espace-in > span:first-child { display: none; }
-  /* En une seule colonne, un masque horizontal ne protège plus rien : le texte
-     occupe toute la largeur. Le filigrane bascule donc à la verticale — présent
-     derrière le titre, qui est assez gros pour l'encaisser, éteint dès que le
-     corps de texte commence. */
-  .wip-espace-fond {
-    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 26%, rgba(0,0,0,.07) 58%, transparent 76%);
-            mask-image: linear-gradient(180deg, #000 0, #000 26%, rgba(0,0,0,.07) 58%, transparent 76%);
-  }
+  /* Même bascule que la galerie sous 700 px : le 3:2 devient 4:3 pour garder
+     de la hauteur utile une fois la largeur réduite, et le cartouche reprend
+     toute la largeur — à 76 %, il ne tenait plus qu'une poignée de mots. */
+  .wip-espace-vue { aspect-ratio: 4 / 3; }
+  .wip-espace-legende { max-width: 100%; padding: 11px 14px 12px; }
+  .wip-espace-legende p { font-size: 13px; }
 }
 
 /* ———————————————————— section sombre : pourquoi ce nom ———————————————————— */
@@ -982,42 +1140,31 @@ html, body { margin: 0; padding: 0; }
 }
 .wip-photo:not(:has(img)) span b { color: var(--fonte); }
 
-/* ═══ VISUELS PROVISOIRES — sections 01 et 05 ═══
-   Décision du 25/08/2026 : dérogation assumée aux §5ter et §6 du brand book
-   (« interdit : photo de banque d'images ») pour la seule phase de maquette.
-   Les quatre images de la section 01 montrent la salle de quelqu'un d'autre
-   sous VOS chiffres (420 m², 6 barres, 4,20 m). Elles DOIVENT partir avant la
-   mise en ligne — d'où le marquage visible, le préfixe « provisoire- » sur les
-   fichiers et le relevé de sources dans media/CREDITS.md.
-   (Ces quatre-là sont passées en filigrane de fond le 26/08/2026 ; elles
-   affirment donc beaucoup moins qu'en cadre, mais elles restent fausses.)
+/* ═══ VISUELS DE MAQUETTE ═══
+   Images de banque servant à juger le rendu en attendant le shooting :
+   quatre fonds d'espace (01), six vues du carrousel (05), trois portraits de
+   coachs (06). Sources et traitements dans media/CREDITS.md.
 
-   26/08/2026 — trois portraits provisoires ajoutés aux fiches coachs (06).
-   ⚠ CEUX-LÀ SONT PLUS EXPOSÉS QUE LES QUATRE AUTRES : ce sont des personnes
-   identifiables présentées comme le personnel de la salle. La licence Pexels
-   l'interdit explicitement en ligne (voir media/CREDITS.md). Maquette
-   uniquement, à remplacer par le shooting.
+   Le badge bleu et le préfixe « provisoire- » les distinguent d'un coup d'œil
+   des visuels définitifs.
 
-   28/08/2026 — six visuels provisoires de plus, carrousel « En images » (05).
-   ⚠ MÊME PROBLÈME QUE LES PORTRAITS, ET À PLUS GRANDE ÉCHELLE : quatre des six
-   montrent des personnes identifiables, sous des légendes qui les désignent
-   comme les adhérents et les coachs de la salle. Les deux autres montrent le
-   plateau et le matériel de quelqu'un d'autre sous les chiffres de WIP
-   (420 m², 4,20 m). C'est le lot le plus exposé de la page.
-
-   ┌─ POUR TOUT RETIRER D'UN COUP ───────────────────────────────────┐
-   │  décommenter les trois lignes ci-dessous : les fonds et les      │
-   │  portraits disparaissent, les briefs de shooting restent, les    │
-   │  vignettes de l'équipe reprennent leurs initiales et le badge    │
-   │  bleu « visuel provisoire » s'efface avec ce qu'il signalait.    │
+   ┌─ BASCULER LA PAGE EN MODE « SANS PHOTO » ───────────────────────┐
+   │  décommenter les trois lignes ci-dessous : les images se        │
+   │  vident, les briefs de shooting restent, les vignettes de       │
+   │  l'équipe reprennent leurs initiales et le badge bleu s'efface. │
    └─────────────────────────────────────────────────────────────────┘
    [data-provisoire] img { display: none !important; }
    .wip-equipe-vignettes button i { display: block !important; }
    .wip-espace-note b, .wip-coach-note b { display: none !important; }
 */
 .wip-photo[data-provisoire] { box-shadow: inset 0 0 0 2px var(--bleu); }
+/* Depuis le 01/09 la photo d'espace est un cadre visible et non plus un fond :
+   elle doit porter le même marquage que les autres. `data-provisoire` vit sur
+   .wip-espace, d'où le sélecteur descendant. */
+.wip-espace[data-provisoire] .wip-espace-vue { box-shadow: inset 0 0 0 2px var(--bleu); }
 .wip-photo[data-provisoire]::after,
-.wip-vie-cadre[data-provisoire]::after {
+.wip-vie-cadre[data-provisoire]::after,
+.wip-espace[data-provisoire] .wip-espace-vue::after {
   content: 'Visuel provisoire'; position: absolute; top: 0; left: 0; z-index: 3;
   background: var(--bleu); color: #fff;
   font-family: var(--mono); font-size: 8px; font-weight: 500;
@@ -1330,12 +1477,22 @@ html, body { margin: 0; padding: 0; }
   background: var(--fonte);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
 }
+/* Fondu dissymétrique — 28/08/2026.
+   Les deux vues avaient la même durée : à mi-course, elles étaient toutes
+   deux à 50 % d'opacité et le fond noir du cadre transparaissait, ce qui
+   creusait la transition. La sortante part maintenant plus vite (.34s) que
+   l'entrante n'arrive (.58s) : leurs opacités se recouvrent au lieu de se
+   croiser à mi-hauteur. Deux règles suffisent — la valeur d'arrivée choisit
+   sa transition, donc `.on` porte l'entrée et la règle de base la sortie. */
 .wip-vie-vue {
   position: absolute; inset: 0; margin: 0;
   opacity: 0; visibility: hidden;
-  transition: opacity .62s ease, visibility .62s;
+  transition: opacity .34s ease-in, visibility .34s;
 }
-.wip-vie-vue.on { opacity: 1; visibility: visible; z-index: 2; }
+.wip-vie-vue.on {
+  opacity: 1; visibility: visible; z-index: 2;
+  transition: opacity .58s ease-out, visibility 0s;
+}
 .wip-vie-vue img {
   width: 100%; height: 100%; object-fit: cover; display: block;
   transform: scale(1.05);
@@ -1348,7 +1505,9 @@ html, body { margin: 0; padding: 0; }
 /* Légende posée dans le coin bas-gauche, hors de la diagonale qui mange le
    coin bas-droit. Fond plein : sur six photos aux luminosités différentes,
    un simple dégradé ne garantissait pas le contraste. */
-.wip-vie-legende {
+/* Cartouche mutualisé entre la galerie et les quatre espaces : un seul jeu de
+   règles, donc deux composants qui ne peuvent pas dériver l'un de l'autre. */
+.wip-vie-legende, .wip-espace-legende {
   position: absolute; left: 0; bottom: 0; z-index: 4;
   max-width: min(48ch, 76%);
   background: rgba(11,13,12,.86);
@@ -1356,15 +1515,22 @@ html, body { margin: 0; padding: 0; }
   padding: 13px 17px 14px;
   border-bottom-left-radius: var(--talon);
 }
-.wip-vie-legende .wip-mono {
+.wip-vie-legende .wip-mono, .wip-espace-legende .wip-mono {
   display: block; font-size: 8.5px; font-weight: 500;
   letter-spacing: .12em; text-transform: uppercase; color: var(--bleu-c);
   margin-bottom: 5px;
 }
-.wip-vie-legende p {
+.wip-vie-legende p, .wip-espace-legende p {
   font-size: 14.5px; line-height: 1.45; color: var(--magnesie);
   font-stretch: 105%;
 }
+/* Le cartouche des espaces porte le descriptif entier, pas une seule phrase
+   comme celui de la galerie : il lui faut plus de largeur et un peu d'air.
+   Contraste vérifié au pire cas — magnésie sur un fond composite d'environ
+   #2D2D2D (noir à 86 % sur une image blanche) donne 9:1, très au-dessus du
+   seuil AA, quelle que soit la photo qui passe dessous. */
+.wip-espace-legende { max-width: min(62ch, 66%); padding: 17px 21px 18px; }
+.wip-espace-legende p { line-height: 1.5; }
 
 /* la barre : compteur, vignettes, flèches */
 .wip-vie-barre {
@@ -1692,9 +1858,11 @@ html, body { margin: 0; padding: 0; }
   }
 
   .wip-espace-corps { grid-template-rows: 1fr; }
-  /* les quatre espaces sont dépliés d'office : leurs quatre fonds doivent
-     l'être aussi, sinon seul le premier est illustré */
-  .wip-espace-fond { opacity: .3; }
+  /* Les quatre espaces sont dépliés d'office : leurs quatre photos sont donc
+     visibles d'emblée. Le recadrage lent, lui, dépend de la classe `.on` que
+     seul le script pose — on le neutralise pour que les images ne restent pas
+     figées sur leur agrandissement de départ. */
+  .wip-espace-vue img { transform: none; transition: none; }
   .wip-croix { display: none; }
 
   /* En images : sans script, les six vues se déplient en planche. Le visiteur
@@ -1832,6 +2000,19 @@ html, body { margin: 0; padding: 0; }
       <use href="#sig-wordmark" x="272"  y="209"  width="323" height="88"/>
       <use href="#sig-wordmark" x="-272" y="209"  width="323" height="88"/>
     </pattern>
+
+    <!-- ————— le disque olympique, vu de face —————
+         Un anneau, pas un aplat. Le rapport épaisseur/rayon (21 %) est repris
+         exactement des pastilles `.wip-disque` des espaces et du planning :
+         le lecteur retrouve en très grand la forme qu'il croise en 38 px.
+         C'est ce qui en fait un système plutôt qu'un décor.
+
+         Enroulement conforme au DESIGN_KNOWLEDGE : contour extérieur horaire,
+         contre-forme en sens inverse — rendu identique en nonzero comme en
+         evenodd, donc sans surprise selon le moteur.                       -->
+    <symbol id="sig-disque" viewBox="0 0 100 100">
+      <path fill="currentColor" d="M 50 0 A 50 50 0 1 1 50 100 A 50 50 0 1 1 50 0 Z M 50 10.5 A 39.5 39.5 0 1 0 50 89.5 A 39.5 39.5 0 1 0 50 10.5 Z"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -1936,7 +2117,8 @@ html, body { margin: 0; padding: 0; }
   </header>
 
   <!-- ————— espaces ————— -->
-  <section class="wip-wrap wip-sec sans-trait" id="espaces">
+  <section class="wip-wrap wip-sec sans-trait wip-a-galet" id="espaces">
+    <svg class="wip-galet" style="color: var(--d15); width: min(46vw, 500px); top: -70px; right: -150px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
       <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">01</span><b>Quatre espaces</b></span>
@@ -1954,11 +2136,6 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-espaces wip-rev">
 
       <div class="wip-espace on" data-espace data-provisoire>
-        <!-- Le bandeau est très panoramique : `cover` n'en garde qu'une bande.
-             Chaque fond est donc calé sur ce qui identifie la pratique — ici
-             les barres au sol, dans le tiers bas d'une image en portrait, et
-             non le mur qui occupe tout le haut. -->
-        <img class="wip-espace-fond" src="media/provisoire-cf.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 82%">
         <button class="wip-espace-tete" aria-expanded="true" aria-controls="espace-cf">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d25); color: var(--d25)">25</span>
           <span class="wip-espace-nom">Cross-training &amp; Hyrox</span>
@@ -1968,24 +2145,26 @@ html, body { margin: 0; padding: 0; }
         <div class="wip-espace-corps on" id="espace-cf">
           <div>
             <div class="wip-espace-in">
-              <span></span>
-              <div class="wip-espace-texte">
-                <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence.</p>
-                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</p>
+              <figure class="wip-espace-vue">
+                <img src="media/provisoire-cf.jpg" alt="Plateau de cross-training : barres au sol, rameurs et anneaux sous la charpente." loading="lazy" decoding="async" style="object-position: 50% 82%">
+                <div class="wip-espace-legende">
+                  <span class="wip-mono">Cross-training &amp; Hyrox</span>
+                  <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence.</p>
+                </div>
+              </figure>
+              <div class="wip-espace-bande">
+                <span><b>420 m²</b> de plateau</span>
+                <span><b>12</b> par cours</span>
+                <span><b>60 min</b> la séance</span>
+                <span><b>6h30 → 21h</b></span>
               </div>
-              <div class="wip-fiche">
-                <div><span class="wip-mono">Surface</span><span>420 m²</span></div>
-                <div><span class="wip-mono">Groupe</span><span>12 max</span></div>
-                <div><span class="wip-mono">Durée</span><span>60 min</span></div>
-                <div><span class="wip-mono">Créneaux</span><span>6h30 → 21h</span></div>
-              </div>
+              <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="wip-espace" data-espace data-provisoire>
-        <img class="wip-espace-fond" src="media/provisoire-pole.jpg" alt="" loading="lazy" decoding="async">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-pole">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d15); color: var(--d15)">15</span>
           <span class="wip-espace-nom">Studio Pole Dance &amp; Aérien</span>
@@ -1995,24 +2174,26 @@ html, body { margin: 0; padding: 0; }
         <div class="wip-espace-corps" id="espace-pole">
           <div>
             <div class="wip-espace-in">
-              <span></span>
-              <div class="wip-espace-texte">
-                <p>Un studio dédié, pas un coin de salle. Six barres, 4,20 m sous plafond, sol amortissant et rideaux occultants — parce que la première séance, on n'a pas envie d'être vue depuis le parking.</p>
-                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : studio pole, rideaux tirés, contre-jour. Le chrome de la barre, pas le visage. Ni rose, ni sourire posé face caméra</p>
+              <figure class="wip-espace-vue">
+                <img src="media/provisoire-pole.jpg" alt="Studio de pole dance : barre verticale, sol amortissant, lumière rasante." loading="lazy" decoding="async">
+                <div class="wip-espace-legende">
+                  <span class="wip-mono">Studio Pole Dance &amp; Aérien</span>
+                  <p>Un studio dédié, pas un coin de salle. Six barres, 4,20 m sous plafond, sol amortissant et rideaux occultants — parce que la première séance, on n'a pas envie d'être vue depuis le parking.</p>
+                </div>
+              </figure>
+              <div class="wip-espace-bande">
+                <span><b>80 m²</b> de studio</span>
+                <span><b>6</b> barres</span>
+                <span><b>4,20 m</b> sous plafond</span>
+                <span><b>75 min</b> la séance</span>
               </div>
-              <div class="wip-fiche">
-                <div><span class="wip-mono">Surface</span><span>80 m²</span></div>
-                <div><span class="wip-mono">Barres</span><span>6</span></div>
-                <div><span class="wip-mono">Hauteur</span><span>4,20 m</span></div>
-                <div><span class="wip-mono">Durée</span><span>75 min</span></div>
-              </div>
+              <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : studio pole, rideaux tirés, contre-jour. Le chrome de la barre, pas le visage. Ni rose, ni sourire posé face caméra</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="wip-espace" data-espace data-provisoire>
-        <img class="wip-espace-fond" src="media/provisoire-open.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 72%">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-open">
           <span class="wip-disque" style="background: var(--magnesie); border-color: var(--d2); color: var(--fonte)">2.5</span>
           <span class="wip-espace-nom">Open Gym</span>
@@ -2022,24 +2203,26 @@ html, body { margin: 0; padding: 0; }
         <div class="wip-espace-corps" id="espace-open">
           <div>
             <div class="wip-espace-in">
-              <span></span>
-              <div class="wip-espace-texte">
-                <p>Rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, vous faites ce que vous voulez. Un coach est toujours dans la salle si vous avez une question — il ne viendra pas vous corriger sans qu'on lui demande.</p>
-                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : plateforme d'haltérophilie, cadrage serré sur les mains et la magnésie. La troisième tentative, pas le record</p>
+              <figure class="wip-espace-vue">
+                <img src="media/provisoire-open.jpg" alt="Open gym : racks, haltères alignés et plateforme d'haltérophilie." loading="lazy" decoding="async" style="object-position: 50% 72%">
+                <div class="wip-espace-legende">
+                  <span class="wip-mono">Open Gym</span>
+                  <p>Rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, vous faites ce que vous voulez. Un coach est toujours dans la salle si vous avez une question — il ne viendra pas vous corriger sans qu'on lui demande.</p>
+                </div>
+              </figure>
+              <div class="wip-espace-bande">
+                <span><b>70 m²</b> en accès libre</span>
+                <span><b>6</b> racks</span>
+                <span><b>1</b> plateforme</span>
+                <span><b>Horaires d'ouverture</b></span>
               </div>
-              <div class="wip-fiche">
-                <div><span class="wip-mono">Surface</span><span>70 m²</span></div>
-                <div><span class="wip-mono">Accès</span><span>Horaire d'ouverture</span></div>
-                <div><span class="wip-mono">Racks</span><span>6</span></div>
-                <div><span class="wip-mono">Plateforme</span><span>1</span></div>
-              </div>
+              <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : plateforme d'haltérophilie, cadrage serré sur les mains et la magnésie. La troisième tentative, pas le record</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="wip-espace" data-espace data-provisoire>
-        <img class="wip-espace-fond" src="media/provisoire-chill.jpg" alt="" loading="lazy" decoding="async" style="object-position: 50% 66%">
         <button class="wip-espace-tete" aria-expanded="false" aria-controls="espace-chill">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d5); color: var(--d5)">5</span>
           <span class="wip-espace-nom">Zone Chill</span>
@@ -2049,17 +2232,20 @@ html, body { margin: 0; padding: 0; }
         <div class="wip-espace-corps" id="espace-chill">
           <div>
             <div class="wip-espace-in">
-              <span></span>
-              <div class="wip-espace-texte">
-                <p>Canapés, café, grande table. C'est ici que les gens restent vingt minutes après la séance et que la salle devient autre chose qu'une salle. On l'a dessiné en premier, avant les racks.</p>
-                <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : la Zone Chill vingt minutes après la séance. Plusieurs personnes, lumière du jour, personne ne pose</p>
+              <figure class="wip-espace-vue">
+                <img src="media/provisoire-chill.jpg" alt="Zone Chill : canapés, grande table et coin café, après la séance." loading="lazy" decoding="async" style="object-position: 50% 66%">
+                <div class="wip-espace-legende">
+                  <span class="wip-mono">Zone Chill</span>
+                  <p>Canapés, café, grande table. C'est ici que les gens restent vingt minutes après la séance et que la salle devient autre chose qu'une salle. On l'a dessinée en premier, avant les racks.</p>
+                </div>
+              </figure>
+              <div class="wip-espace-bande">
+                <span><b>60 m²</b> de séjour</span>
+                <span><b>24</b> places assises</span>
+                <span><b>Café</b> torréfié à Tours</span>
+                <span><b>Wifi</b></span>
               </div>
-              <div class="wip-fiche">
-                <div><span class="wip-mono">Surface</span><span>60 m²</span></div>
-                <div><span class="wip-mono">Places assises</span><span>24</span></div>
-                <div><span class="wip-mono">Café</span><span>torréfié à Tours</span></div>
-                <div><span class="wip-mono">Wifi</span><span>oui</span></div>
-              </div>
+              <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : la Zone Chill vingt minutes après la séance. Plusieurs personnes, lumière du jour, personne ne pose</p>
             </div>
           </div>
         </div>
@@ -2070,13 +2256,84 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
   </section>
 
+  <!-- ————— le vocabulaire —————
+       Placée juste après les espaces : on vient de lire « Cross-training &
+       Hyrox, 420 m² » et la question suivante est mécaniquement « oui mais
+       c'est quoi ». Y répondre ici évite que le visiteur aille la poser à
+       Google — et parte.
+
+       ⚠ §5 bis-A : le nom de la marque déposée du milieu n'apparaît pas, y
+       compris dans ce commentaire. La première fiche le désigne en clair
+       par ce qu'il est (« une licence américaine ») sans le nommer : c'est
+       la formulation qui informe le lecteur, ne loue le mot de personne, et
+       transforme au passage la contrainte en argument.
+
+       ⚠ La ligne d'affiliation HYROX est à revalider mot pour mot contre le
+       pack de marque affilié (§5 bis, « à obtenir ») : le libellé de statut
+       autorisé est imposé par HYROX et prime sur notre rédaction. -->
+  <section class="wip-wrap wip-sec wip-a-galet" id="lexique">
+    <svg class="wip-galet" style="color: var(--bleu); width: min(28vw, 300px); bottom: -80px; right: -110px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
+    <div class="wip-tsec">
+      <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">02</span><b>Le vocabulaire</b></span>
+      <h2>
+        <span class="m"><i style="--i:0">Cross-training,</i></span>
+        <span class="m"><i style="--i:1">Hyrox,</i></span>
+        <span class="m"><i style="--i:2">haltérophilie :</i></span>
+        <span class="m"><i style="--i:3">qui</i></span>
+        <span class="m"><i style="--i:4">fait</i></span>
+        <span class="m"><i style="--i:5">quoi</i></span>
+      </h2>
+      <p class="wip-tsec-intro">Trois mots qu'on emploie tout le temps ici et que personne n'est censé connaître avant d'entrer. Voilà ce qu'ils veulent dire, sans jargon et sans test d'entrée.</p>
+    </div>
+
+    <div class="wip-etapes wip-rev">
+      <div class="wip-etape">
+        <span class="wip-etape-n">01</span>
+        <h3>Le cross-training</h3>
+        <p>Le nom générique de la pratique : une séance courte et variée qui mélange gymnastique, port de charge et cardio, différente chaque jour. C'est la même méthode que dans les salles qui l'exploitent sous une licence américaine — enseigne différente, licence en moins, et ici personne ne vous demandera de carte.</p>
+        <span class="wip-mono">60 min · 12 par cours</span>
+      </div>
+      <div class="wip-etape">
+        <span class="wip-etape-n">02</span>
+        <h3>Le Hyrox</h3>
+        <p>Un format de course, pas une méthode : huit kilomètres de course entrecoupés de huit ateliers de force, toujours les mêmes, partout dans le monde. C'est ce qui permet de comparer un temps fait à Amboise avec un temps fait à Hambourg.</p>
+        <span class="wip-mono">8 km · 8 ateliers</span>
+      </div>
+      <div class="wip-etape">
+        <span class="wip-etape-n">03</span>
+        <h3>L'haltérophilie</h3>
+        <p>Deux mouvements — l'arraché, l'épaulé-jeté — et des années pour les affiner. Discipline olympique à part entière, travaillée ici sur plateforme dédiée, en cours comme en accès libre.</p>
+        <span class="wip-mono">2 mouvements · 1 plateforme</span>
+      </div>
+    </div>
+
+    <dl class="wip-lex">
+      <div><dt>WOD</dt><dd><b>Workout of the day</b> — l'entraînement du jour, affiché au tableau. Le même pour tout le monde, avec sa version allégée écrite juste à côté de la version prescrite.</dd></div>
+      <div><dt>Scaler</dt><dd>Adapter un mouvement à ce que vous savez faire aujourd'hui. Ce n'est pas une version au rabais : c'est la version juste. Tout le monde scale, y compris les coachs.</dd></div>
+      <div><dt>AMRAP</dt><dd><b>As many rounds as possible</b> — le maximum de tours dans un temps donné. Vous vous arrêtez au chronomètre, jamais à l'épuisement.</dd></div>
+      <div><dt>EMOM</dt><dd><b>Every minute on the minute</b> — un bloc de travail au départ de chaque minute, le temps qui reste est du repos. Le format le plus lisible pour une première séance.</dd></div>
+      <div><dt>Benchmark</dt><dd>Une séance de référence qu'on refait deux ou trois fois dans l'année. Le seul chronomètre qui compte : le vôtre, six mois plus tôt.</dd></div>
+      <div><dt>Rig</dt><dd>La structure d'acier au centre du plateau — barres de traction, anneaux, poulies, supports de barre. C'est autour d'elle que tourne le cours.</dd></div>
+      <div><dt>Box</dt><dd>Le nom que le milieu donne à ce type de salle. La nôtre fait 1 000 m² sous charpente, dans un ancien bâtiment industriel.</dd></div>
+      <div><dt>PR</dt><dd><b>Personal record</b> — votre meilleure marque sur un mouvement. On l'écrit au tableau pour la dater, pas pour la comparer à celle du voisin.</dd></div>
+    </dl>
+
+    <p class="wip-affil">
+      <b>Salle affiliée HYROX</b>
+      <i>L'affiliation engage le matériel, le format des ateliers et la formation des coachs sur les huit stations officielles. C'est ce qui sépare une préparation Hyrox d'un cours qui y ressemble.</i>
+    </p>
+
+    <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
   <!-- ————— pourquoi ce nom ————— -->
   <section class="wip-nom">
     <svg class="wip-trame" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#sig-trame)"/></svg>
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--magnesie)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">02</span><b>Pourquoi ce nom</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">03</span><b>Pourquoi ce nom</b></span>
         <h2>
           <span class="m"><i style="--i:0">Trois</i></span>
           <span class="m"><i style="--i:1">verbes,</i></span>
@@ -2115,10 +2372,11 @@ html, body { margin: 0; padding: 0; }
   </section>
 
   <!-- ————— questions ————— -->
-  <section class="wip-wrap wip-sec sans-trait">
+  <section class="wip-wrap wip-sec sans-trait wip-a-galet">
+    <svg class="wip-galet" style="color: var(--d25); width: min(34vw, 360px); bottom: -110px; left: -140px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">03</span><b>Ce qu'on nous dit le plus souvent</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">04</span><b>Ce qu'on nous dit le plus souvent</b></span>
       <h2>
         <span class="m"><i style="--i:0">Les</i></span>
         <span class="m"><i style="--i:1">quatre</i></span>
@@ -2152,10 +2410,11 @@ html, body { margin: 0; padding: 0; }
   </section>
 
   <!-- ————— première fois ————— -->
-  <section class="wip-wrap wip-sec" id="premiere-fois">
+  <section class="wip-wrap wip-sec wip-a-galet" id="premiere-fois">
+    <svg class="wip-galet" style="color: var(--bleu); width: min(24vw, 250px); top: 120px; right: -95px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">04</span><b>Première visite</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>Première visite</b></span>
       <h2>
         <span class="m"><i style="--i:0">La</i></span>
         <span class="m"><i style="--i:1">première</i></span>
@@ -2201,7 +2460,7 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-wrap wip-sec sans-trait" id="galerie">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>En images</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>En images</b></span>
       <h2>
         <span class="m"><i style="--i:0">Des</i></span>
         <span class="m"><i style="--i:1">gens</i></span>
@@ -2237,6 +2496,9 @@ html, body { margin: 0; padding: 0; }
         <figure class="wip-vie-vue">
           <img src="media/provisoire-vie-06.jpg" width="1400" height="933" alt="Travail du gainage au medicine ball, au sol, contre le mur de brique." loading="lazy" decoding="async">
         </figure>
+        <figure class="wip-vie-vue">
+          <img src="media/provisoire-vie-06.jpg" width="1400" height="933" alt="Un test d'ajout d'image" loading="lazy" decoding="async">
+        </figure>
 
         <!-- La légende est réécrite par le script ; ce contenu est celui de la
              première vue, pour que le sens tienne aussi sans JavaScript. -->
@@ -2247,7 +2509,7 @@ html, body { margin: 0; padding: 0; }
       </div>
 
       <div class="wip-vie-barre">
-        <p class="wip-mono wip-vie-compteur"><b data-vie-compteur>01</b> / 06</p>
+        <p class="wip-mono wip-vie-compteur"><b data-vie-compteur>01</b> / 07</p>
 
         <div class="wip-vie-vignettes" role="tablist" aria-label="Choisir une photo">
           <button type="button" aria-current="true" aria-label="Photo 1 : le plateau d'entraînement"><img src="media/provisoire-vie-01.jpg" alt="" loading="lazy" decoding="async"></button>
@@ -2256,6 +2518,7 @@ html, body { margin: 0; padding: 0; }
           <button type="button" aria-label="Photo 4 : un adhérent au rameur"><img src="media/provisoire-vie-04.jpg" alt="" loading="lazy" decoding="async"></button>
           <button type="button" aria-label="Photo 5 : la récupération en groupe"><img src="media/provisoire-vie-05.jpg" alt="" loading="lazy" decoding="async"></button>
           <button type="button" aria-label="Photo 6 : gainage au medicine ball"><img src="media/provisoire-vie-06.jpg" alt="" loading="lazy" decoding="async"></button>
+          <button type="button" aria-label="Photo 7 : Test"><img src="media/provisoire-vie-06.jpg" alt="" loading="lazy" decoding="async"></button>
         </div>
 
         <div class="wip-vie-nav">
@@ -2268,17 +2531,18 @@ html, body { margin: 0; padding: 0; }
         </div>
       </div>
 
-      <p class="wip-espace-note"><b>Visuels provisoires</b>À photographier : six vues de la salle en séance — le plateau, le matériel, un cours en cours, l'effort, la récupération. Lumière latérale dure, tous les gabarits, jamais un sourire posé face caméra</p>
+      <p class="wip-espace-note"><b>Visuels provisoires</b>À photographier : sept vues de la salle en séance — le plateau, le matériel, un cours en cours, l'effort, la récupération. Lumière latérale dure, tous les gabarits, jamais un sourire posé face caméra</p>
     </div>
 
     <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
   </section>
 
   <!-- ————— équipe ————— -->
-  <section class="wip-wrap wip-sec" id="equipe">
+  <section class="wip-wrap wip-sec wip-a-galet" id="equipe">
+    <svg class="wip-galet" style="color: var(--fonte); width: min(42vw, 460px); bottom: -130px; left: -180px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--fonte)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>L'équipe</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>L'équipe</b></span>
       <h2>
         <span class="m"><i style="--i:0">Vous</i></span>
         <span class="m"><i style="--i:1">choisissez</i></span>
@@ -2381,11 +2645,12 @@ html, body { margin: 0; padding: 0; }
   </section>
 
   <!-- ————— planning ————— -->
-  <section class="wip-sec sans-trait pose" id="planning">
+  <section class="wip-sec sans-trait pose wip-a-galet" id="planning">
+    <svg class="wip-galet" style="color: var(--d25); width: min(30vw, 330px); top: -80px; right: -110px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>Planning</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Planning</b></span>
         <h2>
           <span class="m"><i style="--i:0">Les</i></span>
           <span class="m"><i style="--i:1">horaires,</i></span>
@@ -2480,7 +2745,7 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-wrap wip-sec sans-trait" id="lieu">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Le lieu</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">09</span><b>Le lieu</b></span>
       <h2>
         <span class="m"><i style="--i:0">Un</i></span>
         <span class="m"><i style="--i:1">ancien</i></span>
@@ -2527,11 +2792,12 @@ html, body { margin: 0; padding: 0; }
   </section>
 
   <!-- ————— formules & contact ————— -->
-  <section class="wip-sec pose" id="tarifs">
+  <section class="wip-sec pose wip-a-galet" id="tarifs">
+    <svg class="wip-galet" style="color: var(--bleu); width: min(44vw, 480px); bottom: -160px; left: -170px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">09</span><b>Formules</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">10</span><b>Formules</b></span>
         <h2>
           <span class="m"><i style="--i:0">On</i></span>
           <span class="m"><i style="--i:2">en</i></span>
@@ -2571,7 +2837,7 @@ html, body { margin: 0; padding: 0; }
         </div>
         <div>
           <span class="wip-mono">Du lundi au samedi, 9h – 20h</span>
-          <a href="tel:+33000000000" class="wip-tel" style="margin-top: 10px">02 47 00 00 00</a>
+          <a href="tel:+33780335321" class="wip-tel" style="margin-top: 10px">07 80 33 53 21</a>
           <div style="margin-top: 20px">
             <a href="#reserver" class="wip-cta">Réserver ma séance d'essai<i aria-hidden="true">→</i></a>
           </div>
@@ -2648,6 +2914,7 @@ html, body { margin: 0; padding: 0; }
           <h4>La salle</h4>
           <ul>
             <li><a href="#espaces">Les quatre espaces</a></li>
+            <li><a href="#lexique">Cross-training, Hyrox : le vocabulaire</a></li>
             <li><a href="#planning">Planning des cours</a></li>
             <li><a href="#tarifs">Formules et essai</a></li>
             <li><a href="#equipe">Les coachs</a></li>
@@ -2685,7 +2952,7 @@ html, body { margin: 0; padding: 0; }
         <div>
           <h4>Nous parler</h4>
           <ul>
-            <li><a href="tel:+33247000000">02 47 00 00 00</a></li>
+            <li><a href="tel:+33780335321">07 80 33 53 21</a></li>
             <li><a href="https://instagram.com/wip.athletic">@wip.athletic</a></li>
             <li>bonjour@wipathletics.fr</li>
             <li>Mentions légales · CGV</li>
@@ -2716,15 +2983,19 @@ html, body { margin: 0; padding: 0; }
   d'une salle de sport ; HealthAndBeautyBusiness seul désignait un institut de
   beauté et brouillait la catégorisation.
 
-  ⚠ TROIS VALEURS À RENSEIGNER AVANT MISE EN LIGNE
-  1. "telephone" — 02 47 00 00 00 est un numéro de remplissage.
-  2. "geo" — absent volontairement : des coordonnées approximatives contredisent
+  ⚠ DEUX VALEURS À RENSEIGNER AVANT MISE EN LIGNE
+  ("telephone" est renseigné depuis le 01/09/2026 : +33 7 80 33 53 21.)
+  1. "geo" — absent volontairement : des coordonnées approximatives contredisent
      la fiche Google Business et affaiblissent le référencement local. Relever la
      latitude et la longitude exactes sur Google Maps (clic droit sur la porte),
      puis ajouter dans le nœud #salle :
      "geo": { "@type": "GeoCoordinates", "latitude": 47.xxxxx, "longitude": 0.xxxxx },
-  3. "sameAs" — compléter avec la page Facebook et la fiche Google Business
+  2. "sameAs" — compléter avec la page Facebook et la fiche Google Business
      dès qu'elles existent : c'est ce qui relie la page à l'entité Google.
+
+  Le numéro doit rester au format E.164 ("+33780335321") dans le JSON-LD : c'est
+  ce qui permet à Google de le rapprocher de celui de la fiche Google Business.
+  Le format lisible (07 80 33 53 21) est réservé à l'affichage.
 
   Les horaires portent un "validFrom" au 31/10/2026. Sans lui, Google peut
   afficher « Ouvert » dès aujourd'hui, alors que le bâtiment est en chantier.
@@ -2744,7 +3015,7 @@ html, body { margin: 0; padding: 0; }
       "url": "https://wipathletics.fr/",
       "logo": "https://wipathletics.fr/logo/png/wip-logo-principal-noir@2400.png",
       "image": "https://wipathletics.fr/media/og-wip-athletics.jpg",
-      "telephone": "+33247000000",
+      "telephone": "+33780335321",
       "email": "bonjour@wipathletics.fr",
       "currenciesAccepted": "EUR",
       "paymentAccepted": "Carte bancaire, prélèvement, espèces",
@@ -2762,19 +3033,35 @@ html, body { margin: 0; padding: 0; }
       "hasMap": "https://www.google.com/maps/search/?api=1&query=1329+chemin+du+Roi,+37400+Amboise,+France",
       "areaServed": ["Amboise","Nazelles-Négron","Pocé-sur-Cisse","Vouvray","Montlouis-sur-Loire","Bléré","Château-Renault","Saint-Règle","Limeray","Tours","Tours Est","Indre-et-Loire","Val de Loire"],
       "sameAs": ["https://www.instagram.com/wip.athletic"],
+      "memberOf": {
+        "@type": "Organization",
+        "name": "HYROX",
+        "url": "https://hyrox.com/",
+        "description": "Réseau international de salles affiliées à la course HYROX."
+      },
       "knowsAbout": [
         "Cross training",
         "Entraînement fonctionnel",
         "Préparation physique Hyrox",
+        "Course HYROX",
         "Pole dance",
         "Disciplines aériennes",
         "Haltérophilie",
+        "Arraché et épaulé-jeté",
         "Musculation",
         "Renforcement musculaire",
         "Conditionnement physique",
         "Coaching sportif",
         "Remise en forme",
-        "Open gym"
+        "Open gym",
+        "WOD - entraînement du jour",
+        "AMRAP",
+        "EMOM",
+        "Séance benchmark",
+        "Adaptation des mouvements (scaling)",
+        "Gymnastique aux anneaux",
+        "Rameur et ski erg",
+        "Sled push et sled pull"
       ],
       "openingHoursSpecification": [
         { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "06:30", "closes": "22:00", "validFrom": "2026-10-31" },
@@ -2866,6 +3153,10 @@ html, body { margin: 0; padding: 0; }
         { "@type": "Question", "name": "Y a-t-il un âge limite pour s'inscrire ?", "acceptedAnswer": { "@type": "Answer", "text": "Nos adhérents vont de 16 à 71 ans. Les mouvements sont les mêmes que ceux de la vie courante : se relever, porter, pousser. Ils deviennent plus utiles avec l'âge, pas moins." } },
         { "@type": "Question", "name": "Faut-il être à l'aise avec le regard des autres ?", "acceptedAnswer": { "@type": "Answer", "text": "Personne ne regarde. Tout le monde est occupé à finir sa propre série. Et si vous préférez commencer seul, l'Open Gym et le coaching individuel existent pour ça." } },
         { "@type": "Question", "name": "Quelles activités pratique-t-on à WIP Athletics ?", "acceptedAnswer": { "@type": "Answer", "text": "Quatre espaces sur 1 000 m² : le cross-training et la préparation Hyrox sur 420 m², le studio de pole dance et d'aérien sur 80 m², l'open gym en accès libre sur 70 m² avec sa plateforme d'haltérophilie, et une zone chill de 60 m² avec café. Les cours collectifs sont limités à 12 personnes." } },
+        { "@type": "Question", "name": "C'est quoi le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Le nom générique de la pratique : une séance courte et variée qui mélange gymnastique, port de charge et cardio, différente chaque jour. C'est la même méthode que dans les salles qui l'exploitent sous une licence américaine — enseigne différente, licence en moins. Chaque mouvement du jour a une version allégée écrite à côté de la version prescrite." } },
+        { "@type": "Question", "name": "Quelle est la différence entre le cross-training et le Hyrox ?", "acceptedAnswer": { "@type": "Answer", "text": "Le cross-training est une méthode d'entraînement : une séance différente chaque jour. Le Hyrox est un format de course : huit kilomètres entrecoupés de huit ateliers de force, toujours les mêmes, partout dans le monde. On s'entraîne en cross-training, on court un Hyrox — et c'est ce format identique partout qui permet de comparer un temps fait à Amboise avec un temps fait à Hambourg." } },
+        { "@type": "Question", "name": "WIP Athletics est-elle une salle affiliée HYROX ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. WIP Athletics est une salle affiliée HYROX à Amboise, en Indre-et-Loire. L'affiliation engage le matériel, le format des ateliers et la formation des coachs sur les huit stations officielles : c'est ce qui sépare une préparation Hyrox d'un cours qui y ressemble." } },
+        { "@type": "Question", "name": "Faut-il connaître le vocabulaire (WOD, AMRAP, EMOM) avant de venir ?", "acceptedAnswer": { "@type": "Answer", "text": "Non, et personne ne vous le demandera. WOD est l'entraînement du jour, AMRAP le maximum de tours dans un temps donné, EMOM un bloc de travail au départ de chaque minute, scaler l'adaptation d'un mouvement à votre niveau du jour. Ces mots s'apprennent en trois séances, et le coach les traduit à voix haute tant que c'est nécessaire." } },
         { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "Au 1329 chemin du Roi, 37400 Amboise, à dix minutes du centre d'Amboise et vingt-cinq minutes de Tours. 1 000 m² sous charpente, hauteur libre de 4,20 m, parking gratuit de 40 places devant la porte. Vestiaires neufs, douches individuelles, accès PMR complet." } },
         { "@type": "Question", "name": "Comment réserver une séance d'essai ?", "acceptedAnswer": { "@type": "Answer", "text": "Les formules dépendent de ce que vous voulez pratiquer, de votre rythme et de vos horaires : on en discute cinq minutes au téléphone, puis on vous accueille sur place. La séance d'essai est offerte et sans engagement. Elle se réserve dès maintenant, pour un créneau à partir du 31 octobre 2026." } }
       ]
@@ -2936,6 +3227,14 @@ html, body { margin: 0; padding: 0; }
       Array.prototype.forEach.call(joursPl, function (j, n) {
         if (n === i) { j.removeAttribute('hidden'); } else { j.setAttribute('hidden', ''); }
       });
+      /* Le curseur se place tout seul depuis cet index (voir la feuille) :
+         la grille est régulière, aucune mesure n'est nécessaire. La classe
+         `pret` n'arme la transition qu'au coup suivant, pour que l'ouverture
+         de la page ne déclenche pas un glissement non sollicité. */
+      barreJours.style.setProperty('--onglet', i);
+      if (!barreJours.classList.contains('pret')) {
+        requestAnimationFrame(function () { barreJours.classList.add('pret'); });
+      }
     };
 
     /* lundi = 0 … samedi = 5 ; le dimanche renvoie au lundi, la salle est fermée */
@@ -3107,6 +3406,7 @@ html, body { margin: 0; padding: 0; }
     var vOeil      = vie.querySelector('[data-vie-oeil]');
     var vTexte     = vie.querySelector('[data-vie-texte]');
     var vBande     = vie.querySelector('.wip-vie-vignettes');
+    var vLegende   = vie.querySelector('.wip-vie-legende');
     var vCourant   = 0;
 
     /* Ramène la vignette active dans la bande sans jamais toucher au
@@ -3144,8 +3444,18 @@ html, body { margin: 0; padding: 0; }
         else { v.removeAttribute('aria-current'); }
       });
       if (vCompteur) vCompteur.textContent = ('0' + (cible + 1)).slice(-2);
-      if (vOeil && LEGENDES[cible])  vOeil.textContent  = LEGENDES[cible][0];
-      if (vTexte && LEGENDES[cible]) vTexte.textContent = LEGENDES[cible][1];
+
+      /* Une vue ajoutée dans le HTML sans sa ligne dans LEGENDES gardait le
+         texte de la vue précédente — une légende fausse, ce qui est pire que
+         pas de légende du tout. Le cartouche s'efface donc quand la ligne
+         manque. Pour la remplir : ajouter une entrée au tableau ci-dessus,
+         dans le même ordre que les <figure> du HTML. */
+      var leg = LEGENDES[cible];
+      if (vLegende) vLegende.hidden = !leg;
+      if (leg) {
+        if (vOeil)  vOeil.textContent  = leg[0];
+        if (vTexte) vTexte.textContent = leg[1];
+      }
 
       vCadrerVignette(vVignettes[cible]);
       vCourant = cible;

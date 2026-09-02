@@ -932,7 +932,7 @@ const DONNEES_STRUCTUREES = {
       description: DESCRIPTION_PAGE,
       slogan: "Work. Improve. Progress.",
       url: "https://wipathletics.fr",
-      telephone: "+33247000000",
+      telephone: "+33780335321",
       email: "bonjour@wipathletics.fr",
       currenciesAccepted: "EUR",
       address: {
@@ -1506,8 +1506,8 @@ export default function WipAthletics() {
             </div>
             <div>
               <span className="wip-mono">Du lundi au samedi, 9h – 20h</span>
-              <a href="tel:+33000000000" className="wip-tel" style={{ marginTop: 10 }}>
-                02 47 00 00 00
+              <a href="tel:+33780335321" className="wip-tel" style={{ marginTop: 10 }}>
+                07 80 33 53 21
               </a>
               <div style={{ marginTop: 20 }}>
                 <a href="#reserver" className="wip-cta">
@@ -1643,7 +1643,7 @@ export default function WipAthletics() {
             <div>
               <h4>Nous parler</h4>
               <ul>
-                <li><a href="tel:+33247000000">02 47 00 00 00</a></li>
+                <li><a href="tel:+33780335321">07 80 33 53 21</a></li>
                 <li><a href="https://instagram.com/wip.athletic">@wip.athletic</a></li>
                 <li>bonjour@wipathletics.fr</li>
                 <li>Mentions légales · CGV</li>

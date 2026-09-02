@@ -4,14 +4,7 @@
 User-agent: *
 Allow: /
 
-# Visuels provisoires de maquette : ce sont des photos de banque d'images qui
-# ne montrent NI la salle NI l'équipe. Tant qu'elles sont en ligne, on évite
-# au moins qu'elles soient indexées dans Google Images sous le nom de la salle.
-# La règle joue par préfixe : cette seule ligne couvre les quatre fonds d'espace
-# et les trois portraits. À supprimer le jour du shooting — voir media/CREDITS.md.
-Disallow: /media/provisoire-
-
-# Vidéo de fond : 75 Mo, aucun intérêt pour un moteur, coût de crawl réel.
+# Vidéo de fond : 14 Mo, aucun intérêt pour un moteur, coût de crawl réel.
 Disallow: /media/wip-hero.mp4
 
 Sitemap: https://wipathletics.fr/sitemap.xml
