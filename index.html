@@ -992,12 +992,11 @@ html, body { margin: 0; padding: 0; }
   .wip-espace-tete .wip-espace-meta { display: none; }
   .wip-disque { width: 38px; height: 38px; border-width: 3px; font-size: 8px; }
   .wip-espace-in { grid-template-columns: 1fr; gap: 24px; padding: 4px 0 28px; }
-  /* Même bascule que la galerie sous 700 px : le 3:2 devient 4:3 pour garder
-     de la hauteur utile une fois la largeur réduite, et le cartouche reprend
-     toute la largeur — à 76 %, il ne tenait plus qu'une poignée de mots. */
-  .wip-espace-vue { aspect-ratio: 4 / 3; }
-  .wip-espace-legende { max-width: 100%; padding: 11px 14px 12px; }
-  .wip-espace-legende p { font-size: 13px; }
+  /* Le cadre garde son 3:2 jusqu'à 520 px : à cette largeur la photo est déjà
+     pleine largeur et la surimpression du cartouche tient encore. En dessous
+     elle décroche — la bascule est dans le bloc « cartouche mutualisé » plus
+     bas, seul endroit du source où la règle l'emporte. Voir l'avertissement de
+     cascade qui y est posé. */
 }
 
 /* ———————————————————— section sombre : pourquoi ce nom ———————————————————— */
@@ -1531,6 +1530,55 @@ html, body { margin: 0; padding: 0; }
    seuil AA, quelle que soit la photo qui passe dessous. */
 .wip-espace-legende { max-width: min(62ch, 66%); padding: 17px 21px 18px; }
 .wip-espace-legende p { line-height: 1.5; }
+
+/* ⚠ CASCADE — ce bloc doit rester APRÈS les deux règles ci-dessus. À
+   spécificité égale c'est l'ordre du source qui tranche, et la bascule mobile
+   vivait jusqu'au 02/09 dans le @media des espaces, 500 lignes plus haut : son
+   `max-width: 100%` était écrasé par le `min(62ch, 66%)` juste au-dessus, sans
+   qu'aucun outil ne le signale. Ne pas la redéplacer vers le haut.
+
+   MESURÉ sur « Cross-training & Hyrox », la plus longue des quatre fiches
+   (330 signes de descriptif) :
+     390 px — cartouche 292 px de haut dans un cadre de 293 px → la photo est
+              couverte à 100 %, on ne voit plus rien de la salle ;
+     360 px — cartouche 314 px dans un cadre de 270 px → 116 %, et 44 px de
+              texte passent sous le bord haut, coupés par l'`overflow: hidden`.
+
+   La surimpression convient au cartouche de la galerie, qui porte une phrase.
+   Elle ne convient pas à celui des espaces, qui porte le descriptif entier.
+
+   SEUIL MESURÉ, pas choisi. Part du cadre occupée par le cartouche, en
+   balayant les largeurs sur cette même fiche :
+     760 → 28 %   640 → 29 %   560 → 38 %   520 → 46 %
+     480 → 49 %   440 → 60 %   400 → 72 %   360 → 87 %
+   La surimpression tient tant qu'elle reste sous la moitié de la photo, et
+   décroche brutalement en dessous de 480 px. On bascule donc à 520 px — le
+   dernier palier sain, et un point de rupture qui existe déjà dans ce fichier
+   plutôt qu'un treizième. Au-dessus, la surimpression est conservée : elle
+   fonctionne, et c'est la mise en page d'origine. */
+@media (max-width: 520px) {
+  /* le cadre cesse d'être une fenêtre et redevient une colonne ; la coupe
+     diagonale du §5 passe sur l'image elle-même, elle n'est pas perdue */
+  .wip-espace-vue {
+    aspect-ratio: auto; max-height: none; overflow: visible; clip-path: none;
+  }
+  .wip-espace-vue img {
+    aspect-ratio: 4 / 3; height: auto;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--coupe-y)), calc(100% - var(--coupe-x)) 100%, 0 100%);
+  }
+  /* Le liseré « provisoire » cerclait la fenêtre. Sans clip-path il ferait le
+     tour de l'image ET du cartouche : seule la pastille du coin reste. */
+  .wip-espace[data-provisoire] .wip-espace-vue { box-shadow: none; }
+  /* Fond plein au lieu du voile flouté : le cartouche ne se pose plus sur une
+     photo, il n'a donc plus rien à laisser transparaître — et le backdrop-filter
+     coûtait une couche de composition pour rien. */
+  .wip-espace-legende {
+    position: static; max-width: 100%; padding: 15px 17px 17px;
+    background: var(--fonte);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .wip-espace-legende p { font-size: 14px; }
+}
 
 /* la barre : compteur, vignettes, flèches */
 .wip-vie-barre {
