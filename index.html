@@ -129,8 +129,18 @@ html, body { margin: 0; padding: 0; }
   --gutter: clamp(20px, 4vw, 64px);
   --section-y: clamp(72px, 10vw, 160px);
   --maxw: 1440px;
-  --fs-display-1: clamp(52px, 9vw, 136px);
-  --fs-display-3: clamp(36px, 4.6vw, 72px);
+  /* ⚠ Deux dimensions, pas une. Un titre calé sur la seule largeur devient
+     trop haut dès que l'écran est bas : mesuré à 1440 × 900, le hero épinglé
+     débordait de 91 px et passait sous la barre. `min(9vw, 13vh)` le borne par
+     la plus contraignante des deux. Le plancher descend à 38 px : à 390 px de
+     large, 9vw n'en fait que 35 et l'ancien plancher de 52 px ne descendait
+     jamais — c'est ce qui coupait « WORK. » sur téléphone. */
+  --fs-display-1: clamp(38px, min(9vw, 13vh), 136px);
+  /* Plancher à 26 px et non 36 : en chasse 125 %, un caractère de titre mesure
+     ~0,83 × le corps. « IMPRESSIONNENT » (14 signes) fait donc 420 px à 36 px,
+     soit plus que les 350 px utiles d'un écran de 390. Aucune largeur maximale
+     ne rattrape un mot indivisible trop large — seul le corps le peut. */
+  --fs-display-3: clamp(26px, 4.6vw, 72px);
   --fs-h3: 24px; --fs-lead: 19px; --fs-body: 16px; --fs-sm: 14px; --fs-label: 13px; --fs-micro: 11px;
   --ls-display: -.035em; --ls-heading: -.02em; --ls-label: .14em;
   --dur-2: 200ms; --dur-3: 340ms; --dur-4: 620ms; --dur-5: 900ms;
@@ -319,7 +329,7 @@ html, body { margin: 0; padding: 0; }
 .wip-hero-pause.actif { display: inline-flex; }
 .wip-hero-pause:hover { color: var(--magnesie); }
 .wip-hero-pause i { font-style: normal; font-size: 11px; }
-.wip-hero-in { position: relative; z-index: 1; width: 100%; padding-top: var(--sp-10); padding-bottom: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-6); }
+.wip-hero-in { position: relative; z-index: 1; width: 100%; padding-top: clamp(24px, 8vh, 128px); padding-bottom: clamp(28px, 5vh, 64px); display: flex; flex-direction: column; gap: clamp(16px, 2.5vh, 32px); }
 .wip-hero-tags { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 .wip-titre {
   display: flex; flex-direction: column; gap: var(--sp-2);
@@ -400,7 +410,11 @@ html, body { margin: 0; padding: 0; }
 .wip-tsec-oeil span { color: var(--beton-c); }
 .wip-sec.clair .wip-tsec-oeil i { color: var(--bleu); }
 .wip-sec.clair .wip-tsec-oeil span { color: var(--beton-f); }
-.wip-tsec h2 { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: var(--fs-display-3); line-height: 1.04; letter-spacing: var(--ls-display); text-transform: uppercase; max-width: 18ch; }
+/* ⚠ `min(18ch, 100%)` et non `18ch` seul. L'unité ch suit le corps du texte :
+   à 36 px en chasse 125 %, 18 caractères mesurent 420 px — plus large qu'un
+   écran de 390 px. Le titre de la section « L'équipe » débordait donc du cadre
+   sur téléphone, les mots longs coupés au bord. Mesuré le 02/09. */
+.wip-tsec h2 { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: var(--fs-display-3); line-height: 1.04; letter-spacing: var(--ls-display); text-transform: uppercase; max-width: min(18ch, 100%); }
 .wip-tsec-intro { font-size: var(--fs-lead); line-height: 1.55; color: var(--beton-c); max-width: 46ch; }
 .wip-sec.clair .wip-tsec-intro { color: var(--encre); }
 .wip-tsec-filet { width: 100%; height: 1px; background: var(--trait-n); margin-top: var(--sp-2); }
@@ -497,6 +511,39 @@ html, body { margin: 0; padding: 0; }
 .wip-creneau b { font-family: var(--mono); font-size: var(--fs-label); font-weight: 500; color: var(--magnesie); font-variant-numeric: tabular-nums; }
 .wip-creneau span { font-family: var(--mono); font-size: 10px; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--beton-c); }
 .wip-creneau[hidden] { display: none; }
+/* ————————————— le planning sur petit écran —————————————
+   Sept jours empilés, c'est 31 créneaux à la file : plus de 2 500 px à faire
+   défiler pour une information qu'on consulte en trois secondes. Sous 860 px —
+   dès que la grille ne tient plus en colonnes lisibles — le planning montre
+   donc UN SEUL jour, choisi dans une barre d'onglets.
+
+   L'en-tête de jour disparaît alors : l'onglet actif porte déjà l'information,
+   et le répéter juste en dessous ne fait qu'ajouter du bruit. */
+.wip-jours-onglets { display: none; }
+@media (max-width: 860px) {
+  .wip-jours-onglets {
+    display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+  }
+  .wip-jours-onglets::-webkit-scrollbar { display: none; }
+  .wip-jours-onglets button {
+    --chanfrein: 7px; --talon: 5px;
+    flex: none; padding: 10px 15px; min-height: 40px;
+    font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label);
+    text-transform: uppercase; color: var(--beton-c);
+    box-shadow: inset 0 0 0 1px var(--trait-n2);
+    transition: all var(--dur-2) var(--ease-drive);
+  }
+  .wip-jours-onglets button[aria-pressed="true"] { background: var(--magnesie); color: var(--fonte); box-shadow: none; }
+  /* ⚠ Préfixé par l'id : le bloc « responsive » de fin de feuille déclare le
+     planning à 4 colonnes sous 1100 px, et à 390 px les deux media queries
+     s'appliquent. À spécificité égale, la dernière déclarée gagnait — le jour
+     affiché n'occupait qu'un quart de la largeur. On ne dépend plus de l'ordre. */
+  #planning .wip-planning { grid-template-columns: 1fr; }
+  .wip-jour-tete { display: none; }
+  .wip-jour { min-height: 0; }
+}
+
 .wip-planning-note { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: .06em; color: var(--beton-c); }
 
 /* ═══ COACHCARD — CD : image 3:4, nom uppercase 125, rôle, traits de discipline ═══ */
@@ -665,7 +712,10 @@ html, body { margin: 0; padding: 0; }
 @media (max-width: 860px) {
   .wip-verbes, .wip-etapes { grid-template-columns: 1fr; }
   .wip-q-item { grid-template-columns: 1fr; gap: var(--sp-4); }
-  .wip-planning { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* ⚠ Le planning n'a plus de règle de colonnes ici. Sous 860 px il passe à un
+     seul jour (bloc « le planning sur petit écran », plus haut) : une règle à
+     deux colonnes déclarée APRÈS celle-là la battait à spécificité égale, et le
+     jour affiché n'occupait que la moitié de la largeur. */
   .wip-galerie { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: minmax(100px, auto); }
   .wip-tuile { grid-column: span 6 !important; grid-row: span 2 !important; }
   .wip-tuile:nth-child(n+3) { grid-column: span 3 !important; }
@@ -675,12 +725,21 @@ html, body { margin: 0; padding: 0; }
 @media (max-width: 560px) {
   .wip-cartes, .wip-coachs { grid-template-columns: 1fr; }
   .wip-carte { min-height: 420px; }
-  .wip-planning { grid-template-columns: 1fr; }
-  /* en pile, chaque jour se réduit à ce qu'il contient et l'en-tête colle à ses créneaux */
-  .wip-jour { min-height: 0; }
-  .wip-jour-tete { position: sticky; top: var(--nav-h); z-index: 1; }
+  /* le planning à un jour est géré plus haut, à 860 px */
   .wip-tuile:nth-child(n+3) { grid-column: span 6 !important; }
-  .wip-hero-in { padding-top: var(--sp-9); }
+  /* ⚠ LE HERO EST ÉPINGLÉ : son contenu doit tenir dans la hauteur disponible,
+     sinon il déborde PAR LE HAUT (align-items: flex-end) et passe sous la barre.
+     C'est ce qui coupait « WORK. » sur téléphone — constaté le 02/09.
+
+     Mesuré à 390 × 844 : la barre prend 70 px, il reste 774 px. Le budget se
+     tient à ~640 px avec les valeurs ci-dessous, marge comprise. Toute
+     augmentation de padding, de gap ou de corps ici doit être remesurée. */
+  /* paddings et gouttières : gérés en vh sur la règle de base */
+  .wip-sous { font-size: 16px; line-height: 1.5; }
+  .wip-hero-tags { gap: 6px; }
+  .wip-tag { padding: 5px 9px 4px; font-size: 10px; }
+  .wip-actions { gap: var(--sp-2); }
+  .wip-cta-lg { padding: 16px 22px; font-size: 15px; }
   .wip-pied-grid { gap: var(--sp-6); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -943,6 +1002,15 @@ html, body { margin: 0; padding: 0; }
         <button type="button" class="wip-coupe" data-filtre="hyrox" aria-pressed="false" style="--f: var(--d25); --ft: var(--magnesie)">Hyrox</button>
         <button type="button" class="wip-coupe" data-filtre="pole" aria-pressed="false" style="--f: var(--chrome); --ft: var(--fonte)">Pole</button>
         <button type="button" class="wip-coupe" data-filtre="og" aria-pressed="false" style="--f: var(--magnesie); --ft: var(--fonte)">Open gym</button>
+      </div>
+      <div class="wip-jours-onglets wip-rev" role="group" aria-label="Choisir un jour">
+        <button type="button" data-jour="0" aria-pressed="true">Lun</button>
+        <button type="button" data-jour="1" aria-pressed="false">Mar</button>
+        <button type="button" data-jour="2" aria-pressed="false">Mer</button>
+        <button type="button" data-jour="3" aria-pressed="false">Jeu</button>
+        <button type="button" data-jour="4" aria-pressed="false">Ven</button>
+        <button type="button" data-jour="5" aria-pressed="false">Sam</button>
+        <button type="button" data-jour="6" aria-pressed="false">Dim</button>
       </div>
       <div class="wip-planning wip-rev" data-delai="1">
         <div class="wip-jour-bloc">
@@ -1322,26 +1390,59 @@ html, body { margin: 0; padding: 0; }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(maj);
   }
 
-  /* ————— planning : filtre par discipline ————— */
-  var filtres = document.querySelectorAll('.wip-filtres button');
+  /* ————— planning : une discipline et, sur petit écran, un jour —————
+     Les deux critères se combinent dans une seule fonction : un bloc est
+     visible s'il lui reste au moins un créneau après filtrage ET, sous 860 px,
+     s'il est le jour choisi. Les écrire séparément conduisait à ce que le
+     dernier appelé écrase l'autre. */
+  var filtres  = document.querySelectorAll('.wip-filtres button');
+  var onglets  = document.querySelectorAll('.wip-jours-onglets button');
   var creneaux = document.querySelectorAll('.wip-creneau');
-  if (filtres.length && creneaux.length) {
+  var blocs    = document.querySelectorAll('.wip-jour-bloc');
+
+  if (creneaux.length && blocs.length) {
+    var disc = 'tout';
+    var jour = 0;
+    var etroit = window.matchMedia('(max-width: 860px)');
+
+    function majPlanning() {
+      Array.prototype.forEach.call(creneaux, function (c) {
+        c.hidden = !(disc === 'tout' || c.getAttribute('data-d') === disc);
+      });
+      var unSeulJour = etroit.matches;
+      var premierNonVide = -1;
+      Array.prototype.forEach.call(blocs, function (bloc, i) {
+        var reste = bloc.querySelectorAll('.wip-creneau:not([hidden])').length;
+        if (reste > 0 && premierNonVide < 0) premierNonVide = i;
+        bloc.hidden = reste === 0 || (unSeulJour && i !== jour);
+      });
+      /* Le jour choisi n'a plus rien après filtrage : on bascule sur le premier
+         qui a quelque chose, plutôt que de montrer un planning vide. */
+      if (unSeulJour && premierNonVide >= 0 && blocs[jour].hidden) {
+        jour = premierNonVide;
+        blocs[jour].hidden = false;
+      }
+      Array.prototype.forEach.call(onglets, function (o, i) {
+        o.setAttribute('aria-pressed', String(i === jour));
+        var vide = blocs[i].querySelectorAll('.wip-creneau:not([hidden])').length === 0
+                && !(disc === 'tout');
+        o.disabled = vide;
+        o.style.opacity = vide ? '.4' : '';
+      });
+    }
+
     Array.prototype.forEach.call(filtres, function (b) {
       b.addEventListener('click', function () {
-        var k = b.getAttribute('data-filtre');
+        disc = b.getAttribute('data-filtre');
         Array.prototype.forEach.call(filtres, function (o) { o.setAttribute('aria-pressed', String(o === b)); });
-        Array.prototype.forEach.call(creneaux, function (c) {
-          c.hidden = !(k === 'tout' || c.getAttribute('data-d') === k);
-        });
-        /* Un jour sans aucun créneau visible s'efface entièrement. Sans ça, le
-           filtre laissait des en-têtes de jour suivis d'un vide — surtout
-           visible en pile sur téléphone. */
-        Array.prototype.forEach.call(document.querySelectorAll('.wip-jour-bloc'), function (bloc) {
-          var reste = bloc.querySelectorAll('.wip-creneau:not([hidden])').length;
-          bloc.hidden = reste === 0;
-        });
+        majPlanning();
       });
     });
+    Array.prototype.forEach.call(onglets, function (b, i) {
+      b.addEventListener('click', function () { jour = i; majPlanning(); });
+    });
+    if (etroit.addEventListener) etroit.addEventListener('change', majPlanning);
+    majPlanning();
   }
 
   /* —————————————————————————————————————————————————————————————
