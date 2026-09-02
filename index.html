@@ -151,6 +151,35 @@ html, body { margin: 0; padding: 0; }
 .wip button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 .wip a { color: inherit; text-decoration: none; }
 .wip p { text-wrap: pretty; }
+
+/* ⚠ PIÈGE DE SPÉCIFICITÉ — à lire avant de donner une marge à un <p>.
+   Le reset ci-dessus (`.wip p`) vaut 0,1,1. Une règle de classe simple vaut
+   0,1,0 : elle perd, quel que soit son rang dans le source. Tout `margin` posé
+   sur un <p> par sa seule classe est donc silencieusement annulé.
+
+   Mesuré le 02/09/2026 — valeurs déclarées puis réellement calculées :
+     .wip-tsec-intro   <p>   22 px  →  0 px   (les onze sections de la page)
+     .wip-affil        <p>   38 px  →  0 px
+     .wip-hyrox-note   <p>   32 px  →  0 px
+     .wip-lex          <dl>  36 px  → 36 px   le reset ne liste pas <dl>
+     .wip-stations     <ol>  34 px  → 34 px   ni <ol>
+   D'où un bug invisible : deux blocs voisins, l'un espacé, l'autre collé.
+
+   ⚠ Le reset annule `padding` autant que `margin` : le cartouche d'affiliation
+   avait son texte collé aux quatre bords, et le chanfrein lui mordait la
+   dernière ligne. Le retrait bas-droit est majoré de la valeur du chanfrein,
+   sinon la coupe passe dans le texte.
+
+   Marges et retraits rétablis ici, préfixés `.wip` pour passer à 0,2,0. Tout
+   nouveau <p> qui a besoin d'une marge ou d'un retrait se déclare dans ce
+   bloc, pas à côté de ses propres règles de style. */
+.wip .wip-tsec-intro { margin-top: 22px; }
+.wip .wip-hyrox-note { margin-top: 32px; }
+.wip .wip-affil {
+  margin-top: 38px;
+  padding: 18px calc(22px + var(--chanfrein)) calc(20px + var(--chanfrein)) 22px;
+}
+
 .wip :focus-visible { outline: 2px solid var(--bleu); outline-offset: 3px; }
 .wip section[id], .wip header[id] { scroll-margin-top: calc(var(--nav-h) + 12px); }
 
@@ -822,12 +851,87 @@ html, body { margin: 0; padding: 0; }
   .wip-lex > div { grid-template-columns: 1fr; gap: 5px; padding: 13px 0; }
 }
 
+/* ——————————————————————— stations HYROX ———————————————————————
+   Les huit ateliers de la course, dans l'ordre officiel. La liste se dessine
+   toute seule : c'est une séquence numérotée, elle prend donc la forme d'une
+   séquence numérotée — index en mono, nom en Archivo, mesure en mono. Même
+   grammaire que le lexique de la section 02, à trois lignes de CSS près.
+
+   ⚠ Les distances et répétitions sont celles de la division Open. Elles sont
+   à revalider contre le pack de marque affilié avant mise en ligne (§5 bis,
+   « ces règles priment sur les nôtres »). Les charges ne sont pas indiquées :
+   elles changent selon la division, une valeur unique serait fausse. */
+/* ⚠ Flux en COLONNE, pas en ligne. Une grille à deux colonnes remplit par
+   défaut ligne par ligne, ce qui donnait 01 03 05 07 à gauche et 02 04 06 08 à
+   droite : le lecteur qui descend une colonne lisait la course dans le
+   désordre. C'est la différence entre cette liste et le lexique de la section
+   02, où l'ordre n'a aucune importance. Quatre rangs figés, donc, et le flux
+   repasse en ligne quand la grille tombe à une colonne. */
+.wip-stations {
+  list-style: none; margin: 34px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, auto); grid-auto-flow: column;
+  column-gap: 46px; border-top: 2px solid var(--fonte);
+}
+.wip-stations li {
+  display: grid; grid-template-columns: 30px 1fr auto; gap: 14px;
+  align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--trait);
+}
+.wip-stations i {
+  font-style: normal; font-family: var(--mono); font-size: 11px;
+  font-weight: 600; color: var(--bleu);
+}
+.wip-stations span { font-size: 15.5px; font-weight: 600; letter-spacing: -.015em; }
+.wip-stations b {
+  font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--beton-f);
+}
+@media (max-width: 820px) {
+  .wip-stations { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+}
+
+/* La course elle-même : deux nombres et rien d'autre. Posés en gros mono, ils
+   disent le format plus vite qu'une phrase — et le vocabulaire d'une salle est
+   chiffré (§4). */
+.wip-course {
+  display: flex; flex-wrap: wrap; gap: 14px 52px; align-items: flex-start;
+  margin-top: 6px;
+}
+.wip-course div { display: flex; flex-direction: column; gap: 4px; }
+.wip-course b {
+  font-family: var(--mono); font-size: 34px; font-weight: 600;
+  letter-spacing: -.05em; line-height: 1; color: var(--fonte);
+}
+.wip-course span {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--beton-f);
+}
+@media (max-width: 560px) {
+  .wip-course { gap: 18px 34px; }
+  .wip-course b { font-size: 27px; }
+}
+/* La levée d'objection en fin de section : le Hyrox attire les compétiteurs et
+   fait fuir tout le monde d'autre. Cette phrase existe pour les seconds, elle
+   est donc en texte courant et pas en cartouche. */
+.wip-hyrox-note {
+  max-width: 62ch; margin: 32px 0 0; color: var(--encre);
+  font-size: 16px; line-height: 1.62;
+}
+
 /* Le seul actif que la concurrence locale ne peut pas copier : l'affiliation.
    Traitée en ligne de mention, pas en bandeau — §5 bis « HYROX = une
    certification, pas un territoire » : position fixe, surface plafonnée. */
+/* Fond NOIR, et pas `--papier` comme au premier jet : la section Hyrox est une
+   section `pose`, elle est donc elle-même en `--papier`, et le cartouche y
+   était rigoureusement invisible — deux paragraphes qui semblaient se
+   télescoper. Le noir en fait au passage l'ancre visuelle de la section, ce
+   qui est juste : l'affiliation est le seul fait de cette page qu'un
+   concurrent local ne peut pas recopier. Les valeurs de texte sont les
+   variantes « sur noir » du §3, contrastes déjà vérifiés (6,1:1 et 5,9:1). */
+/* marge et retrait : voir le bloc « piège de spécificité » en tête de feuille —
+   déclarés ici, ils seraient annulés par le reset `.wip p`. */
 .wip-affil {
-  max-width: 620px;   /* mesure plafonnée : une mention, pas un bandeau */
-  margin-top: 34px; padding: 18px 22px 20px; background: var(--papier);
+  max-width: 620px;   /* mesure plafonnée : une mention, pas un bandeau (§5 bis) */
+  background: var(--fonte);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chanfrein)),
                      calc(100% - var(--chanfrein)) 100%, 0 100%);
 }
@@ -835,16 +939,16 @@ html, body { margin: 0; padding: 0; }
    courant, donc en Archivo : une phrase entière en mono ne se lit pas. */
 .wip-affil b {
   display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--fonte);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--magnesie);
 }
 .wip-affil b::before {
   content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 11px;
-  background: var(--bleu); vertical-align: 1px;
+  background: var(--bleu-c); vertical-align: 1px;
   clip-path: polygon(0 0, 100% 0, 100% 55%, 55% 100%, 0 100%);  /* la coupe du §5, en pastille */
 }
 .wip-affil i {
   display: block; margin-top: 10px; font-style: normal; font-family: var(--display);
-  font-size: 14.5px; line-height: 1.55; color: var(--beton-f);
+  font-size: 14.5px; line-height: 1.55; color: var(--beton-c);
 }
 
 /* ———————————————————————————————— espaces ———————————————————————————————— */
@@ -986,6 +1090,15 @@ html, body { margin: 0; padding: 0; }
 .wip-espace-bande > span + span::before {
   content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 14px;
   background: var(--trait); transform: skewX(-36.87deg); vertical-align: -1px;
+}
+/* Les deux pratiques du plateau, avec le signe déjà inventé par le planning :
+   disque plein pour le cours de base, anneau pour le créneau Hyrox. Même
+   rouge, même espace, remplissage différent — c'est la « différenciation
+   subtile » du §5 bis, et surtout pas un second territoire. Le signe ne vivait
+   que dans le planning ; la carte s'appelait « Cross-training & Hyrox » sans
+   jamais reparler du second. */
+.wip-espace-pratiques .wip-pastille {
+  display: inline-block; margin-right: 9px; vertical-align: -1px;
 }
 @media (max-width: 760px) {
   .wip-espace-tete { grid-template-columns: 40px 1fr 24px; gap: 16px; }
@@ -2186,7 +2299,7 @@ html, body { margin: 0; padding: 0; }
       <div class="wip-espace on" data-espace data-provisoire>
         <button class="wip-espace-tete" aria-expanded="true" aria-controls="espace-cf">
           <span class="wip-disque" style="background: var(--fonte); border-color: var(--d25); color: var(--d25)">25</span>
-          <span class="wip-espace-nom">Cross-training &amp; Hyrox</span>
+          <span class="wip-espace-nom">Plateau cross-training</span>
           <span class="wip-espace-meta">420 m² · 12 par cours</span>
           <span class="wip-croix on" aria-hidden="true"></span>
         </button>
@@ -2196,8 +2309,8 @@ html, body { margin: 0; padding: 0; }
               <figure class="wip-espace-vue">
                 <img src="media/provisoire-cf.jpg" alt="Plateau de cross-training : barres au sol, rameurs et anneaux sous la charpente." loading="lazy" decoding="async" style="object-position: 50% 82%">
                 <div class="wip-espace-legende">
-                  <span class="wip-mono">Cross-training &amp; Hyrox</span>
-                  <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence.</p>
+                  <span class="wip-mono">Plateau cross-training</span>
+                  <p>Le cœur de la salle : entraînement fonctionnel en petit groupe. Barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite au tableau, à côté de la version prescrite — pas en note de bas de page. Le coach vous donne la vôtre avant que la séance commence. C'est aussi le plateau qui accueille les créneaux Hyrox, détaillés plus bas.</p>
                 </div>
               </figure>
               <div class="wip-espace-bande">
@@ -2205,6 +2318,15 @@ html, body { margin: 0; padding: 0; }
                 <span><b>12</b> par cours</span>
                 <span><b>60 min</b> la séance</span>
                 <span><b>6h30 → 21h</b></span>
+              </div>
+              <!-- Un seul plateau, deux pratiques. Les deux signes sont ceux du
+                   planning, à l'identique : on ne réinvente pas un code à trois
+                   sections d'écart. Les volumes sont ceux réellement affichés
+                   au planning (18 + 4 sur 30 créneaux) — à recompter si le
+                   planning bouge. -->
+              <div class="wip-espace-bande wip-espace-pratiques">
+                <span><i class="wip-pastille" style="background: var(--d25)"></i><b>18</b> créneaux cross-training</span>
+                <span><i class="wip-pastille anneau" style="box-shadow: inset 0 0 0 2.5px var(--d25)"></i><b>4</b> créneaux Hyrox</span>
               </div>
               <p class="wip-espace-note"><b>Visuel provisoire</b>À photographier : le rig en pleine séance — un coach à côté d'un débutant, jamais devant le groupe. Lumière latérale dure, 24 mm</p>
             </div>
@@ -2367,12 +2489,72 @@ html, body { margin: 0; padding: 0; }
       <div><dt>PR</dt><dd><b>Personal record</b> — votre meilleure marque sur un mouvement. On l'écrit au tableau pour la dater, pas pour la comparer à celle du voisin.</dd></div>
     </dl>
 
-    <p class="wip-affil">
-      <b>Salle affiliée HYROX</b>
-      <i>L'affiliation engage le matériel, le format des ateliers et la formation des coachs sur les huit stations officielles. C'est ce qui sépare une préparation Hyrox d'un cours qui y ressemble.</i>
-    </p>
-
     <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+  </section>
+
+  <!-- ————— hyrox —————
+       Section propre, décidée le 02/09 : le Hyrox ne devait plus se lire comme
+       une mention accrochée au cross-training. Il en est désormais séparé par
+       la structure et par l'offre.
+
+       ⚠ §5 bis — la séparation s'arrête là. Pas de couleur propre, pas de
+       territoire, pas de badge agrandi : le fond `pose` et le rang de section
+       suffisent à le distinguer. Une couleur HYROX ferait de WIP la sous-marque
+       de son partenaire, ce qui est exactement le motif pour lequel le jaune
+       « Signal » a été abandonné le 21/08. L'accent reste le rouge du plateau,
+       parce que le Hyrox se pratique sur le plateau.
+
+       ⚠ Les huit distances sont celles de la division Open. À revalider contre
+       le pack de marque affilié avant mise en ligne. -->
+  <section class="wip-sec pose wip-a-galet" id="hyrox">
+    <svg class="wip-galet" style="color: var(--d25); width: min(32vw, 340px); top: -90px; left: -130px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
+    <div class="wip-wrap">
+      <div class="wip-tsec">
+        <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">03</span><b>Hyrox</b></span>
+        <h2>
+          <span class="m"><i style="--i:0">Huit</i></span>
+          <span class="m"><i style="--i:1">kilomètres,</i></span>
+          <span class="m"><i style="--i:2">huit</i></span>
+          <span class="m"><i style="--i:3">ateliers,</i></span>
+          <span class="m"><i style="--i:4">un</i></span>
+          <span class="m"><i style="--i:5">chrono</i></span>
+          <span class="m"><i style="--i:6">comparable</i></span>
+          <span class="m"><i style="--i:7">partout</i></span>
+        </h2>
+        <p class="wip-tsec-intro">Le Hyrox n'est pas une méthode d'entraînement, c'est une course. Le parcours est identique à Amboise, à Paris et à Hambourg — c'est ce qui rend un temps comparable, et ce qui rend la préparation précise.</p>
+      </div>
+
+      <div class="wip-course wip-rev">
+        <div><b>8 km</b><span>de course</span></div>
+        <div><b>8</b><span>ateliers de force</span></div>
+        <div><b>1 km</b><span>avant chaque atelier</span></div>
+        <div><b>4</b><span>créneaux par semaine</span></div>
+      </div>
+
+      <ol class="wip-stations wip-rev">
+        <li><i>01</i><span>Ski erg</span><b>1 000 m</b></li>
+        <li><i>02</i><span>Sled push</span><b>50 m</b></li>
+        <li><i>03</i><span>Sled pull</span><b>50 m</b></li>
+        <li><i>04</i><span>Burpees broad jump</span><b>80 m</b></li>
+        <li><i>05</i><span>Rameur</span><b>1 000 m</b></li>
+        <li><i>06</i><span>Farmers carry</span><b>200 m</b></li>
+        <li><i>07</i><span>Sandbag lunges</span><b>100 m</b></li>
+        <li><i>08</i><span>Wall balls</span><b>100 répétitions</b></li>
+      </ol>
+
+      <p class="wip-affil">
+        <b>Salle affiliée HYROX</b>
+        <i>L'affiliation engage le matériel, le format des ateliers et la formation des coachs sur les huit stations officielles. C'est ce qui sépare une préparation Hyrox d'un cours qui y ressemble.</i>
+      </p>
+
+      <!-- Le parcours des coachs est la source : c'est Simon qui suit la
+           préparation aux courses (voir section « L'équipe »). Ne pas
+           attribuer ce rôle à quelqu'un d'autre sans changer les deux endroits. -->
+      <p class="wip-hyrox-note">Il n'y a pas besoin de viser une course pour venir sur ces créneaux : le format est un excellent entraînement d'endurance, et beaucoup s'y inscrivent sans jamais prendre de dossard. Ceux qui en prennent un sont suivis par Simon, qui encadre la préparation aux courses.</p>
+
+      <div class="wip-colophon" aria-hidden="true"><i></i><svg viewBox="0 0 1965 1000" fill="currentColor" focusable="false"><use href="#sig-symbole"/></svg></div>
+    </div>
   </section>
 
   <!-- ————— pourquoi ce nom ————— -->
@@ -2381,7 +2563,7 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--magnesie)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">03</span><b>Pourquoi ce nom</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">04</span><b>Pourquoi ce nom</b></span>
         <h2>
           <span class="m"><i style="--i:0">Trois</i></span>
           <span class="m"><i style="--i:1">verbes,</i></span>
@@ -2424,7 +2606,7 @@ html, body { margin: 0; padding: 0; }
     <svg class="wip-galet" style="color: var(--d25); width: min(34vw, 360px); bottom: -110px; left: -140px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">04</span><b>Ce qu'on nous dit le plus souvent</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>Ce qu'on nous dit le plus souvent</b></span>
       <h2>
         <span class="m"><i style="--i:0">Les</i></span>
         <span class="m"><i style="--i:1">quatre</i></span>
@@ -2462,7 +2644,7 @@ html, body { margin: 0; padding: 0; }
     <svg class="wip-galet" style="color: var(--bleu); width: min(24vw, 250px); top: 120px; right: -95px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">05</span><b>Première visite</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>Première visite</b></span>
       <h2>
         <span class="m"><i style="--i:0">La</i></span>
         <span class="m"><i style="--i:1">première</i></span>
@@ -2508,7 +2690,7 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-wrap wip-sec sans-trait" id="galerie">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">06</span><b>En images</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>En images</b></span>
       <h2>
         <span class="m"><i style="--i:0">Des</i></span>
         <span class="m"><i style="--i:1">gens</i></span>
@@ -2590,7 +2772,7 @@ html, body { margin: 0; padding: 0; }
     <svg class="wip-galet" style="color: var(--fonte); width: min(42vw, 460px); bottom: -130px; left: -180px" aria-hidden="true" focusable="false"><use href="#sig-disque"/></svg>
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--fonte)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">07</span><b>L'équipe</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>L'équipe</b></span>
       <h2>
         <span class="m"><i style="--i:0">Vous</i></span>
         <span class="m"><i style="--i:1">choisissez</i></span>
@@ -2698,7 +2880,7 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--d25)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">08</span><b>Planning</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">09</span><b>Planning</b></span>
         <h2>
           <span class="m"><i style="--i:0">Les</i></span>
           <span class="m"><i style="--i:1">horaires,</i></span>
@@ -2793,7 +2975,7 @@ html, body { margin: 0; padding: 0; }
   <section class="wip-wrap wip-sec sans-trait" id="lieu">
     <div class="wip-tsec">
       <span class="wip-tsec-regle" style="background: var(--d15)" aria-hidden="true"></span>
-      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">09</span><b>Le lieu</b></span>
+      <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">10</span><b>Le lieu</b></span>
       <h2>
         <span class="m"><i style="--i:0">Un</i></span>
         <span class="m"><i style="--i:1">ancien</i></span>
@@ -2845,7 +3027,7 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap">
       <div class="wip-tsec">
         <span class="wip-tsec-regle" style="background: var(--bleu)" aria-hidden="true"></span>
-        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">10</span><b>Formules</b></span>
+        <span class="wip-tsec-oeil wip-mono"><span aria-hidden="true">11</span><b>Formules</b></span>
         <h2>
           <span class="m"><i style="--i:0">On</i></span>
           <span class="m"><i style="--i:2">en</i></span>
@@ -2864,7 +3046,7 @@ html, body { margin: 0; padding: 0; }
         </div>
         <div class="wip-formule">
           <h3>Accès à un espace</h3>
-          <p>Vous ne pratiquez qu'une discipline : cross-training et Hyrox, ou pole dance. Accès illimité sur tous les créneaux de cet espace.</p>
+          <p>Vous ne pratiquez qu'une discipline : le plateau — cross-training et créneaux Hyrox compris — ou le studio pole. Accès illimité sur tous les créneaux de cet espace.</p>
         </div>
         <div class="wip-formule">
           <h3>Accès complet</h3>
@@ -2962,7 +3144,8 @@ html, body { margin: 0; padding: 0; }
           <h4>La salle</h4>
           <ul>
             <li><a href="#espaces">Les quatre espaces</a></li>
-            <li><a href="#lexique">Cross-training, Hyrox : le vocabulaire</a></li>
+            <li><a href="#lexique">Le vocabulaire du plateau</a></li>
+            <li><a href="#hyrox">Hyrox : le format et la préparation</a></li>
             <li><a href="#planning">Planning des cours</a></li>
             <li><a href="#tarifs">Formules et essai</a></li>
             <li><a href="#equipe">Les coachs</a></li>
@@ -3132,7 +3315,7 @@ html, body { margin: 0; padding: 0; }
         "name": "Activités de WIP Athletics à Amboise",
         "itemListElement": [
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de cross-training en petit groupe à Amboise", "alternateName": "Entraînement fonctionnel", "description": "Entraînement fonctionnel en groupe de 12 personnes maximum : barres, anneaux, rameurs, sled, ski erg. Chaque mouvement du jour a une version débutante écrite à côté de la version prescrite.", "serviceType": "Cross training", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Préparation aux courses Hyrox", "description": "Préparation physique aux stations Hyrox et au format course : ski erg, sled push, sled pull, burpees broad jump, rameur, farmers carry, sandbag lunges, wall balls.", "serviceType": "Préparation Hyrox", "areaServed": "Indre-et-Loire", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Préparation aux courses Hyrox à Amboise", "alternateName": "Créneaux Hyrox en salle affiliée", "description": "Quatre créneaux par semaine sur le format officiel : 8 km de course fractionnés par huit ateliers de force, un kilomètre avant chacun — ski erg 1 000 m, sled push 50 m, sled pull 50 m, burpees broad jump 80 m, rameur 1 000 m, farmers carry 200 m, sandbag lunges 100 m, wall balls 100 répétitions. Ouvert sans objectif de compétition.", "serviceType": "Préparation Hyrox", "areaServed": ["Amboise", "Tours", "Indre-et-Loire"], "url": "https://wipathletics.fr/#hyrox", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cours de pole dance et disciplines aériennes à Amboise", "description": "Pole dance et aérien dans un espace dédié, rideaux occultants, cours en petit groupe du niveau découverte au confirmé.", "serviceType": "Pole dance", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Haltérophilie et travail de la barre", "description": "Plateforme d'haltérophilie accessible en open gym, et suivi de la progression technique par un coach spécialisé.", "serviceType": "Haltérophilie", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Open gym en accès libre", "description": "70 m² en accès libre : rack, haltères, machines, plateforme d'haltérophilie. Vous venez quand vous voulez, un coach est toujours dans la salle si vous avez une question.", "serviceType": "Open gym", "areaServed": "Amboise", "provider": { "@id": "https://wipathletics.fr/#salle" } } },
@@ -3203,6 +3386,8 @@ html, body { margin: 0; padding: 0; }
         { "@type": "Question", "name": "Quelles activités pratique-t-on à WIP Athletics ?", "acceptedAnswer": { "@type": "Answer", "text": "Quatre espaces sur 1 000 m² : le cross-training et la préparation Hyrox sur 420 m², le studio de pole dance et d'aérien sur 80 m², l'open gym en accès libre sur 70 m² avec sa plateforme d'haltérophilie, et une zone chill de 60 m² avec café. Les cours collectifs sont limités à 12 personnes." } },
         { "@type": "Question", "name": "C'est quoi le cross-training ?", "acceptedAnswer": { "@type": "Answer", "text": "Le nom générique de la pratique : une séance courte et variée qui mélange gymnastique, port de charge et cardio, différente chaque jour. C'est la même méthode que dans les salles qui l'exploitent sous une licence américaine — enseigne différente, licence en moins. Chaque mouvement du jour a une version allégée écrite à côté de la version prescrite." } },
         { "@type": "Question", "name": "Quelle est la différence entre le cross-training et le Hyrox ?", "acceptedAnswer": { "@type": "Answer", "text": "Le cross-training est une méthode d'entraînement : une séance différente chaque jour. Le Hyrox est un format de course : huit kilomètres entrecoupés de huit ateliers de force, toujours les mêmes, partout dans le monde. On s'entraîne en cross-training, on court un Hyrox — et c'est ce format identique partout qui permet de comparer un temps fait à Amboise avec un temps fait à Hambourg." } },
+        { "@type": "Question", "name": "En quoi consiste une séance de préparation Hyrox ?", "acceptedAnswer": { "@type": "Answer", "text": "On travaille le format de la course : 8 km de course fractionnés par huit ateliers de force, un kilomètre avant chacun. Dans l'ordre officiel : ski erg 1 000 m, sled push 50 m, sled pull 50 m, burpees broad jump 80 m, rameur 1 000 m, farmers carry 200 m, sandbag lunges 100 m, wall balls 100 répétitions. Quatre créneaux par semaine à Amboise, et il n'y a pas besoin de viser une course pour y venir." } },
+        { "@type": "Question", "name": "Faut-il faire de la compétition pour venir sur les créneaux Hyrox ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Le format est un excellent entraînement d'endurance et beaucoup s'y inscrivent sans jamais prendre de dossard. Ceux qui en prennent un sont suivis par Simon, qui encadre la préparation aux courses." } },
         { "@type": "Question", "name": "WIP Athletics est-elle une salle affiliée HYROX ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. WIP Athletics est une salle affiliée HYROX à Amboise, en Indre-et-Loire. L'affiliation engage le matériel, le format des ateliers et la formation des coachs sur les huit stations officielles : c'est ce qui sépare une préparation Hyrox d'un cours qui y ressemble." } },
         { "@type": "Question", "name": "Faut-il connaître le vocabulaire (WOD, AMRAP, EMOM) avant de venir ?", "acceptedAnswer": { "@type": "Answer", "text": "Non, et personne ne vous le demandera. WOD est l'entraînement du jour, AMRAP le maximum de tours dans un temps donné, EMOM un bloc de travail au départ de chaque minute, scaler l'adaptation d'un mouvement à votre niveau du jour. Ces mots s'apprennent en trois séances, et le coach les traduit à voix haute tant que c'est nécessaire." } },
         { "@type": "Question", "name": "Où se trouve la salle et comment s'y garer ?", "acceptedAnswer": { "@type": "Answer", "text": "Au 1329 chemin du Roi, 37400 Amboise, à dix minutes du centre d'Amboise et vingt-cinq minutes de Tours. 1 000 m² sous charpente, hauteur libre de 4,20 m, parking gratuit de 40 places devant la porte. Vestiaires neufs, douches individuelles, accès PMR complet." } },

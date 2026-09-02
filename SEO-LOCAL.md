@@ -154,10 +154,12 @@ défendable, et personne ne le tient encore en Indre-et-Loire.
 
 | Requête visée | Où elle se joue |
 |---|---|
-| salle affiliée HYROX Amboise / Tours / Indre-et-Loire | Fiche GBP + bloc « Le vocabulaire » ✅ |
-| préparation HYROX Tours | Section Hyrox + `memberOf` du JSON-LD ✅ |
-| s'entraîner pour un HYROX débutant | À écrire — futur article/section |
-| HYROX c'est quoi | Bloc « Le vocabulaire » ✅ + FAQ balisée ✅ |
+| salle affiliée HYROX Amboise / Tours / Indre-et-Loire | Fiche GBP + cartouche d'affiliation, section 03 ✅ |
+| préparation HYROX Tours | **Section 03 · Hyrox** + `memberOf` + `Service` dédié avec son ancre ✅ |
+| HYROX c'est quoi / les 8 stations | Section 03, liste officielle des huit ateliers ✅ + 2 FAQ balisées ✅ |
+| HYROX sans faire de compétition | Section 03, dernier paragraphe ✅ + FAQ balisée ✅ |
+| différence cross-training / Hyrox | Bloc « Le vocabulaire » ✅ + FAQ balisée ✅ |
+| s'entraîner pour son premier HYROX | À écrire — futur article |
 
 **Axe secondaire — cross-training et local (30 %)**
 
@@ -186,9 +188,11 @@ fonctionnel, plateau, open gym, ski erg, sled, wall ball, arraché, épaulé-jet
 | `HealthClub` + `ExerciseGym` balisés | ✅ nettement au-dessus des concurrents locaux |
 | `memberOf` → HYROX | ✅ ajouté le 01/09 — le rattachement d'entité |
 | `knowsAbout` : 22 entrées dont le lexique | ✅ ajouté le 01/09 |
-| `FAQPage` : 11 questions | ✅ dont 4 ajoutées le 01/09 |
+| `FAQPage` : 13 questions | ✅ 4 ajoutées le 01/09, 2 le 02/09 |
 | `Event` d'ouverture au 31/10 | ✅ |
 | Section « 02 · Le vocabulaire » | ✅ ajoutée le 01/09 |
+| Section « 03 · Hyrox » — les 8 ateliers, l'affiliation | ✅ ajoutée le 02/09 |
+| `Service` Hyrox avec son ancre `#hyrox` et les 8 distances | ✅ 02/09 |
 | `geo` (latitude / longitude) | ❌ **à relever sur Maps, clic droit sur la porte** |
 | `sameAs` : fiche GBP, Facebook | ❌ à compléter dès leur création |
 | Casse de la marque HYROX | ⚠️ « Hyrox » dans le texte courant, « HYROX » sur la mention d'affiliation. À harmoniser contre le pack de marque affilié |
