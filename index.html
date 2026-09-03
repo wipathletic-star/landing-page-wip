@@ -442,7 +442,25 @@ html, body { margin: 0; padding: 0; }
 .wip-sec.clair .wip-coach-role { color: var(--beton-f); }
 
 /* ═══ DISCIPLINECARD — CD : min-h 480, image flex-1, barre accent 34%→100% ═══ */
-.wip-cartes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+/* Cinq cartes depuis le 02/09 (ajout du Hyrox), et le user les veut alignées.
+   `auto-fit` n'y arrivait pas : le conteneur mesure 1 180 px, il faut 238 px de
+   minimum pour cinq, et la place manquait de peu — la grille retombait à quatre
+   et laissait une carte seule sur sa ligne.
+
+   Au-dessus de 1 200 px, les cinq colonnes sont donc imposées. Une carte y fait
+   223 px : le titre passe à 18 px et le retrait horizontal à 16 px, sinon
+   « Plateau cross-training » (226 px à 22 px) déborde de son cadre. Mesuré,
+   pas estimé. En dessous, la grille reprend son adaptation naturelle. */
+.wip-cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); gap: var(--sp-4); }
+@media (min-width: 1200px) {
+  .wip-cartes { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-3); }
+  .wip-carte-corps { padding: var(--sp-5) var(--sp-4) var(--sp-4); gap: var(--sp-3); }
+  #espaces .wip-carte h3 { font-size: 18px; }
+  #espaces .wip-carte p { font-size: 13.5px; }
+  #espaces .wip-carte-meta li { padding: 4px 7px; font-size: 9px; }
+  .wip-carte-lien { padding: 0 var(--sp-4) var(--sp-5); }
+  .wip-carte-idx { top: var(--sp-4); left: var(--sp-4); }
+}
 .wip-carte {
   position: relative; display: flex; flex-direction: column; min-height: 480px;
   background: var(--fonte-2); box-shadow: inset 0 0 0 1px var(--trait-n);
@@ -464,6 +482,29 @@ html, body { margin: 0; padding: 0; }
 .wip-carte-lien { margin-top: auto; padding: 0 var(--sp-5) var(--sp-6); font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--magnesie); transition: transform var(--dur-2) var(--ease-snap); }
 .wip-carte-lien::after { content: ""; display: inline-block; width: 18px; height: 2px; margin-left: 10px; vertical-align: middle; background: var(--c); }
 .wip-carte:hover .wip-carte-lien { transform: translateX(6px); }
+/* ————————————— l'affiliation HYROX sur une carte —————————————
+   §5 bis : HYROX est une certification, pas un territoire. Donc aucune couleur
+   propre, aucun badge agrandi — le signe est l'anneau rouge du disque 25 validé
+   le 02/09, et la mention tient en une ligne de mono.
+
+   ⚠ Le libellé exact du statut d'affiliation autorisé est imposé par HYROX et
+   figure dans le pack de marque affilié, qui n'est pas encore obtenu (§5 bis,
+   « À OBTENIR »). Ces règles priment sur les nôtres : à revalider mot pour mot
+   avant mise en ligne. Ne jamais redessiner ni recolorer la marque HYROX. */
+.wip-carte-affil {
+  display: flex; align-items: center; gap: 9px;
+  margin-top: var(--sp-2); padding-top: var(--sp-3);
+  border-top: 1px solid var(--trait-n);
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--magnesie);
+}
+.wip-carte-affil i { flex: none; width: 11px; height: 11px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--d25); }
+
+/* emplacement sans photo : les hachures du §5, à 36,87° */
+.wip-carte-img.vide { display: grid; place-items: center; background: repeating-linear-gradient(126.87deg, var(--fonte-1) 0 14px, var(--fonte-2) 14px 28px); }
+.wip-carte-img.vide::after { content: none; }
+.wip-carte-img.vide span.brief { font-family: var(--mono); font-size: 9px; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--beton-c); text-align: center; max-width: 20ch; line-height: 1.7; padding: var(--sp-4); }
+
 /* le badge « visuel provisoire » — même règle que sur index.html */
 .wip-carte[data-provisoire] .wip-carte-img::before { content: 'Visuel provisoire'; position: absolute; top: 0; right: 0; z-index: 3; background: var(--bleu); color: #fff; font-family: var(--mono); font-size: 8px; letter-spacing: .11em; text-transform: uppercase; padding: 6px 9px; }
 
@@ -891,8 +932,8 @@ html, body { margin: 0; padding: 0; }
     <div class="wip-wrap wip-sec-in">
       <header class="wip-tsec wip-rev">
         <div class="wip-tsec-oeil"><i>01</i><span>Les espaces</span></div>
-        <h2>Quatre façons de prendre soin de vous</h2>
-        <p class="wip-tsec-intro">Personne ne vient pour la même raison. Se remettre en mouvement, se vider la tête, retrouver de la force, ou passer un moment avec des gens. Quatre espaces sous le même toit.</p>
+        <h2>Cinq façons de prendre soin de vous</h2>
+        <p class="wip-tsec-intro">Personne ne vient pour la même raison. Se remettre en mouvement, se vider la tête, retrouver de la force, ou passer un moment avec des gens. Quatre espaces sous le même toit, plus le Hyrox qui se pratique sur le plateau.</p>
         <div class="wip-tsec-filet" aria-hidden="true"></div>
       </header>
       <div class="wip-cartes">
@@ -905,8 +946,22 @@ html, body { margin: 0; padding: 0; }
           </div>
           <span class="wip-carte-lien">Réserver un essai</span>
         </a>
-        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="1" style="--c: var(--chrome)" data-provisoire>
-          <div class="wip-carte-img"><img src="media/provisoire-pole.jpg" alt="Studio de pole dance : barre verticale, sol amortissant, lumière rasante." loading="lazy" decoding="async"><span class="wip-carte-idx">02</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
+        <!-- Le Hyrox suit le plateau parce qu'il s'y pratique : ce n'est pas un
+             cinquième lieu, c'est un format de course sur des créneaux dédiés.
+             Le nommer ici répond à ceux qui cherchent « Hyrox Amboise » sans
+             pour autant en faire un territoire (§5 bis). -->
+        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="1" style="--c: var(--d25)" data-provisoire>
+          <div class="wip-carte-img"><img src="media/provisoire-vie-02.jpg" alt="Mur de matériel : wall balls alignées au-dessus d'un râtelier d'haltères." loading="lazy" decoding="async" style="object-position: 50% 30%"><span class="wip-carte-idx">02</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
+          <div class="wip-carte-corps">
+            <h3>Hyrox</h3>
+            <p>Huit kilomètres de course entrecoupés de huit ateliers de force, identiques partout dans le monde. Ça se passe sur le plateau, sur des créneaux dédiés — et pas besoin de viser une course pour venir : beaucoup s'y entraînent sans jamais prendre de dossard.</p>
+            <ul class="wip-carte-meta"><li class="wip-coupe">8 km</li><li class="wip-coupe">8 ateliers</li><li class="wip-coupe">4 créneaux</li></ul>
+            <p class="wip-carte-affil"><i aria-hidden="true"></i>Salle affiliée HYROX</p>
+          </div>
+          <span class="wip-carte-lien">Réserver un essai</span>
+        </a>
+        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="2" style="--c: var(--chrome)" data-provisoire>
+          <div class="wip-carte-img"><img src="media/provisoire-pole.jpg" alt="Studio de pole dance : barre verticale, sol amortissant, lumière rasante." loading="lazy" decoding="async"><span class="wip-carte-idx">03</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
           <div class="wip-carte-corps">
             <h3>Studio pole &amp; aérien</h3>
             <p>Force, souplesse et confiance, barre après barre, à son rythme. Rideaux tirés : la première fois, on n'a pas envie d'être vue depuis le parking. On l'a prévu.</p>
@@ -914,8 +969,8 @@ html, body { margin: 0; padding: 0; }
           </div>
           <span class="wip-carte-lien">Réserver un essai</span>
         </a>
-        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="2" style="--c: var(--magnesie)" data-provisoire>
-          <div class="wip-carte-img"><img src="media/provisoire-open.jpg" alt="Open gym : racks, haltères alignés et plateforme d'haltérophilie." loading="lazy" decoding="async" style="object-position: 50% 72%"><span class="wip-carte-idx">03</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
+        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="3" style="--c: var(--magnesie)" data-provisoire>
+          <div class="wip-carte-img"><img src="media/provisoire-open.jpg" alt="Open gym : racks, haltères alignés et plateforme d'haltérophilie." loading="lazy" decoding="async" style="object-position: 50% 72%"><span class="wip-carte-idx">04</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
           <div class="wip-carte-corps">
             <h3>Open gym</h3>
             <p>Vos écouteurs, votre programme, personne à qui parler si vous n'en avez pas envie. Un coach reste dans la salle si vous avez une question — et ne vient que si vous l'appelez.</p>
@@ -923,8 +978,8 @@ html, body { margin: 0; padding: 0; }
           </div>
           <span class="wip-carte-lien">Réserver un essai</span>
         </a>
-        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="3" style="--c: var(--bleu-c)" data-provisoire>
-          <div class="wip-carte-img"><img src="media/provisoire-chill.jpg" alt="Zone Chill : canapés, grande table et coin café, après la séance." loading="lazy" decoding="async" style="object-position: 50% 66%"><span class="wip-carte-idx">04</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
+        <a href="#reserver" class="wip-carte wip-coupe wip-rev" data-delai="4" style="--c: var(--bleu-c)" data-provisoire>
+          <div class="wip-carte-img"><img src="media/provisoire-chill.jpg" alt="Zone Chill : canapés, grande table et coin café, après la séance." loading="lazy" decoding="async" style="object-position: 50% 66%"><span class="wip-carte-idx">05</span><span class="wip-carte-barre" aria-hidden="true"></span></div>
           <div class="wip-carte-corps">
             <h3>Zone Chill</h3>
             <p>Canapés, café, grande table. C'est ici que la séance se termine vraiment, et que la salle devient un endroit où on a envie de revenir. On l'a dessinée en premier, avant les racks.</p>
@@ -1103,11 +1158,11 @@ html, body { margin: 0; padding: 0; }
           <figcaption><span class="wip-coach-nom">Simon</span><span class="wip-coach-role">Cofondateur · coach plateau &amp; haltérophilie</span><div class="wip-coach-traits" aria-hidden="true"><i style="--t: var(--d25)"></i><i style="--t: var(--bleu-c)"></i></div></figcaption>
         </figure>
         <figure class="wip-coach wip-rev" data-delai="2">
-          <div class="wip-coach-img wip-coupe-photo vide"><span>À photographier — portrait dans la Zone Chill, lumière du jour</span></div>
+          <div class="wip-coach-img wip-coupe-photo" data-provisoire><img src="media/provisoire-vie-03.jpg" alt="" loading="lazy" decoding="async" style="object-position: 16% 44%"></div>
           <figcaption><span class="wip-coach-nom">Sabrina</span><span class="wip-coach-role">Cofondatrice · direction administrative</span></figcaption>
         </figure>
         <figure class="wip-coach wip-rev" data-delai="3">
-          <div class="wip-coach-img wip-coupe-photo vide"><span>À photographier — portrait sur le plateau ou devant la façade</span></div>
+          <div class="wip-coach-img wip-coupe-photo" data-provisoire><img src="media/provisoire-vie-04.jpg" alt="" loading="lazy" decoding="async" style="object-position: 64% 38%"></div>
           <figcaption><span class="wip-coach-nom">Benjamin</span><span class="wip-coach-role">Cofondateur · <span class="wip-arenseigner">rôle à renseigner</span></span></figcaption>
         </figure>
       </div>
